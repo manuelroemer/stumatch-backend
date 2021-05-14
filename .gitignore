@@ -8,9 +8,8 @@ dist
 node_modules
 yarn.lock
 
-# Editor Files
+# Editor Files (VS Code files are published).
 .idea
-.vscode
 *.sublime-project
 *.sublime-workspace
 
