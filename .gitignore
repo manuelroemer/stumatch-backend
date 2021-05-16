@@ -1,6 +1,9 @@
 # Compiled Files
 dist
 
+# Development Files
+.env
+
 # OS Files
 .DS_STORE
 
