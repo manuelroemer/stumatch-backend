@@ -3,7 +3,7 @@ import { json } from 'body-parser';
 import { config } from './config';
 import { establishDbConnection } from './db/connection';
 import { logger } from './log';
-import posts from './routes/posts';
+import posts from './endpoints/posts';
 
 const app = express();
 app.use(json());
