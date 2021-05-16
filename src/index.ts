@@ -1,16 +1,23 @@
 import express from 'express';
-import { json } from 'body-parser';
-import { config } from './config';
+import passport from 'passport';
 import { establishDbConnection } from './db/connection';
+import { config } from './config';
 import { logger } from './log';
 import posts from './endpoints/posts';
+import authToken from './endpoints/auth/token';
+import { apiErrorHandler } from './middlewares/apiErrorHandler';
+import './middlewares/passport';
 
 const app = express();
-app.use(json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 app.use(posts);
+app.use(authToken);
+app.use(apiErrorHandler);
 
 establishDbConnection().then(() => {
-  app.listen(config.port, () => {
-    logger.info(`Server is running on port ${config.port}.`);
+  app.listen(config.serverPort, () => {
+    logger.info(`Server is running on port ${config.serverPort}.`);
   });
 });

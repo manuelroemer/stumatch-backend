@@ -9,6 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const config = {
-  port: process.env.PORT ?? 4040,
-  dbConnectionString: process.env.MONGODB_CONNECTION_STRING ?? '',
+  serverPort: process.env.SERVER_PORT ?? 4040,
+  dbConnectionString: process.env.DB_CONNECTION_STRING ?? '',
+  authJwtSecret: process.env.AUTH_JWT_SECRET ?? 'nosecret',
+  authJwtIssuer: process.env.AUTH_JWT_ISSUER ?? 'sTUMatch',
 };

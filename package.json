@@ -1,28 +1,37 @@
 {
-  "name": "gql-playground",
+  "private": true,
+  "name": "stumatch-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "Manuel Römer",
-  "license": "ISC",
+  "author": "Nhu Duong, Manuel Römer, Quoc Khang Phan, Jonas Großmann",
   "scripts": {
     "start": "npm run watch",
-    "build": "tsc",
-    "watch": "npm run build && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "build": "npm run clean && tsc",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
+    "watch-ts": "npm run clean && tsc -w",
+    "clean": "rimraf dist",
+    "seed": "npm run build && node dist/db/seed.js",
     "lint": "eslint \"./src/**.ts\"",
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "bcrypt": "^5.0.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.9",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.11",
+    "@types/node": "^15.3.0",
+    "@types/passport": "^1.0.6",
+    "@types/passport-jwt": "^3.0.5",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "concurrently": "^6.1.0",
@@ -31,6 +40,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.2.4"
   }
 }

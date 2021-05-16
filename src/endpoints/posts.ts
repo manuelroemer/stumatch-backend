@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from 'express';
 import { PostModel } from '../db/models/post';
+import { authenticateJwt } from '../middlewares/authenticateJwt';
 
 const getAll: RequestHandler = async (_, res) => {
   const posts = await PostModel.find();
@@ -13,4 +14,8 @@ const post: RequestHandler = async (req, res) => {
   return res.status(201).json(post);
 };
 
-export default Router().get('/posts', getAll).post('/posts', post);
+const router = Router();
+router.get('/posts', authenticateJwt, getAll);
+router.post('/posts', authenticateJwt, post);
+
+export default router;
