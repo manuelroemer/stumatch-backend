@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "stumatch-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "description": "The sTUMatch backend.",
   "author": "Nhu Duong, Manuel Römer, Quoc Khang Phan, Jonas Großmann",
+  "main": "index.js",
   "scripts": {
     "start": "npm run watch",
     "build": "npm run clean && tsc",
