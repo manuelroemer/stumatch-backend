@@ -15,7 +15,7 @@ const post: RequestHandler = async (req, res) => {
 };
 
 const router = Router();
-router.get('/posts', authenticateJwt, getAll);
-router.post('/posts', authenticateJwt, post);
+router.get('/api/v1/posts', authenticateJwt, getAll);
+router.post('/api/v1/posts', authenticateJwt, post);
 
 export default router;

@@ -11,7 +11,7 @@ First of all, ensure that [NodeJS](https://nodejs.org/en/) is installed on your 
 Then, clone the repository and install the packages:
 
 ```sh
-git clone INSERT_GIT_URL_HERE stumatch-backend
+git clone https://gitlab.lrz.de/seba-master-2021/team-29/backend.git stumatch-backend
 
 cd stumatch-backend
 npm i

@@ -27,6 +27,6 @@ function generateJwt(user: User) {
 }
 
 const router = Router();
-router.post('/auth/token', post);
+router.post('/api/v1/auth/token', post);
 
 export default router;
