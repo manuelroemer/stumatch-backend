@@ -16,8 +16,8 @@ import { userSeed } from './models/userSeed';
     logger.info('Existing data cleared.');
 
     logger.info('Creating seed data...');
-    await UserModel.create(userSeed);
-    await PostModel.create(postSeed);
+    await UserModel.create(mapSeedIds(userSeed));
+    await PostModel.create(mapSeedIds(postSeed));
     logger.info('Seed data created.');
   } catch (err) {
     logger.error(`Seeding the database failed: ${err?.message ?? err}`, err);
@@ -25,3 +25,11 @@ import { userSeed } from './models/userSeed';
     mongoose.disconnect();
   }
 })();
+
+function mapSeedIds(seeds: Array<any>) {
+  return seeds.map((seed) => {
+    seed._id = seed.id;
+    delete seed.id;
+    return seed;
+  });
+}

@@ -17,6 +17,7 @@
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@types/uuid": "^8.3.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^9.0.2",
@@ -26,6 +27,7 @@
     "mongoose": "^5.12.9",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "uuid": "^8.3.2",
     "winston": "^3.3.3",
     "yup": "^0.32.9"
   },

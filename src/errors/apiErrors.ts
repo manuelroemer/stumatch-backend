@@ -5,7 +5,13 @@ export class ApiError extends Error {
 }
 
 export class BadRequestError extends ApiError {
-  constructor(message?: string) {
+  constructor(message = 'Invalid request data.') {
     super(400, message);
+  }
+}
+
+export class NotFoundError extends ApiError {
+  constructor(message = 'The requested entity was not found.') {
+    super(404, message);
   }
 }

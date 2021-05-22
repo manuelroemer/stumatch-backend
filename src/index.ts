@@ -18,6 +18,8 @@ app.use(passport.initialize());
 app.use(endpoints);
 app.use(apiErrorHandler);
 
+app.response.apiResult = app.response.json; // Enforces response typing.
+
 establishDbConnection().then(() => {
   app.listen(config.serverPort, () => {
     logger.info(`Server is running on port ${config.serverPort}.`);

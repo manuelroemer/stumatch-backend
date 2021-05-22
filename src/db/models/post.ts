@@ -1,15 +1,15 @@
-import { model, Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { createDbObjectSchema, DbObject } from './dbObject';
 
-export interface Post {
+export interface Post extends DbObject {
   content: string;
 }
 
-const PostSchema = new Schema<Post>({
+const postSchema = createDbObjectSchema<Post>({
   content: {
     type: String,
     required: true,
-    unique: false,
   },
 });
 
-export const PostModel = model<Post>('Post', PostSchema);
+export const PostModel = model<Post>('Post', postSchema);

@@ -1,19 +1,15 @@
 import { Router } from 'express';
-import { object, SchemaOf, string } from 'yup';
-import { Post, PostModel } from '../../db/models/post';
+import { PostModel } from '../../db/models/post';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-
-const schema: SchemaOf<Post> = object({
-  content: string().required(),
-}).defined();
+import { PostRequestBody, postValidationSchema } from './schemas';
 
 const post = asyncRequestHandler(async (req, res) => {
-  const body = req.body as Post;
-  const post = new PostModel(body);
+  const body = req.body as PostRequestBody;
+  const post = new PostModel({ _id: body.id, ...body });
   await post.save();
-  return res.status(201).json(post);
+  return res.status(201).apiResult({ result: post.toObject() });
 });
 
-export default Router().post('/api/v1/posts', authenticateJwt, validateRequestBody(schema), post);
+export default Router().post('/api/v1/posts', authenticateJwt, validateRequestBody(postValidationSchema), post);

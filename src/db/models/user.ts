@@ -1,12 +1,13 @@
-import { model, Schema } from 'mongoose';
+import { model } from 'mongoose';
+import { createDbObjectSchema, DbObject } from './dbObject';
 
-export interface User {
-  id: string;
-  email: string;
+export interface User extends DbObject {
   passwordHash: string;
+  email: string;
+  displayName: string;
 }
 
-const UserSchema = new Schema<User>({
+const userSchema = createDbObjectSchema<User>({
   email: {
     type: String,
     required: true,
@@ -18,4 +19,4 @@ const UserSchema = new Schema<User>({
   },
 });
 
-export const UserModel = model<User>('User', UserSchema);
+export const UserModel = model<User>('User', userSchema);

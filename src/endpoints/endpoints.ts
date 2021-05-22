@@ -6,7 +6,12 @@
 
 export const endpoints = [
   require('./auth/token/post').default,
-  require('./posts/getAll').default,
-  require('./posts/post').default,
+
   require('./status/get').default,
+
+  require('./posts/getAll').default,
+  require('./posts/get').default,
+  require('./posts/patch').default,
+  require('./posts/post').default,
+  require('./posts/delete').default,
 ];
