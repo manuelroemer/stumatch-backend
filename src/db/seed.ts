@@ -5,6 +5,7 @@ import { PostModel } from './models/post';
 import { postSeed } from './models/postSeed';
 import { UserModel } from './models/user';
 import { userSeed } from './models/userSeed';
+import faker from 'faker';
 
 (async function () {
   try {
