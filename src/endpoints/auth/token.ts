@@ -15,7 +15,7 @@ const post = asyncRequestHandler(async (req, res) => {
     throw new BadRequestError('Invalid username or password.');
   }
 
-  return res.status(200).json({ token: generateJwt(user!) });
+  return res.status(200).json({ access_token: generateJwt(user!), token_type: 'bearer' });
 });
 
 function generateJwt(user: User) {
