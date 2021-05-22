@@ -1,14 +1,10 @@
 import { ApiResult } from './apiResult';
+import { User as AppUser } from '../db/models/user';
 
 declare global {
   namespace Express {
-    interface User {
-      /**
-       * The user's ID in the DB.
-       * Injected during authentication.
-       */
-      id: string;
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface User extends AppUser {}
 
     interface Response {
       /**
