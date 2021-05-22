@@ -1,0 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// Using `require()` instead of `import` for importing the endpoints is dirty, but honestly the
+// easiest way resulting in the least amount of code.
+// Using `import` and giving each of the imported endpoint functions a unique name is just
+// unnecessarily overengineered given the below alternative.
+
+export const endpoints = [
+  require('./auth/token/post').default,
+  require('./posts/getAll').default,
+  require('./posts/post').default,
+  require('./status/get').default,
+];
