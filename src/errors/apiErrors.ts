@@ -10,8 +10,14 @@ export class BadRequestError extends ApiError {
   }
 }
 
+export class ForbiddenError extends ApiError {
+  constructor(message = 'Access to this resource is forbidden.') {
+    super(403, message);
+  }
+}
+
 export class NotFoundError extends ApiError {
-  constructor(message = 'The requested entity was not found.') {
+  constructor(message = 'The requested resource was not found.') {
     super(404, message);
   }
 }

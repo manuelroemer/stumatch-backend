@@ -9,6 +9,8 @@ export const endpoints = [
 
   require('./status/get').default,
 
+  require('./users/get').default,
+
   require('./posts/getAll').default,
   require('./posts/get').default,
   require('./posts/patch').default,

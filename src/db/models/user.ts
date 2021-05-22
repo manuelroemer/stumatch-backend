@@ -12,12 +12,16 @@ export interface User extends DbObject {
 }
 
 const userSchema = createDbObjectSchema<User>({
+  passwordHash: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
     unique: true,
   },
-  passwordHash: {
+  displayName: {
     type: String,
     required: true,
   },
