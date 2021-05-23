@@ -4,7 +4,7 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
 const getAll = asyncRequestHandler(async (_req, res) => {
-  const posts = await PostModel.find().limit(5);
+  const posts = await PostModel.find();
   return res.status(200).apiResult({ result: posts.map((post) => post.toObject()) });
 });
 

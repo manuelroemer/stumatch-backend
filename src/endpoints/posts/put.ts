@@ -5,7 +5,7 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { PostRequestBody, postValidationSchema } from './schemas';
+import { PostRequestBody, postValidationSchema } from './utils';
 
 const patch = asyncRequestHandler(async (req, res) => {
   const body = req.body as PostRequestBody;

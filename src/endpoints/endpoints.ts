@@ -9,6 +9,7 @@ export const endpoints = [
 
   require('./status/get').default,
 
+  require('./users/getAll').default,
   require('./users/get').default,
 
   require('./posts/getAll').default,

@@ -1,14 +1,16 @@
 import { Router } from 'express';
-import { User, UserModel } from '../../db/models/user';
+import { UserModel } from '../../db/models/user';
 import { ForbiddenError, NotFoundError } from '../../errors/apiErrors';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
+import { hasRoles } from '../../utils/roles';
+import { formatUserResponse } from './utils';
 
 const get = asyncRequestHandler(async (req, res) => {
-  const thisUserId = req.user!.id;
-  const requestedId = req.params.id === 'me' ? thisUserId : req.params.id;
+  const thisUser = req.getUserOrThrow();
+  const requestedId = req.params.id === 'me' ? thisUser.id : req.params.id;
 
-  if (thisUserId !== requestedId) {
+  if (thisUser.id !== requestedId && !hasRoles(thisUser, 'admin')) {
     throw new ForbiddenError();
   }
 
@@ -17,11 +19,7 @@ const get = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  // User contains sensitive data not intended for API consumers.
-  const result: Partial<User> = user.toObject();
-  delete result.passwordHash;
-
-  return res.status(200).apiResult({ result });
+  return res.status(200).apiResult({ result: formatUserResponse(user.toObject()) });
 });
 
 export default Router().get('/api/v1/users/:id', authenticateJwt, get);

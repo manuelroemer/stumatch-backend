@@ -6,6 +6,13 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-empty-interface
     interface User extends AppUser {}
 
+    interface Request {
+      /**
+       * Returns the request's `user` or throws if no user is set.
+       */
+      getUserOrThrow(): User;
+    }
+
     interface Response {
       /**
        * Returns the specified API result as a JSON result.
