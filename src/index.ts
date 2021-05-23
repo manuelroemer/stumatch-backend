@@ -8,7 +8,7 @@ import { logger } from './log';
 import { apiErrorHandler } from './middlewares/apiErrorHandler';
 import { endpoints } from './endpoints/endpoints';
 import './middlewares/passport';
-import { extendExpress } from './expressExtensions';
+import { extendExpress } from './extendExpress';
 
 const app = express();
 extendExpress(app);
