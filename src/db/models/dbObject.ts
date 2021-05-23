@@ -20,14 +20,14 @@ const dbObjectSchemaOptions: SchemaOptions = {
     createdAt: 'createdOn',
     updatedAt: 'modifiedOn',
   },
-  toObject: { transform: transformStripDbProps },
-  toJSON: { transform: transformStripDbProps },
+  toObject: { transform: transformToApiConformingStructure },
+  toJSON: { transform: transformToApiConformingStructure },
 };
 
 // Reason for this transformation function:
 // In the API endpoints, we frequently return plain DB objects using `toObject`.
 // Without this transformation function, we'd return unnecessary, DB specific props.
-function transformStripDbProps(_doc: any, ret: any) {
+function transformToApiConformingStructure(_doc: any, ret: any) {
   const result = { id: ret._id, ...ret };
   delete result._id;
   delete result.__v;
