@@ -9,7 +9,7 @@ export interface ApiResult<T> {
 /**
  * Enhances the default API result format with metadata about paginated endpoints.
  */
-export interface PaginationApiResult<T> extends ApiResult<T> {
+export interface PaginationApiResult<T> extends ApiResult<Array<T>> {
   totalCount: number;
   pages: number;
   page: number;
