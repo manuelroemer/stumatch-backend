@@ -1,5 +1,6 @@
 import { Schema, SchemaOptions } from 'mongoose';
 import { v4 as uuid } from 'uuid';
+import { pagination } from '../plugins/pagination';
 
 /**
  * Properties shared by every object stored in the server's DB.
@@ -41,5 +42,7 @@ function transformStripDbProps(_doc: any, ret: any) {
 export function createDbObjectSchema<T extends DbObject>(definition?: object, options?: SchemaOptions) {
   const finalDefinition = { ...dbObjectSchemaDefinition, ...definition };
   const finalOptions = { ...dbObjectSchemaOptions, ...options };
-  return new Schema<T>(finalDefinition, finalOptions);
+  const schema = new Schema<T>(finalDefinition, finalOptions);
+  schema.plugin(pagination);
+  return schema;
 }

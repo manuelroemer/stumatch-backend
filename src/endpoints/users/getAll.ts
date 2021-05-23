@@ -9,8 +9,12 @@ import { formatUserResponse } from './utils';
 const getAll = asyncRequestHandler(async (req, res) => {
   const thisUser = req.getUserOrThrow();
   const query: FilterQuery<User> = hasRoles(thisUser, 'admin') ? {} : { _id: thisUser.id };
-  const users = await UserModel.find(query);
-  return res.status(200).apiResult({ result: users.map((user) => formatUserResponse(user.toObject())) });
+  const queryResult = await UserModel.paginate(req.getPaginationOptions(), query);
+
+  return res.status(200).apiResult({
+    ...queryResult,
+    result: queryResult.result.map((user) => formatUserResponse(user.toObject())),
+  });
 });
 
 export default Router().get('/api/v1/users', authenticateJwt, getAll);

@@ -1,5 +1,6 @@
-import { ApiResult } from './apiResult';
+import { ApiResult, PaginationApiResult } from './apiResult';
 import { User as AppUser } from '../db/models/user';
+import { PaginationOptions } from '../db/plugins/pagination';
 
 declare global {
   namespace Express {
@@ -11,6 +12,10 @@ declare global {
        * Returns the request's `user` or throws if no user is set.
        */
       getUserOrThrow(): User;
+      /**
+       * Parses pagination options from the request's query parameters.
+       */
+      getPaginationOptions(): PaginationOptions;
     }
 
     interface Response {
@@ -19,7 +24,7 @@ declare global {
        * Using this method in favor of `json` is prefered since it enforces correct result typing.
        * @param result The API result to be returned.
        */
-      apiResult<T>(result: ApiResult<T>): Response;
+      apiResult<T>(result: ApiResult<T> | PaginationApiResult<T>): Response;
     }
   }
 }

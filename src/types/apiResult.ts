@@ -8,3 +8,10 @@ export interface ApiResult<T> {
    */
   result: T;
 }
+
+export interface PaginationApiResult<T> extends ApiResult<T> {
+  totalCount: number;
+  pages: number;
+  page: number;
+  pageSize: number;
+}
