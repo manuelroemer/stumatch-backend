@@ -13,7 +13,7 @@ export const endpoints = [
 
   require('./posts/getAll').default,
   require('./posts/get').default,
-  require('./posts/patch').default,
+  require('./posts/put').default,
   require('./posts/post').default,
   require('./posts/delete').default,
 ];
