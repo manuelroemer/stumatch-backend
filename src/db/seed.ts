@@ -12,19 +12,19 @@ import { userSeed } from './models/userSeed';
   try {
     await establishDbConnection();
 
-    logger.info('Clearing existing data...');
+    logger.info('[DB] Clearing existing data...');
     await UserModel.deleteMany();
     await PostModel.deleteMany();
     await NotificationModel.deleteMany();
-    logger.info('Existing data cleared.');
+    logger.info('[DB] Existing data cleared.');
 
-    logger.info('Creating seed data...');
+    logger.info('[DB] reating seed data...');
     await UserModel.create(mapSeedIds(userSeed));
     await PostModel.create(mapSeedIds(postSeed));
     await NotificationModel.create(mapSeedIds(notificationSeed));
-    logger.info('Seed data created.');
+    logger.info('[DB] Seed data created.');
   } catch (err) {
-    logger.error(`Seeding the database failed: ${err?.message ?? err}`, err);
+    logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
   } finally {
     mongoose.disconnect();
   }

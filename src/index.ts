@@ -26,6 +26,6 @@ app.response.apiResult = app.response.json;
 
 establishDbConnection().then(() => {
   server.listen(config.serverPort, () => {
-    logger.info(`Server is running on port ${config.serverPort}.`);
+    logger.info(`[Server] Server is running on port ${config.serverPort}.`);
   });
 });

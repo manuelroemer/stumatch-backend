@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 // Dev builds can leverage a local .env file for custom settings.
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
-  logger.info('Using development configuration values from the .env file.');
+  logger.info('[Config] Using development configuration values from the .env file.');
 }
 
 export const config = {

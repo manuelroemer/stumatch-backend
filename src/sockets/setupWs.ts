@@ -21,10 +21,12 @@ export function setupWs(httpServer: HttpServer) {
     const userId = socket.request.user!.id!;
     const uniqueRoom = getUserRoom(userId);
     socket.join(uniqueRoom);
-    logger.info(`User ${userId} established WS connection. Added to room ${uniqueRoom}. Socket ID: ${socket.id}.`);
+    logger.info(`[WS] User ${userId} established WS connection. Added to room ${uniqueRoom}. Socket ID: ${socket.id}.`);
+
+    socket.on('disconnect', () => logger.info(`[WS] User ${userId} disconnected. Socket ID: ${socket.id}.`));
   });
 
-  logger.info('WebSockets have been setup.');
+  logger.info('[WS] WebSockets have been setup.');
   return ws;
 }
 

@@ -13,9 +13,9 @@ export async function establishDbConnection() {
       useUnifiedTopology: true,
     });
 
-    logger.info('Successfully established the database connection.');
+    logger.info('[DB] Successfully established the database connection.');
   } catch (e) {
-    logger.error('Failed to establish a database connection.', e);
+    logger.error('[DB] Failed to establish a database connection.', e);
     throw e;
   }
 }
