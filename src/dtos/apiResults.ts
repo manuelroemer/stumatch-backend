@@ -25,7 +25,7 @@ export function paginationApiResult<T>(
   metadata: Omit<PaginationApiResult<T>, 'result'>,
 ): PaginationApiResult<T> {
   return {
-    result,
+    ...apiResult(result),
     totalCount: metadata.totalCount,
     pages: metadata.pages,
     page: metadata.page,
