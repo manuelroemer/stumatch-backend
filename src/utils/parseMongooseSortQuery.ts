@@ -1,8 +1,8 @@
-export type AllowedSortQueryFieldName<T> = keyof T;
+export type SortableFields<T> = keyof T;
 
 const pattern = /([^\s:]+)(:(asc|desc))?/;
 
-export function parseMongooseSortQuery<T>(input: string, allowedFieldNames: Array<AllowedSortQueryFieldName<T>>) {
+export function parseMongooseSortQuery<T>(input: string, sortableFields: Array<SortableFields<T>>) {
   const fragments = input.split(',');
   const sortQuery: any = fragments
     .map((fragment) => pattern.exec(fragment))
@@ -12,7 +12,7 @@ export function parseMongooseSortQuery<T>(input: string, allowedFieldNames: Arra
       const direction = matches![3] ?? 'asc';
       return { fieldName, direction };
     })
-    .filter(({ fieldName }) => allowedFieldNames.includes(fieldName as any))
+    .filter(({ fieldName }) => sortableFields.includes(fieldName as any))
     .reduce((sortQuery, { fieldName, direction }) => ({ ...sortQuery, [fieldName]: direction }), {});
 
   // Special handling for the ID for now.

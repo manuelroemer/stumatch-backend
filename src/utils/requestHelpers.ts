@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { PaginationOptions } from '../db/plugins/pagination';
 import { UnauthorizedError } from '../dtos/apiErrors';
-import { AllowedSortQueryFieldName, parseMongooseSortQuery } from './parseMongooseSortQuery';
+import { SortableFields, parseMongooseSortQuery } from './parseMongooseSortQuery';
 
 /**
  * Returns the request's `user` or throws if no user is set.
@@ -48,9 +48,9 @@ export function getUserId(req: Request, paramName = 'id'): string {
  * * `?sort=foo:asc`
  * * `?sort=foo:desc`
  * * `?sort=foo:asc,bar:desc`
- * @param allowedFieldNames An array of the fields which are allowed to be present in the generated sort query.
+ * @param sortableFields An array of the fields which are allowed to be present in the generated sort query.
  */
-export function getSortQueryFromUrl<T>(req: Request, allowedFieldNames: Array<AllowedSortQueryFieldName<T>>) {
+export function getSortQueryFromUrl<T>(req: Request, sortableFields: Array<SortableFields<T>>) {
   const sort = req.query.sort?.toString() ?? '';
-  return sort ? parseMongooseSortQuery(sort, allowedFieldNames) : undefined;
+  return sort ? parseMongooseSortQuery(sort, sortableFields) : undefined;
 }
