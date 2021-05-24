@@ -50,7 +50,7 @@ export function getUserId(req: Request, paramName = 'id'): string {
  * * `?sort=foo:asc,bar:desc`
  * @param allowedFieldNames An array of the fields which are allowed to be present in the generated sort query.
  */
-export function getMongooseSortQuery<T>(req: Request, allowedFieldNames: Array<AllowedSortQueryFieldName<T>>) {
+export function getSortQueryFromUrl<T>(req: Request, allowedFieldNames: Array<AllowedSortQueryFieldName<T>>) {
   const sort = req.query.sort?.toString() ?? '';
   return sort ? parseMongooseSortQuery(sort, allowedFieldNames) : undefined;
 }
