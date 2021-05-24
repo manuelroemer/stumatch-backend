@@ -1,12 +1,13 @@
 import { Request } from 'express';
 import { PaginationOptions } from '../db/plugins/pagination';
+import { UnauthorizedError } from '../errors/apiErrors';
 
 /**
  * Returns the request's `user` or throws if no user is set.
  */
 export function getUserOrThrow(req: Request) {
   if (!req.user) {
-    throw new Error('No user is authenticated at this point in time.');
+    throw new UnauthorizedError();
   }
   return req.user;
 }
@@ -23,4 +24,16 @@ export function getPaginationOptions(req: Request): PaginationOptions {
     page,
     pageSize: Math.min(1000, pageSize),
   };
+}
+
+/**
+ * Extracts the special user ID from the request's URL parameters.
+ * Accepts the special "me" value (which is replaced with the user ID from the token).
+ */
+export function getUserId(req: Request, paramName = 'id'): string {
+  const idInUrl = req.params[paramName];
+  if (idInUrl === 'me') {
+    return getUserOrThrow(req).id!;
+  }
+  return idInUrl;
 }

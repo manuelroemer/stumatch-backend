@@ -1,21 +1,17 @@
 import { Router } from 'express';
 import { UserModel } from '../../db/models/user';
-import { ForbiddenError, NotFoundError } from '../../errors/apiErrors';
+import { NotFoundError } from '../../errors/apiErrors';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { getUserOrThrow } from '../../utils/requestHelpers';
-import { hasRoles } from '../../utils/roleHelpers';
+import { getUserId } from '../../utils/requestHelpers';
+import { validateThisUserHasIdOrRoles } from '../../utils/roleHelpers';
 import { formatUserResponse } from './utils';
 
 const get = asyncRequestHandler(async (req, res) => {
-  const thisUser = getUserOrThrow(req);
-  const requestedId = req.params.id === 'me' ? thisUser.id : req.params.id;
+  const requestedUserId = getUserId(req);
+  validateThisUserHasIdOrRoles(req, requestedUserId, 'admin');
 
-  if (thisUser.id !== requestedId && !hasRoles(thisUser, 'admin')) {
-    throw new ForbiddenError();
-  }
-
-  const user = await UserModel.findById(requestedId);
+  const user = await UserModel.findById(requestedUserId);
   if (!user) {
     throw new NotFoundError();
   }
