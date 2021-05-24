@@ -9,6 +9,11 @@ declare module 'mongoose' {
      * @param options The pagination options.
      * @param query An optional query.
      */
-    paginate(options: PaginationOptions, query?: FilterQuery<T>): Promise<PaginationResult<T>>;
+    paginate(
+      options: PaginationOptions,
+      query?: FilterQuery<T>,
+      projection?: any,
+      queryOptions?: QueryOptions,
+    ): Promise<PaginationResult<T>>;
   }
 }

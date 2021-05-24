@@ -1,3 +1,4 @@
+import { QueryOptions } from 'mongoose';
 import { EnforceDocument, FilterQuery, Model, Schema } from 'mongoose';
 
 export interface PaginationResult<T> {
@@ -23,6 +24,8 @@ export function pagination<T>(schema: Schema<T>) {
     this: Model<T>,
     { page, pageSize }: PaginationOptions,
     query: FilterQuery<T> = {},
+    projection?: any,
+    options?: QueryOptions,
   ): Promise<PaginationResult<T>> {
     if (page < 1) {
       throw new Error('page must be >= 1.');
@@ -33,7 +36,7 @@ export function pagination<T>(schema: Schema<T>) {
     }
 
     const totalCount = await this.countDocuments(query);
-    const docs = await this.find(query)
+    const docs = await this.find(query, projection, options)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
 
