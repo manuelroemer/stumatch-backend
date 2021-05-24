@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Post, PostModel } from '../../db/models/post';
-import { paginationApiResult } from '../../dtos/apiResult';
+import { paginationApiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { AllowedSortQueryFieldName } from '../../utils/parseMongooseSortQuery';

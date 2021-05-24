@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PostModel } from '../../db/models/post';
 import { NotFoundError } from '../../dtos/apiErrors';
-import { apiResult } from '../../dtos/apiResult';
+import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';

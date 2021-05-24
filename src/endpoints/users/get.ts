@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserModel } from '../../db/models/user';
 import { NotFoundError } from '../../dtos/apiErrors';
-import { apiResult } from '../../dtos/apiResult';
+import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserId } from '../../utils/requestHelpers';

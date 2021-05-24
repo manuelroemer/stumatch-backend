@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { FilterQuery } from 'mongoose';
 import { User, UserModel } from '../../db/models/user';
-import { paginationApiResult } from '../../dtos/apiResult';
+import { paginationApiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { AllowedSortQueryFieldName } from '../../utils/parseMongooseSortQuery';

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PostModel } from '../../db/models/post';
-import { apiResult } from '../../dtos/apiResult';
+import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';

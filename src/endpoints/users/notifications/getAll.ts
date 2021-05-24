@@ -8,7 +8,7 @@ import { getMongooseSortQuery, getPaginationOptions, getUserId } from '../../../
 import { validateThisUserHasIdOrRoles } from '../../../utils/roleHelpers';
 import { AllowedSortQueryFieldName } from '../../../utils/parseMongooseSortQuery';
 import { Notification } from '../../../db/models/notification';
-import { paginationApiResult } from '../../../dtos/apiResult';
+import { paginationApiResult } from '../../../dtos/apiResults';
 
 const allowedSortings: Array<AllowedSortQueryFieldName<Notification>> = [
   'id',
