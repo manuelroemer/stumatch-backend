@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { BaseSchema, ValidationError } from 'yup';
-import { BadRequestError } from '../errors/apiErrors';
+import { BadRequestError } from '../dtos/apiErrors';
 import { asyncRequestHandler } from '../utils/asyncRequestHandler';
 
 const baseValidationErrorMessage = `Validation failed. The request body had an invalid format.`;

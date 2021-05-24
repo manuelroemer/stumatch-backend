@@ -15,3 +15,20 @@ export interface PaginationApiResult<T> extends ApiResult<Array<T>> {
   page: number;
   pageSize: number;
 }
+
+export function apiResult<T>(result: T): ApiResult<T> {
+  return { result };
+}
+
+export function paginationApiResult<T>(
+  result: Array<T>,
+  metadata: Omit<PaginationApiResult<T>, 'result'>,
+): PaginationApiResult<T> {
+  return {
+    result,
+    totalCount: metadata.totalCount,
+    pages: metadata.pages,
+    page: metadata.page,
+    pageSize: metadata.pageSize,
+  };
+}

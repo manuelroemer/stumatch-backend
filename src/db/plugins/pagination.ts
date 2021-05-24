@@ -2,7 +2,7 @@ import { QueryOptions } from 'mongoose';
 import { EnforceDocument, FilterQuery, Model, Schema } from 'mongoose';
 
 export interface PaginationResult<T> {
-  result: Array<EnforceDocument<T, {}>>;
+  docs: Array<EnforceDocument<T, {}>>;
   totalCount: number;
   pages: number;
   page: number;
@@ -41,7 +41,7 @@ export function pagination<T>(schema: Schema<T>) {
       .limit(pageSize);
 
     return {
-      result: docs,
+      docs,
       totalCount,
       pages: Math.ceil(totalCount / pageSize),
       page,

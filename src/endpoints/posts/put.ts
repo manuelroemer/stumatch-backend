@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PostModel } from '../../db/models/post';
-import { NotFoundError } from '../../errors/apiErrors';
+import { NotFoundError } from '../../dtos/apiErrors';
+import { apiResult } from '../../dtos/apiResult';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
@@ -16,7 +17,7 @@ const put = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  return res.status(200).apiResult({ result: updatedPost.toObject() });
+  return res.status(200).json(apiResult(updatedPost.toObject()));
 });
 
 export default Router().put(

@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { PaginationOptions } from '../db/plugins/pagination';
-import { UnauthorizedError } from '../errors/apiErrors';
+import { UnauthorizedError } from '../dtos/apiErrors';
 import { AllowedSortQueryFieldName, parseMongooseSortQuery } from './parseMongooseSortQuery';
 
 /**

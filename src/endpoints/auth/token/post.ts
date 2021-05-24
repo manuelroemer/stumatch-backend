@@ -3,7 +3,7 @@ import { compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { User, UserModel } from '../../../db/models/user';
 import { config } from '../../../config';
-import { BadRequestError } from '../../../errors/apiErrors';
+import { BadRequestError } from '../../../dtos/apiErrors';
 import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
 import { SchemaOf, string } from 'yup';
 import { object } from 'yup';

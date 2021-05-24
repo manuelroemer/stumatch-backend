@@ -8,6 +8,7 @@ import { getMongooseSortQuery, getPaginationOptions, getUserId } from '../../../
 import { validateThisUserHasIdOrRoles } from '../../../utils/roleHelpers';
 import { AllowedSortQueryFieldName } from '../../../utils/parseMongooseSortQuery';
 import { Notification } from '../../../db/models/notification';
+import { paginationApiResult } from '../../../dtos/apiResult';
 
 const allowedSortings: Array<AllowedSortQueryFieldName<Notification>> = [
   'id',
@@ -25,11 +26,9 @@ const get = asyncRequestHandler(async (req, res) => {
   const sort = getMongooseSortQuery(req, allowedSortings);
   const query: FilterQuery<Notification> = { userId: requestedUserId };
   const queryOptions: QueryOptions = { sort };
-  const queryResult = await NotificationModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
-  return res.status(200).apiResult({
-    ...queryResult,
-    result: queryResult.result.map((notification) => notification.toObject()),
-  });
+  const paginationResult = await NotificationModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
+  const result = paginationResult.docs.map((doc) => doc.toObject());
+  return res.status(200).json(paginationApiResult(result, paginationResult));
 });
 
 export default Router().get('/api/v1/users/:id/notifications', authenticateJwt, get);

@@ -1,6 +1,6 @@
 import { ErrorRequestHandler } from 'express';
 import { STATUS_CODES } from 'http';
-import { ApiError } from '../errors/apiErrors';
+import { ApiError } from '../dtos/apiErrors';
 import { logger } from '../log';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

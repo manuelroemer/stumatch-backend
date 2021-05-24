@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(endpoints);
 app.use(apiErrorHandler);
-app.response.apiResult = app.response.json;
 
 establishDbConnection().then(() => {
   server.listen(config.serverPort, () => {

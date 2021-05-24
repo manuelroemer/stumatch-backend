@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { BadRequestError } from '../errors/apiErrors';
+import { BadRequestError } from '../dtos/apiErrors';
 import { asyncRequestHandler } from '../utils/asyncRequestHandler';
 
 export function validateBodyIdMatchesPathId(bodyIdName = 'id', pathIdName = 'id'): RequestHandler {

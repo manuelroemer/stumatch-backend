@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { User, UserRole } from '../db/models/user';
-import { ForbiddenError } from '../errors/apiErrors';
+import { ForbiddenError } from '../dtos/apiErrors';
 import { getUserOrThrow } from './requestHelpers';
 
 /**

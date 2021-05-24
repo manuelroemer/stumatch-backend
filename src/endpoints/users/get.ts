@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { UserModel } from '../../db/models/user';
-import { NotFoundError } from '../../errors/apiErrors';
+import { NotFoundError } from '../../dtos/apiErrors';
+import { apiResult } from '../../dtos/apiResult';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserId } from '../../utils/requestHelpers';
@@ -16,7 +17,8 @@ const get = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  return res.status(200).apiResult({ result: formatUserResponse(user.toObject()) });
+  const result = formatUserResponse(user.toObject());
+  return res.status(200).json(apiResult(result));
 });
 
 export default Router().get('/api/v1/users/:id', authenticateJwt, get);
