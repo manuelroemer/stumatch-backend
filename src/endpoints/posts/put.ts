@@ -19,7 +19,7 @@ const patch = asyncRequestHandler(async (req, res) => {
   return res.status(200).apiResult({ result: updatedPost.toObject() });
 });
 
-export default Router().patch(
+export default Router().put(
   '/api/v1/posts/:id',
   authenticateJwt,
   validateRequestBody(postValidationSchema),

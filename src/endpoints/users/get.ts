@@ -3,11 +3,12 @@ import { UserModel } from '../../db/models/user';
 import { ForbiddenError, NotFoundError } from '../../errors/apiErrors';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { hasRoles } from '../../utils/roles';
+import { getUserOrThrow } from '../../utils/requestHelpers';
+import { hasRoles } from '../../utils/roleHelpers';
 import { formatUserResponse } from './utils';
 
 const get = asyncRequestHandler(async (req, res) => {
-  const thisUser = req.getUserOrThrow();
+  const thisUser = getUserOrThrow(req);
   const requestedId = req.params.id === 'me' ? thisUser.id : req.params.id;
 
   if (thisUser.id !== requestedId && !hasRoles(thisUser, 'admin')) {

@@ -8,10 +8,13 @@ import { logger } from './log';
 import { apiErrorHandler } from './middlewares/apiErrorHandler';
 import { endpoints } from './endpoints/endpoints';
 import './middlewares/passport';
-import { extendExpress } from './extendExpress';
+import { setupWs } from './sockets/setupWs';
+import { createServer } from 'http';
 
-const app = express();
-extendExpress(app);
+export const app = express();
+export const server = createServer(app);
+export const ws = setupWs(server);
+
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -19,9 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(endpoints);
 app.use(apiErrorHandler);
+app.response.apiResult = app.response.json;
 
 establishDbConnection().then(() => {
-  app.listen(config.serverPort, () => {
+  server.listen(config.serverPort, () => {
     logger.info(`Server is running on port ${config.serverPort}.`);
   });
 });
