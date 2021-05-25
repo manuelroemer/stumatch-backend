@@ -17,8 +17,8 @@ export function getUserOrThrow(req: Request) {
  * Parses pagination options from the request's query parameters.
  */
 export function getPaginationOptions(req: Request): PaginationOptions {
-  const requestedPage = +(req.query.page ?? '');
-  const requestedPageSize = +(req.query.pageSize ?? '');
+  const requestedPage = ~~+(req.query.page ?? '');
+  const requestedPageSize = ~~+(req.query.pageSize ?? '');
   const page = requestedPage >= 1 ? requestedPage : 1;
   const pageSize = requestedPageSize >= 1 ? requestedPageSize : 100;
   return {
