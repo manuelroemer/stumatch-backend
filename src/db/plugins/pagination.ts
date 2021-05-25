@@ -36,8 +36,9 @@ export function pagination<T>(schema: Schema<T>) {
     }
 
     const totalCount = await this.countDocuments(query);
+    const pages = Math.ceil(totalCount / pageSize);
     const docs = await this.find(query, projection, options)
-      .skip((page - 1) * pageSize)
+      .skip((Math.min(pages, page) - 1) * pageSize)
       .limit(pageSize);
 
     return {
