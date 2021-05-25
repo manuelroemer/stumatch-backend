@@ -19,7 +19,7 @@ const sortableFields: Array<SortableFields<Notification>> = [
   'content',
 ];
 
-const get = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);
   validateThisUserHasIdOrRoles(req, requestedUserId, 'admin');
 
@@ -31,4 +31,4 @@ const get = asyncRequestHandler(async (req, res) => {
   return res.status(200).json(paginationApiResult(result, paginationResult));
 });
 
-export default Router().get('/api/v1/users/:id/notifications', authenticateJwt, get);
+export default Router().get('/api/v1/users/:id/notifications', authenticateJwt, handler);

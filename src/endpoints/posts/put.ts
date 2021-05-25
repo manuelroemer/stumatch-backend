@@ -8,7 +8,7 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { PostRequestBody, postValidationSchema } from './utils';
 
-const put = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as PostRequestBody;
   const id = req.params.id;
   const updatedPost = await PostModel.findByIdAndUpdate(id, body, { new: true });
@@ -25,5 +25,5 @@ export default Router().put(
   authenticateJwt,
   validateRequestBody(postValidationSchema),
   validateBodyIdMatchesPathId(),
-  put,
+  handler,
 );

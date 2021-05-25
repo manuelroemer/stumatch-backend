@@ -18,7 +18,7 @@ import { userSeed } from './models/userSeed';
     await NotificationModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
-    logger.info('[DB] reating seed data...');
+    logger.info('[DB] Creating seed data...');
     await UserModel.create(mapSeedIds(userSeed));
     await PostModel.create(mapSeedIds(postSeed));
     await NotificationModel.create(mapSeedIds(notificationSeed));

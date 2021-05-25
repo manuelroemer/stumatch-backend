@@ -11,7 +11,7 @@ import { formatUserResponse } from './utils';
 
 const sortableFields: Array<SortableFields<User>> = ['id', 'createdOn', 'modifiedOn', 'email', 'displayName'];
 
-const getAll = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const thisUser = getUserOrThrow(req);
   const sort = getSortQueryFromUrl(req, sortableFields);
   const query: FilterQuery<User> = hasRoles(thisUser, 'admin') ? {} : { _id: thisUser.id };
@@ -20,4 +20,4 @@ const getAll = asyncRequestHandler(async (req, res) => {
   return res.status(200).json(paginationApiResult(result, paginationResult));
 });
 
-export default Router().get('/api/v1/users', authenticateJwt, getAll);
+export default Router().get('/api/v1/users', authenticateJwt, handler);

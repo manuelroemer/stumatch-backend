@@ -4,7 +4,7 @@ import { NotFoundError } from '../../dtos/apiErrors';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
-const get = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const id = req.params.id;
   const post = await PostModel.findByIdAndDelete(id);
 
@@ -15,4 +15,4 @@ const get = asyncRequestHandler(async (req, res) => {
   return res.sendStatus(204);
 });
 
-export default Router().delete('/api/v1/posts/:id', authenticateJwt, get);
+export default Router().delete('/api/v1/posts/:id', authenticateJwt, handler);

@@ -5,7 +5,7 @@ import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
-const get = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const id = req.params.id;
   const post = await PostModel.findById(id);
 
@@ -16,4 +16,4 @@ const get = asyncRequestHandler(async (req, res) => {
   return res.status(200).json(apiResult(post.toObject()));
 });
 
-export default Router().get('/api/v1/posts/:id', authenticateJwt, get);
+export default Router().get('/api/v1/posts/:id', authenticateJwt, handler);

@@ -22,7 +22,7 @@ const schema: SchemaOf<RequestBody> = object({
   password: string().defined(),
 }).defined();
 
-const post = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const { email, password } = req.body as RequestBody;
   const user = await UserModel.findOne({ email }).exec();
   const isValid = user && (await compare(password, user.passwordHash));
@@ -42,4 +42,4 @@ function generateJwt(user: User) {
   });
 }
 
-export default Router().post('/api/v1/auth/token', validateRequestBody(schema), post);
+export default Router().post('/api/v1/auth/token', validateRequestBody(schema), handler);

@@ -8,7 +8,7 @@ import { getUserId } from '../../utils/requestHelpers';
 import { validateThisUserHasIdOrRoles } from '../../utils/roleHelpers';
 import { formatUserResponse } from './utils';
 
-const get = asyncRequestHandler(async (req, res) => {
+const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);
   validateThisUserHasIdOrRoles(req, requestedUserId, 'admin');
 
@@ -21,4 +21,4 @@ const get = asyncRequestHandler(async (req, res) => {
   return res.status(200).json(apiResult(result));
 });
 
-export default Router().get('/api/v1/users/:id', authenticateJwt, get);
+export default Router().get('/api/v1/users/:id', authenticateJwt, handler);
