@@ -9,22 +9,22 @@ export const userSeed: Array<User> = [
     email: 'admin@stumatch',
     passwordHash: hashSync('Admin123', 8),
     displayName: 'sTUMatch Administrator',
-    roles: ['user', 'admin'],
+    roles: ['student', 'admin'],
   },
   {
     id: '00000000-0000-1000-8000-000000000001',
-    email: 'user@stumatch',
-    passwordHash: hashSync('User123', 8),
+    email: 'student@stumatch',
+    passwordHash: hashSync('Student123', 8),
     displayName: 'sTUMatch User',
-    roles: ['user'],
+    roles: ['student'],
   },
   ...range(10).map((i) => {
     const user: User = {
       id: `00000000-0000-2000-8000-${i.toString().padStart(12, '0')}`,
       email: faker.internet.email(),
-      passwordHash: hashSync('User123', 8),
+      passwordHash: hashSync('Student123', 8),
       displayName: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      roles: ['user'],
+      roles: ['student'],
     };
     return user;
   }),
