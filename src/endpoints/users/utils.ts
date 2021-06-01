@@ -7,10 +7,10 @@ export function trimPrivateUserProfileInfo(userToReturn: User, thisUser: User) {
 
   // Private data which should *never* be returned.
   delete result.passwordHash;
-  delete result.roles;
 
   // Private data which should not be returned to other users apart from me.
   if (returnPublicProfileInfoOnly) {
+    delete result.roles;
     delete result.email;
   }
 
