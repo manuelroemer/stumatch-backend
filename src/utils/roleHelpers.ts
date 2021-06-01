@@ -32,16 +32,16 @@ export function hasSomeId(user: User, requiredId: string | Array<string>) {
  * @param req The request.
  * @param requiredId  The required ID.
  *   This can be an array of multiple IDs of which one must match the user's ID.
- * @param alternativelyRequiredRoels  The required role(s).
+ * @param alternativelyRequiredRoles  The required role(s).
  *   This can be an array of multiple roles of which one must be assigned to the user.
  */
 export function validateThisUserHasIdOrRole(
   req: Request,
   requiredId: string | Array<string>,
-  alternativelyRequiredRoels: UserRole | Array<UserRole>,
+  alternativelyRequiredRoles: UserRole | Array<UserRole>,
 ) {
   const thisUser = getUserOrThrow(req);
-  if (!hasSomeId(thisUser, requiredId) && !hasSomeRole(thisUser, alternativelyRequiredRoels)) {
+  if (!hasSomeId(thisUser, requiredId) && !hasSomeRole(thisUser, alternativelyRequiredRoles)) {
     throw new ForbiddenError();
   }
 }
