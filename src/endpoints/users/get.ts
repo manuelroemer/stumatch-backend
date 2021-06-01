@@ -4,20 +4,19 @@ import { NotFoundError } from '../../dtos/apiErrors';
 import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { getUserId } from '../../utils/requestHelpers';
-import { validateThisUserHasIdOrRole } from '../../utils/roleHelpers';
-import { formatUserResponse } from './utils';
+import { getUserId, getUserOrThrow } from '../../utils/requestHelpers';
+import { trimPrivateUserProfileInfo } from './utils';
 
 const handler = asyncRequestHandler(async (req, res) => {
+  const thisUser = getUserOrThrow(req);
   const requestedUserId = getUserId(req);
-  validateThisUserHasIdOrRole(req, requestedUserId, 'admin');
-
   const user = await UserModel.findById(requestedUserId);
+
   if (!user) {
     throw new NotFoundError();
   }
 
-  const result = formatUserResponse(user.toObject());
+  const result = trimPrivateUserProfileInfo(user.toObject(), thisUser);
   return res.status(200).json(apiResult(result));
 });
 
