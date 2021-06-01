@@ -3,7 +3,7 @@ import { NotificationModel } from '../../db/models/notification';
 import { NotFoundError } from '../../dtos/apiErrors';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { validateThisUserHasIdOrRoles } from '../../utils/roleHelpers';
+import { validateThisUserHasIdOrRole } from '../../utils/roleHelpers';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const id = req.params.id;
@@ -13,7 +13,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  validateThisUserHasIdOrRoles(req, notification.userId, 'admin');
+  validateThisUserHasIdOrRole(req, notification.userId, 'admin');
   await notification.delete();
 
   return res.sendStatus(204);
