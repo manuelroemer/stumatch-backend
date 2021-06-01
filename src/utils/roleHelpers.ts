@@ -41,7 +41,7 @@ export function validateThisUserHasIdOrRole(
   alternativelyRequiredRoels: UserRole | Array<UserRole>,
 ) {
   const thisUser = getUserOrThrow(req);
-  if (!hasSomeId(thisUser, requiredId) || !hasSomeRole(thisUser, alternativelyRequiredRoels)) {
+  if (!hasSomeId(thisUser, requiredId) && !hasSomeRole(thisUser, alternativelyRequiredRoels)) {
     throw new ForbiddenError();
   }
 }
