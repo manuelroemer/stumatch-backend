@@ -5,7 +5,7 @@ import { NotificationModel } from '../../../db/models/notification';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
 import { getSortQueryFromUrl, getPaginationOptions, getUserId } from '../../../utils/requestHelpers';
-import { validateThisUserHasIdOrRoles } from '../../../utils/roleHelpers';
+import { validateThisUserHasIdOrRole } from '../../../utils/roleHelpers';
 import { SortableFields } from '../../../utils/parseMongooseSortQuery';
 import { Notification } from '../../../db/models/notification';
 import { paginationApiResult } from '../../../dtos/apiResults';
@@ -21,7 +21,7 @@ const sortableFields: Array<SortableFields<Notification>> = [
 
 const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);
-  validateThisUserHasIdOrRoles(req, requestedUserId, 'admin');
+  validateThisUserHasIdOrRole(req, requestedUserId, 'admin');
 
   const sort = getSortQueryFromUrl(req, sortableFields);
   const query: FilterQuery<Notification> = { userId: requestedUserId };

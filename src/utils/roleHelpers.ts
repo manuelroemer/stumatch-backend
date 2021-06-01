@@ -4,13 +4,25 @@ import { ForbiddenError } from '../dtos/apiErrors';
 import { getUserOrThrow } from './requestHelpers';
 
 /**
- * Returns whether the given user has all of the specified roles.
+ * Returns whether the given user has at least one of the specified roles.
  * @param user The user to be checked.
- * @param roles The required roles.
+ * @param requiredRole The required role(s).
+ *   This can be an array of multiple roles of which one must be assigned to the user.
  */
-export function hasRoles(user: User, roles: UserRole | Array<UserRole>) {
-  const requiredRoles = Array.isArray(roles) ? roles : [roles];
-  return requiredRoles.every((requiredRole) => user.roles.includes(requiredRole));
+export function hasSomeRole(user: User, requiredRole: UserRole | Array<UserRole>) {
+  const allRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+  return allRoles.some((requiredRole) => user.roles.includes(requiredRole));
+}
+
+/**
+ * Returns whether the given user has the required ID.
+ * @param user The user to be checked.
+ * @param requiredId The required ID(s).
+ *   This can be an array of multiple IDs of which one must be assigned to the user.
+ */
+export function hasSomeId(user: User, requiredId: string | Array<string>) {
+  const allIds = typeof requiredId === 'string' ? [requiredId] : requiredId;
+  return allIds.some((requiredId) => user.id === requiredId);
 }
 
 /**
@@ -18,16 +30,18 @@ export function hasRoles(user: User, roles: UserRole | Array<UserRole>) {
  * * has the `requiredId`...
  * * or alternatively has the specified roles.
  * @param req The request.
- * @param requiredId The ID that the user requires to access specific resources.
- * @param alternativelyRequiredRoles Required roles if the user does not have the required ID.
+ * @param requiredId  The required ID.
+ *   This can be an array of multiple IDs of which one must match the user's ID.
+ * @param alternativelyRequiredRoles  The required role(s).
+ *   This can be an array of multiple roles of which one must be assigned to the user.
  */
-export function validateThisUserHasIdOrRoles(
+export function validateThisUserHasIdOrRole(
   req: Request,
-  requiredId: string,
+  requiredId: string | Array<string>,
   alternativelyRequiredRoles: UserRole | Array<UserRole>,
 ) {
   const thisUser = getUserOrThrow(req);
-  if (thisUser.id !== requiredId && !hasRoles(thisUser, alternativelyRequiredRoles)) {
+  if (!hasSomeId(thisUser, requiredId) && !hasSomeRole(thisUser, alternativelyRequiredRoles)) {
     throw new ForbiddenError();
   }
 }

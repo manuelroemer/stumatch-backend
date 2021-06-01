@@ -7,7 +7,7 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { object, boolean, string, SchemaOf } from 'yup';
 import { NotificationModel } from '../../db/models/notification';
-import { validateThisUserHasIdOrRoles } from '../../utils/roleHelpers';
+import { validateThisUserHasIdOrRole } from '../../utils/roleHelpers';
 
 interface RequestBody {
   id?: string;
@@ -28,7 +28,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  validateThisUserHasIdOrRoles(req, notification.userId, 'admin');
+  validateThisUserHasIdOrRole(req, notification.userId, 'admin');
   Object.assign(notification, body);
   await notification.save();
 

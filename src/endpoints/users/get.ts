@@ -5,12 +5,12 @@ import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserId } from '../../utils/requestHelpers';
-import { validateThisUserHasIdOrRoles } from '../../utils/roleHelpers';
+import { validateThisUserHasIdOrRole } from '../../utils/roleHelpers';
 import { formatUserResponse } from './utils';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);
-  validateThisUserHasIdOrRoles(req, requestedUserId, 'admin');
+  validateThisUserHasIdOrRole(req, requestedUserId, 'admin');
 
   const user = await UserModel.findById(requestedUserId);
   if (!user) {
