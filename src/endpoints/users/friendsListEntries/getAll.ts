@@ -12,11 +12,11 @@ const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);
   validateThisUserHasIdOrRole(req, requestedUserId, 'admin');
 
-  const query: FilterQuery<Notification> = { $or: [{ user1: requestedUserId }, { user2: requestedUserId }] };
+  const query: FilterQuery<Notification> = { $or: [{ user1Id: requestedUserId }, { user2Id: requestedUserId }] };
   const paginationResult = await FriendsListEntryModel.paginate(getPaginationOptions(req), query, undefined);
   const result = paginationResult.docs.map((doc) => ({
     id: doc.id,
-    friend: doc.user1 === requestedUserId ? doc.user2 : doc.user1,
+    friend: doc.user1Id === requestedUserId ? doc.user2Id : doc.user1Id,
   }));
   return res.status(200).json(paginationApiResult(result, paginationResult));
 });

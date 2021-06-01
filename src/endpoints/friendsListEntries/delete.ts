@@ -13,7 +13,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  validateThisUserHasIdOrRole(req, [friendsListEntry.user1, friendsListEntry.user2], 'admin');
+  validateThisUserHasIdOrRole(req, [friendsListEntry.user1Id, friendsListEntry.user2Id], 'admin');
   await friendsListEntry.delete();
 
   return res.sendStatus(204);

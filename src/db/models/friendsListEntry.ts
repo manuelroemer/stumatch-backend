@@ -2,16 +2,16 @@ import { model } from 'mongoose';
 import { createDbObjectSchema, DbObject } from './dbObject';
 
 export interface FriendsListEntry extends DbObject {
-  user1: string;
-  user2: string;
+  user1Id: string;
+  user2Id: string;
 }
 
 const friendsListEntrySchema = createDbObjectSchema<FriendsListEntry>({
-  user1: {
+  user1Id: {
     type: String,
     required: true,
   },
-  user2: {
+  user2Id: {
     type: String,
     required: true,
   },
@@ -20,7 +20,7 @@ const friendsListEntrySchema = createDbObjectSchema<FriendsListEntry>({
     required: true,
     unique: true,
     default: function (this: FriendsListEntry) {
-      const [a, b] = [this.user1, this.user2].sort((a, b) => a.localeCompare(b));
+      const [a, b] = [this.user1Id, this.user2Id].sort((a, b) => a.localeCompare(b));
       return a + ';' + b;
     },
   },
