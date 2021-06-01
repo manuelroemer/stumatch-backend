@@ -12,6 +12,7 @@ export const endpoints = [
   require('./users/getAll').default,
   require('./users/get').default,
   require('./users/notifications/getAll').default,
+  require('./users/friendsListEntries/getAll').default,
 
   require('./posts/getAll').default,
   require('./posts/get').default,
