@@ -20,6 +20,7 @@ export const endpoints = [
   require('./posts/post').default,
   require('./posts/delete').default,
 
+  require('./notifications/post').default,
   require('./notifications/put').default,
   require('./notifications/delete').default,
 

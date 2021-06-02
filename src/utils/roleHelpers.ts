@@ -26,6 +26,19 @@ export function hasSomeId(user: User, requiredId: string | Array<string>) {
 }
 
 /**
+ * Validates that the requesting user has at least one of the specified roles.
+ * @param req The request.
+ * @param requiredRole The required role(s).
+ *   This can be an array of multiple roles of which one must be assigned to the user.
+ */
+export function validateThisUserHasSomeRole(req: Request, requiredRole: UserRole | Array<UserRole>) {
+  const thisUser = getUserOrThrow(req);
+  if (!hasSomeRole(thisUser, requiredRole)) {
+    throw new ForbiddenError();
+  }
+}
+
+/**
  * Validates that the requesting user either:
  * * has the `requiredId`...
  * * or alternatively has the specified roles.
@@ -35,7 +48,7 @@ export function hasSomeId(user: User, requiredId: string | Array<string>) {
  * @param alternativelyRequiredRoles  The required role(s).
  *   This can be an array of multiple roles of which one must be assigned to the user.
  */
-export function validateThisUserHasIdOrRole(
+export function validateThisUserHasSomeIdOrSomeRole(
   req: Request,
   requiredId: string | Array<string>,
   alternativelyRequiredRoles: UserRole | Array<UserRole>,

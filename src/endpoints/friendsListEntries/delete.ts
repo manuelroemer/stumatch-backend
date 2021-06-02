@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { validateThisUserHasIdOrRole } from '../../utils/roleHelpers';
+import { validateThisUserHasSomeIdOrSomeRole } from '../../utils/roleHelpers';
 import { FriendsListEntryModel } from '../../db/models/friendsListEntry';
 import { NotFoundError } from '../../dtos/apiErrors';
 
@@ -13,7 +13,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  validateThisUserHasIdOrRole(req, [friendsListEntry.user1Id, friendsListEntry.user2Id], 'admin');
+  validateThisUserHasSomeIdOrSomeRole(req, [friendsListEntry.user1Id, friendsListEntry.user2Id], 'admin');
   await friendsListEntry.delete();
 
   return res.sendStatus(204);
