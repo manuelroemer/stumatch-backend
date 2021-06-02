@@ -1,4 +1,5 @@
-import { model } from 'mongoose';
+import { model, Document } from 'mongoose';
+import { emitResourceChangedEvent } from '../../sockets/emitResourceChangedEvent';
 import { createDbObjectSchema, DbObject } from './dbObject';
 
 export interface BaseNotification<NotificationType extends string> extends DbObject {
@@ -48,5 +49,18 @@ const notificationSchema = createDbObjectSchema<Notification>(
   },
   { strict: false },
 );
+
+notificationSchema.post('save', (doc: Document & Notification, next) => {
+  emitResourceChangedEvent(
+    {
+      resourceType: 'notification',
+      changeType: 'changed',
+      id: doc.id,
+    },
+    doc.userId,
+  );
+
+  next();
+});
 
 export const NotificationModel = model<Notification>('Notification', notificationSchema);
