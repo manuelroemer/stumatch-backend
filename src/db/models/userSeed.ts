@@ -16,7 +16,7 @@ export const userSeed: Array<User> = [
     email: 'student@stumatch',
     passwordHash: hashSync('Student123', 8),
     displayName: 'sTUMatch User',
-    roles: ['student'],
+    roles: ['student', 'globalContentManager'],
   },
   ...range(10).map((i) => {
     const user: User = {
