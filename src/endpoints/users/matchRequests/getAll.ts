@@ -21,53 +21,65 @@ const handler = asyncRequestHandler(async (req, res) => {
   const query: FilterQuery<MatchRequest> = { userId: requestedUserId };
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await MatchRequestModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
-  const matchRequests: Array<any> = paginationResult.docs.map((doc) => doc.toObject());
+  const matchRequests = paginationResult.docs.map((doc) => doc.toObject());
+  const apiResults = await Promise.all(
+    matchRequests.map(async (matchRequest) => {
+      const baseResult = {
+        id: matchRequest.id,
+        createdOn: matchRequest.createdOn,
+        modifiedOn: matchRequest.modifiedOn,
+      };
 
-  for (const matchRequest of matchRequests) {
-    if (matchRequest.matchResultId) {
-      const matchResult = await MatchResultModel.findById(matchRequest.matchResultId);
-      if (!matchResult) {
-        throw new Error(`Required match result id: ${matchRequest.matchResultId} does not exist.`);
-      }
+      if (matchRequest.matchResultId) {
+        const matchResult = await MatchResultModel.findById(matchRequest.matchResultId);
+        if (!matchResult) {
+          throw new Error(`Required match result id: ${matchRequest.matchResultId} does not exist.`);
+        }
 
+        const partnerMatchRequestId =
+          matchResult.matchRequest1Id === matchRequest.id ? matchResult.matchRequest2Id : matchResult.matchRequest1Id;
+        const partnerMatchRequest = await MatchRequestModel.findById(partnerMatchRequestId);
+        if (!partnerMatchRequest) {
+          throw new Error(`Required partner match of match request: ${matchRequest.id} does not exist.`);
+        }
 
-      let partnerMatchRequest;
-      if (matchResult.matchRequest1Id === matchRequest.id) {
-        partnerMatchRequest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
+        const partnerUser = await UserModel.findById(partnerMatchRequest.userId);
+        const acceptedByMe =
+          matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser1 : matchResult.acceptedByUser2;
+        const acceptedByPartner =
+          matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser2 : matchResult.acceptedByUser1;
+
+        return {
+          ...baseResult,
+          status: getMatchRequestStatus(acceptedByMe, acceptedByPartner),
+          partnerUser,
+        };
       } else {
-        partnerMatchRequest = await MatchRequestModel.findById(matchResult.matchRequest1Id);
+        return {
+          ...baseResult,
+          status: 'pending',
+        };
       }
+    }),
+  );
 
-      if (!partnerMatchRequest) {
-        throw new Error(`Required partner match of match request: ${matchRequest.id} does not exist.`);
-      }
-
-      const partnerUser = await UserModel.findById(partnerMatchRequest.userId);
-      matchRequest.partnerUser = partnerUser;
-
-
-      const acceptedByMe = matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser1 : matchResult.acceptedByUser2;
-      const acceptedByPartner = matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser2 : matchResult.acceptedByUser1;
-
-      if (acceptedByMe === null && acceptedByPartner === null) {
-        matchRequest.status = 'matched';
-      } else if (acceptedByMe === true && acceptedByPartner === null) {
-        matchRequest.status = 'acceptedByMe';
-      } else if (acceptedByMe === null && acceptedByPartner === true) {
-        matchRequest.status = 'acceptedByPartner';
-      } else if (acceptedByMe === false && acceptedByPartner === null) {
-        matchRequest.status = 'declinedByMe';
-      } else if (acceptedByMe === null && acceptedByPartner === false) {
-        matchRequest.status = 'declinedByPartner';
-      } else {
-        matchRequest.status = 'accepted';
-      }
-    } else {
-      matchRequest.status = 'pending';
-    }
-  }
-
-  return res.status(200).json(paginationApiResult(matchRequests, paginationResult));
+  return res.status(200).json(paginationApiResult(apiResults, paginationResult));
 });
 
 export default Router().get('/api/v1/users/:id/matchRequests', authenticateJwt, handler);
+
+function getMatchRequestStatus(acceptedByMe: boolean | null, acceptedByPartner: boolean | null) {
+  if (acceptedByMe === null && acceptedByPartner === null) {
+    return 'matched';
+  } else if (acceptedByMe === true && acceptedByPartner === null) {
+    return 'acceptedByMe';
+  } else if (acceptedByMe === null && acceptedByPartner === true) {
+    return 'acceptedByPartner';
+  } else if (acceptedByMe === false && acceptedByPartner === null) {
+    return 'declinedByMe';
+  } else if (acceptedByMe === null && acceptedByPartner === false) {
+    return 'declinedByPartner';
+  } else {
+    return 'accepted';
+  }
+}
