@@ -7,7 +7,7 @@ import { SortableFields } from '../../utils/parseMongooseSortQuery';
 import { getUserOrThrow, getPaginationOptions, getSortQueryFromUrl } from '../../utils/requestHelpers';
 import { trimPrivateUserProfileInfo } from './utils';
 
-const sortableFields: Array<SortableFields<User>> = ['id', 'createdOn', 'modifiedOn', 'email', 'displayName'];
+const sortableFields: Array<SortableFields<User>> = ['id', 'createdOn', 'modifiedOn', 'email', 'firstName', 'lastName'];
 
 const handler = asyncRequestHandler(async (req, res) => {
   const thisUser = getUserOrThrow(req);

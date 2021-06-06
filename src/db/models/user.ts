@@ -7,7 +7,8 @@ export type UserRole = typeof knownUserRoles[number];
 export interface User extends DbObject {
   passwordHash: string;
   email: string;
-  displayName: string;
+  firstName: string;
+  lastName: string;
   roles: Array<UserRole>;
 }
 
@@ -21,7 +22,11 @@ const userSchema = createDbObjectSchema<User>({
     required: true,
     unique: true,
   },
-  displayName: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
