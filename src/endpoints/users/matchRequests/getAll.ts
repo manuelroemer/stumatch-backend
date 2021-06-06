@@ -3,13 +3,14 @@ import { QueryOptions } from 'mongoose';
 import { FilterQuery } from 'mongoose';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
-import { getSortQueryFromUrl, getPaginationOptions, getUserId } from '../../../utils/requestHelpers';
+import { getSortQueryFromUrl, getPaginationOptions, getUserId, getUserOrThrow } from '../../../utils/requestHelpers';
 import { validateThisUserHasSomeIdOrSomeRole } from '../../../utils/roleHelpers';
 import { SortableFields } from '../../../utils/parseMongooseSortQuery';
 import { paginationApiResult } from '../../../dtos/apiResults';
 import { MatchRequest, MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
 import { UserModel } from '../../../db/models/user';
+import { trimPrivateUserProfileInfo } from '../utils';
 
 const sortableFields: Array<SortableFields<MatchRequest>> = ['createdOn', 'modifiedOn'];
 
@@ -43,16 +44,20 @@ const handler = asyncRequestHandler(async (req, res) => {
           throw new Error(`Required partner match of match request: ${matchRequest.id} does not exist.`);
         }
 
-        const partnerUser = await UserModel.findById(partnerMatchRequest.userId);
         const acceptedByMe =
           matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser1 : matchResult.acceptedByUser2;
         const acceptedByPartner =
           matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser2 : matchResult.acceptedByUser1;
 
+        const partnerUser = await UserModel.findById(partnerMatchRequest.userId);
+        if (!partnerUser) {
+          throw new Error(`Could not find partner user: ${partnerMatchRequest.userId} does not exist.`);
+        }
+
         return {
           ...baseResult,
           status: getMatchRequestStatus(acceptedByMe, acceptedByPartner),
-          partnerUser,
+          partnerUser: trimPrivateUserProfileInfo(partnerUser.toObject(), getUserOrThrow(req)),
         };
       } else {
         return {
