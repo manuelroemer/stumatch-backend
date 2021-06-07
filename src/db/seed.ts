@@ -6,6 +6,10 @@ import { ChatGroupModel } from './models/chatGroup';
 import { chatGroupSeed } from './models/chatGroupSeed';
 import { FriendsListEntryModel } from './models/friendsListEntry';
 import { friendsListEntrySeed } from './models/friendsListEntrySeed';
+import { MatchRequestModel } from './models/matchRequest';
+import { matchRequestSeed } from './models/matchRequestSeed';
+import { MatchResultModel } from './models/matchResult';
+import { matchResultSeed } from './models/matchResultSeed';
 import { NotificationModel } from './models/notification';
 import { notificationSeed } from './models/notificationSeed';
 import { PostModel } from './models/post';
@@ -23,6 +27,8 @@ import { userSeed } from './models/userSeed';
     await NotificationModel.deleteMany();
     await FriendsListEntryModel.deleteMany();
     await ChatGroupModel.deleteMany();
+    await MatchRequestModel.deleteMany();
+    await MatchResultModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -31,6 +37,8 @@ import { userSeed } from './models/userSeed';
     await NotificationModel.create(mapSeedIds(notificationSeed));
     await FriendsListEntryModel.create(mapSeedIds(friendsListEntrySeed));
     await ChatGroupModel.create(mapSeedIds(chatGroupSeed));
+    await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
+    await MatchResultModel.create(mapSeedIds(matchResultSeed));
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
