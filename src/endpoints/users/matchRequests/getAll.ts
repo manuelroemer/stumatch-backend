@@ -19,7 +19,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   validateThisUserHasSomeIdOrSomeRole(req, requestedUserId, 'admin');
 
   const sort = getSortQueryFromUrl(req, sortableFields);
-  const query: FilterQuery<MatchRequest> = { userId: requestedUserId };
+  const query: FilterQuery<MatchRequest> = { userId: requestedUserId, isDeleted: false };
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await MatchRequestModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
   const matchRequests = paginationResult.docs.map((doc) => doc.toObject());
@@ -49,15 +49,15 @@ const handler = asyncRequestHandler(async (req, res) => {
         const acceptedByPartner =
           matchResult.matchRequest1Id === matchRequest.id ? matchResult.acceptedByUser2 : matchResult.acceptedByUser1;
 
-        const partnerUser = await UserModel.findById(partnerMatchRequest.userId);
-        if (!partnerUser) {
+        const partner = await UserModel.findById(partnerMatchRequest.userId);
+        if (!partner) {
           throw new Error(`Could not find partner user: ${partnerMatchRequest.userId} does not exist.`);
         }
 
         return {
           ...baseResult,
           status: getMatchRequestStatus(acceptedByMe, acceptedByPartner),
-          partnerUser: trimPrivateUserProfileInfo(partnerUser.toObject(), getUserOrThrow(req)),
+          partner: trimPrivateUserProfileInfo(partner.toObject(), getUserOrThrow(req)),
         };
       } else {
         return {
