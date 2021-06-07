@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
+import { server, ws } from '..';
 import { logger } from '../log';
 import { establishDbConnection } from './connection';
+import { ChatGroupModel } from './models/chatGroup';
+import { chatGroupSeed } from './models/chatGroupSeed';
 import { FriendsListEntryModel } from './models/friendsListEntry';
 import { friendsListEntrySeed } from './models/friendsListEntrySeed';
 import { NotificationModel } from './models/notification';
@@ -19,6 +22,7 @@ import { userSeed } from './models/userSeed';
     await PostModel.deleteMany();
     await NotificationModel.deleteMany();
     await FriendsListEntryModel.deleteMany();
+    await ChatGroupModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -26,11 +30,14 @@ import { userSeed } from './models/userSeed';
     await PostModel.create(mapSeedIds(postSeed));
     await NotificationModel.create(mapSeedIds(notificationSeed));
     await FriendsListEntryModel.create(mapSeedIds(friendsListEntrySeed));
+    await ChatGroupModel.create(mapSeedIds(chatGroupSeed));
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
   } finally {
     mongoose.disconnect();
+    server.close();
+    ws.close();
   }
 })();
 
