@@ -11,5 +11,6 @@ export const chatMessageSeed: Array<ChatMessage> = flatten(
     userId: faker.random.arrayElement(chatGroupSeed[0].activeParticipantIds),
     isDeleted: false,
     textContent: faker.lorem.words(),
+    createdOn: faker.date.past(),
   })),
 );
