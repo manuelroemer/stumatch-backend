@@ -1,7 +1,7 @@
 import { model } from 'mongoose';
 import { createDbObjectSchema, DbObject } from './dbObject';
 
-export const knownUserRoles = ['student', 'admin', 'globalContentManager'] as const;
+export const knownUserRoles = ['student', 'admin', 'advertiser', 'globalContentManager', ] as const;
 export type UserRole = typeof knownUserRoles[number];
 
 export interface User extends DbObject {
