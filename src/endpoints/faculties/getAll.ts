@@ -4,13 +4,22 @@ import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
-// 1) Stuff von DB holen
-// 2) Mongoose Models in API Format umwandeln
-// 3) Als 200 - OK JSON Array zurückgeben (-> apiResult format)
-
 const handler = asyncRequestHandler(async (req, res) => {
   const queryResult = await FacultyModel.find();
-  const result = queryResult.map((doc) => doc.toObject());
+  const result = queryResult.map((facultyDoc) => {
+    // Reason for this (yes, it's dirty):
+    // studyPrograms has the _id prop, we want 'id' for the API.
+    // For our simple usecase (readonly APIs only) it's more than enough to just do a quick mapping
+    // here instead of having a better DB schema.
+    const faculty = facultyDoc.toObject();
+    return {
+      ...faculty,
+      studyPrograms: faculty.studyPrograms.map((studyProgram) => ({
+        id: studyProgram._id,
+        name: studyProgram.name,
+      })),
+    };
+  });
   return res.status(200).json(apiResult(result));
 });
 
