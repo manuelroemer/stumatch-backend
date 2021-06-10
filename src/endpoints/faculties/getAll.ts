@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Faculty, FacultyModel } from '../../db/models/faculty';
+import { FacultyModel } from '../../db/models/faculty';
 import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
