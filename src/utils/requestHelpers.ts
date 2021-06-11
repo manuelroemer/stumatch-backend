@@ -54,3 +54,15 @@ export function getSortQueryFromUrl<T>(req: Request, sortableFields: Array<Sorta
   const sort = req.query.sort?.toString() ?? '';
   return sort ? parseMongooseSortQuery(sort, sortableFields) : undefined;
 }
+
+/**
+ * Attempts to read and convert a query parameter of a given name to a {@link Date}.
+ * @param req The request.
+ * @param name The name of the query parameter which should be converted to a date.
+ * @returns The parsed {@link Date} or `undefined` if there was no parsable parameter.
+ */
+export function getDateQueryParam(req: Request, name: string) {
+  const value = req.query[name]?.toString() ?? '';
+  const date = Date.parse(value);
+  return isNaN(date) ? undefined : new Date(date);
+}
