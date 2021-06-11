@@ -54,7 +54,6 @@ export function paginationApiResult<T>(
 export function cursorPaginationApiResult<T>(result: Array<T>, metadata: Omit<CursorPaginationApiResult<T>, 'result'>) {
   return {
     ...apiResult(result),
-    totalCount: metadata.totalCount,
     pageSize: metadata.pageSize,
     cursor: metadata.cursor,
     nextCursor: metadata.nextCursor,
