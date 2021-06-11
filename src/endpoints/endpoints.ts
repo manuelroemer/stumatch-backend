@@ -7,6 +7,8 @@
 export const endpoints = [
   require('./auth/token/post').default,
 
+  require('./faculties/getAll').default,
+
   require('./status/get').default,
 
   require('./users/getAll').default,

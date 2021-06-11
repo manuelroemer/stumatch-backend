@@ -28,6 +28,14 @@ export const userSeed: Array<User> = [
     lastName: 'Educator',
     roles: ['student', 'globalContentManager'],
   },
+  {
+    id: '00000000-0000-1000-8000-000000000003',
+    email: 'advertiser@stumatch',
+    passwordHash: hashSync('Student123', 8),
+    firstName: 'sTUMatch',
+    lastName: 'Advertiser',
+    roles: ['advertiser'],
+  },
   ...range(10).map((i) => {
     const user: User = {
       id: `00000000-0000-2000-8000-${i.toString().padStart(12, '0')}`,
