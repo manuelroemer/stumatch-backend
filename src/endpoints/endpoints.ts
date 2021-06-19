@@ -15,6 +15,7 @@ export const endpoints = [
   require('./users/get').default,
   require('./users/notifications/getAll').default,
   require('./users/friendsListEntries/getAll').default,
+  require('./users/chatGroups/getAll').default,
   require('./users/matchRequests/getAll').default,
   require('./users/advertisements/getAll').default,
 
@@ -36,4 +37,6 @@ export const endpoints = [
   require('./advertisements/post').default,
   require('./advertisements/put').default,
   require('./advertisements/delete').default,
+
+  require('./chatGroups/chatMessages/getAll').default,
 ];

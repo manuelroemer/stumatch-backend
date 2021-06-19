@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
+import { server, ws } from '..';
 import { logger } from '../log';
 import { establishDbConnection } from './connection';
 import { AdvertisementModel } from './models/advertisement';
 import { advertisementSeed } from './models/advertisementSeed';
+import { ChatGroupModel } from './models/chatGroup';
+import { chatGroupSeed } from './models/chatGroupSeed';
+import { ChatMessageModel } from './models/chatMessage';
+import { chatMessageSeed } from './models/chatMessageSeed';
 import { FacultyModel } from './models/faculty';
 import { facultySeed } from './models/facultySeed';
 import { FriendsListEntryModel } from './models/friendsListEntry';
@@ -27,6 +32,8 @@ import { userSeed } from './models/userSeed';
     await PostModel.deleteMany();
     await NotificationModel.deleteMany();
     await FriendsListEntryModel.deleteMany();
+    await ChatGroupModel.deleteMany();
+    await ChatMessageModel.deleteMany();
     await MatchRequestModel.deleteMany();
     await MatchResultModel.deleteMany();
     await FacultyModel.deleteMany();
@@ -38,6 +45,8 @@ import { userSeed } from './models/userSeed';
     await PostModel.create(mapSeedIds(postSeed));
     await NotificationModel.create(mapSeedIds(notificationSeed));
     await FriendsListEntryModel.create(mapSeedIds(friendsListEntrySeed));
+    await ChatGroupModel.create(mapSeedIds(chatGroupSeed));
+    await ChatMessageModel.create(mapSeedIds(chatMessageSeed));
     await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
@@ -47,6 +56,8 @@ import { userSeed } from './models/userSeed';
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
   } finally {
     mongoose.disconnect();
+    server.close();
+    ws.close();
   }
 })();
 
