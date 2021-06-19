@@ -50,7 +50,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
-    await AdvertisementModel.create(mapSeedIds(advertisementSeed))
+    await AdvertisementModel.create(mapSeedIds(advertisementSeed));
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);

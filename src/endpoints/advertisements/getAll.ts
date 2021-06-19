@@ -22,7 +22,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   validateThisUserHasSomeRole(req, 'admin');
   const sort = getSortQueryFromUrl(req, sortableFields);
   const queryOptions: QueryOptions = { sort };
-  const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), {}, undefined,queryOptions);
+  const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), {}, undefined, queryOptions);
   const result = paginationResult.docs.map((doc) => doc.toObject());
   return res.status(200).json(paginationApiResult(result, paginationResult));
 });
