@@ -16,6 +16,7 @@ export const endpoints = [
   require('./users/notifications/getAll').default,
   require('./users/friendsListEntries/getAll').default,
   require('./users/matchRequests/getAll').default,
+  require('./users/advertisements/getAll').default,
 
   require('./posts/getAll').default,
   require('./posts/get').default,
@@ -30,4 +31,9 @@ export const endpoints = [
   require('./matchRequests/delete').default,
 
   require('./friendsListEntries/delete').default,
+
+  require('./advertisements/getAll').default,
+  require('./advertisements/post').default,
+  require('./advertisements/put').default,
+  require('./advertisements/delete').default,
 ];

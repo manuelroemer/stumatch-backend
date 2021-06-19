@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { logger } from '../log';
 import { establishDbConnection } from './connection';
+import { AdvertisementModel } from './models/advertisement';
+import { advertisementSeed } from './models/advertisementSeed';
 import { FacultyModel } from './models/faculty';
 import { facultySeed } from './models/facultySeed';
 import { FriendsListEntryModel } from './models/friendsListEntry';
@@ -28,6 +30,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.deleteMany();
     await MatchResultModel.deleteMany();
     await FacultyModel.deleteMany();
+    await AdvertisementModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -38,6 +41,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
+    await AdvertisementModel.create(mapSeedIds(advertisementSeed))
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
