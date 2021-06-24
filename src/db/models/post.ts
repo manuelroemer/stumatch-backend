@@ -5,7 +5,7 @@ export interface Post extends DbObject {
   content: string;
   title: string;
   authorId: string;
-  categories: string[];
+  categories: Array<string>;
 }
 
 const postSchema = createDbObjectSchema<Post>({
