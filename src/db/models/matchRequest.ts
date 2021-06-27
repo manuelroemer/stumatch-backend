@@ -5,6 +5,10 @@ export interface MatchRequest extends DbObject {
   matchResultId?: string;
   userId: string;
   isDeleted: boolean;
+  facultyId?: string;
+  studyProgramId?: string;
+  minSemester?: number;
+  maxSemester?: number;
 }
 
 const matchRequestSchema = createDbObjectSchema<MatchRequest>({
@@ -18,6 +22,18 @@ const matchRequestSchema = createDbObjectSchema<MatchRequest>({
   isDeleted: {
     type: Boolean,
     default: false,
+  },
+  facultyId: {
+    type: String,
+  },
+  studyProgramId: {
+    type: String,
+  },
+  minSemester: {
+    type: Number,
+  },
+  maxSemester: {
+    type: Number,
   },
 });
 

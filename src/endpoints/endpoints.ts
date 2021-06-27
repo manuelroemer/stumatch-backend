@@ -29,6 +29,7 @@ export const endpoints = [
   require('./notifications/delete').default,
 
   require('./matchRequests/delete').default,
+  require('./matchRequests/post').default,
 
   require('./friendsListEntries/delete').default,
 
