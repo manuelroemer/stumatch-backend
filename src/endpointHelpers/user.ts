@@ -1,7 +1,11 @@
-import { User } from '../../db/models/user';
-import { hasSomeRole } from '../../utils/roleHelpers';
+import { User } from '../db/models/user';
+import { hasSomeRole } from '../utils/roleHelpers';
 
-export function trimPrivateUserProfileInfo(userToReturn: User, thisUser: User) {
+export function getEnrichedUserDto(user: User, thisUser: User) {
+  return trimPrivateUserProfileInfo(user, thisUser);
+}
+
+function trimPrivateUserProfileInfo(userToReturn: User, thisUser: User) {
   const returnPublicProfileInfoOnly = thisUser.id !== userToReturn.id && !hasSomeRole(thisUser, 'admin');
   const result: Partial<User> = { ...userToReturn };
 
