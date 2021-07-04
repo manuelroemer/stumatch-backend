@@ -15,7 +15,7 @@ const handler = asyncRequestHandler(async (req, res) => {
 
   const query: FilterQuery<ChatGroup> = { activeParticipantIds: requestedUserId };
   const results = await ChatGroupModel.find(query);
-  const result = results.map((doc) => getEnrichedChatGroupDto(doc.toObject(), user));
+  const result = await Promise.all(results.map((doc) => getEnrichedChatGroupDto(doc.toObject(), user)));
   return res.status(200).json(apiResult(result));
 });
 
