@@ -2,10 +2,10 @@ import { Router } from 'express';
 import { UserModel } from '../../db/models/user';
 import { NotFoundError } from '../../dtos/apiErrors';
 import { apiResult } from '../../dtos/apiResults';
+import { getEnrichedUserDto } from '../../endpointHelpers/user';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserId, getUserOrThrow } from '../../utils/requestHelpers';
-import { trimPrivateUserProfileInfo } from './utils';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const thisUser = getUserOrThrow(req);
@@ -16,7 +16,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  const result = trimPrivateUserProfileInfo(user.toObject(), thisUser);
+  const result = getEnrichedUserDto(user.toObject(), thisUser);
   return res.status(200).json(apiResult(result));
 });
 

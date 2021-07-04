@@ -30,9 +30,11 @@ export const endpoints = [
 
   require('./matchRequests/delete').default,
   require('./matchRequests/post').default,
+  require('./matchRequests/acceptOrDecline/post').default,
 
   require('./friendsListEntries/delete').default,
 
+  require('./chatGroups/get').default,
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,
 ];

@@ -6,6 +6,7 @@ export interface MatchResult extends DbObject {
   matchRequest2Id: string;
   acceptedByUser1: boolean | null;
   acceptedByUser2: boolean | null;
+  chatGroupId: string | null;
 }
 
 const matchResultSchema = createDbObjectSchema<MatchResult>({
@@ -23,6 +24,10 @@ const matchResultSchema = createDbObjectSchema<MatchResult>({
   },
   acceptedByUser2: {
     type: Boolean,
+    default: null,
+  },
+  chatGroupId: {
+    type: String,
     default: null,
   },
 });
