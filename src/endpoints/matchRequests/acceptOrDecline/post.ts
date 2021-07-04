@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { boolean, object, SchemaOf } from 'yup';
 import { ChatGroupModel } from '../../../db/models/chatGroup';
+import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
 import { BadRequestError, NotFoundError } from '../../../dtos/apiErrors';
@@ -45,11 +46,16 @@ const handler = asyncRequestHandler(async (req, res) => {
       throw new BadRequestError('Status already has been set.');
     }
   }
+
+  const user1MatchRequest = await MatchRequestModel.findById(matchResult.matchRequest1Id);
+  const user2MatchReqeuest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
+  const chatgroup = await ChatGroupModel.create({
+    activeParticipantIds: [user1MatchRequest!.userId, user2MatchReqeuest!.userId],
+  });
+  matchResult.chatGroupId = chatgroup.id;
+
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
-    const user1 = await MatchRequestModel.findById(matchResult.matchRequest1Id);
-    const user2 = await MatchRequestModel.findById(matchResult.matchRequest2Id);
-    const chatgroup = await ChatGroupModel.create({ activeParticipantIds: [user1!.id, user2!.id] });
-    matchResult.chatGroupId = chatgroup.id;
+    await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
   }
 
   await matchResult.save();
