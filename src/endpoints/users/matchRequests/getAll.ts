@@ -58,6 +58,7 @@ const handler = asyncRequestHandler(async (req, res) => {
           ...baseResult,
           status: getMatchRequestStatus(acceptedByMe, acceptedByPartner),
           partner: trimPrivateUserProfileInfo(partner.toObject(), getUserOrThrow(req)),
+          chatGroupId: matchResult.chatGroupId,
         };
       } else {
         return {
