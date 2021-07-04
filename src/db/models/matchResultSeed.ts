@@ -7,6 +7,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000001',
     acceptedByUser1: null,
     acceptedByUser2: null,
+    chatGroupId: null,
   },
   {
     id: '10000000-0000-1000-8000-000000000001',
@@ -14,6 +15,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000003',
     acceptedByUser1: true,
     acceptedByUser2: null,
+    chatGroupId: null,
   },
   {
     id: '10000000-0000-1000-8000-000000000002',
@@ -21,6 +23,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000005',
     acceptedByUser1: null,
     acceptedByUser2: true,
+    chatGroupId: null,
   },
   {
     id: '10000000-0000-1000-8000-000000000003',
@@ -28,6 +31,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000007',
     acceptedByUser1: true,
     acceptedByUser2: true,
+    chatGroupId: '50000000-0000-1000-8000-000000000007',
   },
   {
     id: '10000000-0000-1000-8000-000000000004',
@@ -35,6 +39,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000009',
     acceptedByUser1: false,
     acceptedByUser2: null,
+    chatGroupId: null,
   },
   {
     id: '10000000-0000-1000-8000-000000000005',
@@ -42,5 +47,6 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000011',
     acceptedByUser1: null,
     acceptedByUser2: false,
+    chatGroupId: null,
   },
 ];
