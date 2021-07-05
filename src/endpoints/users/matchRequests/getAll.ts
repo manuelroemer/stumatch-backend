@@ -10,7 +10,7 @@ import { paginationApiResult } from '../../../dtos/apiResults';
 import { MatchRequest, MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
 import { UserModel } from '../../../db/models/user';
-import { trimPrivateUserProfileInfo } from '../utils';
+import { getEnrichedUserDto } from '../../../endpointHelpers/user';
 
 const sortableFields: Array<SortableFields<MatchRequest>> = ['createdOn', 'modifiedOn'];
 
@@ -57,7 +57,7 @@ const handler = asyncRequestHandler(async (req, res) => {
         return {
           ...baseResult,
           status: getMatchRequestStatus(acceptedByMe, acceptedByPartner),
-          partner: trimPrivateUserProfileInfo(partner.toObject(), getUserOrThrow(req)),
+          partner: getEnrichedUserDto(partner.toObject(), getUserOrThrow(req)),
           chatGroupId: matchResult.chatGroupId,
         };
       } else {

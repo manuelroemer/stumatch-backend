@@ -32,11 +32,11 @@ const handler = asyncRequestHandler(async (req, res) => {
   };
   const options: QueryOptions = { sort: { createdOn: 'desc' } };
   const queryResult = await ChatMessageModel.find(query, undefined, options).limit(pageSize);
-  const result = queryResult.map((doc) => doc.toObject());
+  const result = queryResult.map((doc) => doc.toObject()).reverse();
   const apiResult = cursorPaginationApiResult(result, {
     pageSize,
     cursor: before,
-    nextCursor: result.length > 0 ? result[result.length - 1].createdOn : null,
+    nextCursor: result.length > 0 ? result[0].createdOn : null,
   });
   return res.status(200).json(apiResult);
 });
