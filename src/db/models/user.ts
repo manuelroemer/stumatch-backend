@@ -11,7 +11,7 @@ export interface User extends DbObject {
   lastName: string;
   facultyId?: string;
   studyProgramId?: string;
-  startingSemester?: string;
+  startingSemester?: 'WS' | 'SS';
   startingYear?: number;
   roles: Array<UserRole>;
 }
