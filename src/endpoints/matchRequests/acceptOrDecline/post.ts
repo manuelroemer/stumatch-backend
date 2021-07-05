@@ -4,6 +4,7 @@ import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
+import { NotificationModel } from '../../../db/models/notification';
 import { BadRequestError, NotFoundError } from '../../../dtos/apiErrors';
 import { apiResult } from '../../../dtos/apiResults';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
@@ -49,13 +50,31 @@ const handler = asyncRequestHandler(async (req, res) => {
 
   const user1MatchRequest = await MatchRequestModel.findById(matchResult.matchRequest1Id);
   const user2MatchReqeuest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
+
+  await NotificationModel.create({
+    type: body.accepted ? 'matchRequestAcceptedByPartner' : 'matchRequestDeclinedByPartner',
+    userId: matchResult.matchRequest1Id === req.params.id ? user2MatchReqeuest?.userId : user1MatchRequest?.userId,
+    matchRequestId: req.params.id,
+  });
+
   const chatgroup = await ChatGroupModel.create({
     activeParticipantIds: [user1MatchRequest!.userId, user2MatchReqeuest!.userId],
   });
   matchResult.chatGroupId = chatgroup.id;
 
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
-    await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
+    const friendsListEntry1 = await FriendsListEntryModel.findOne({
+      user1Id: user1MatchRequest!.userId,
+      user2Id: user2MatchReqeuest!.userId,
+    });
+    const friendsListEntry2 = await FriendsListEntryModel.findOne({
+      user1Id: user2MatchReqeuest!.userId,
+      user2Id: user1MatchRequest!.userId,
+    });
+
+    if (!friendsListEntry1 && !friendsListEntry2) {
+      await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
+    }
   }
 
   await matchResult.save();
