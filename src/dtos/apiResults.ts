@@ -22,7 +22,8 @@ export interface PaginationApiResult<T> extends ApiResult<Array<T>> {
 export interface CursorPaginationApiResult<T> extends ApiResult<Array<T>> {
   pageSize: number;
   cursor: unknown;
-  nextCursor: unknown;
+  beforeCursor: unknown;
+  afterCursor: unknown;
 }
 
 // Explanation for the below functions:
@@ -56,6 +57,7 @@ export function cursorPaginationApiResult<T>(result: Array<T>, metadata: Omit<Cu
     ...apiResult(result),
     pageSize: metadata.pageSize,
     cursor: metadata.cursor,
-    nextCursor: metadata.nextCursor,
+    beforeCursor: metadata.beforeCursor,
+    afterCursor: metadata.afterCursor,
   };
 }
