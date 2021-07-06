@@ -7,13 +7,13 @@ import { ChatMessage, ChatMessageModel } from '../../../db/models/chatMessage';
 import { QueryOptions } from 'mongoose';
 import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { getUserOrThrow, getDateQueryParam, getPaginationOptions } from '../../../utils/requestHelpers';
-import { ForbiddenError, NotFoundError } from '../../../dtos/apiErrors';
+import { NotFoundError } from '../../../dtos/apiErrors';
 import { updateReadChatMessageForUser } from '../../../endpointHelpers/chatGroup';
+import { validateUserIsInChatGroup } from '../../../endpointHelpers/chatMessage';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const chatGroupId = req.params['id'];
   const before = getDateQueryParam(req, 'before') ?? new Date();
-  const after = getDateQueryParam(req, 'after');
   const { pageSize } = getPaginationOptions(req);
   const user = getUserOrThrow(req);
 
@@ -22,24 +22,20 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  if (!chatGroup.activeParticipantIds.includes(user.id!)) {
-    throw new ForbiddenError();
-  }
+  validateUserIsInChatGroup(user.id!, chatGroup);
 
   const query: FilterQuery<ChatMessage> = {
     chatGroupId,
-    createdOn: after ? { $gt: after } : { $lt: before },
+    createdOn: { $lt: before },
   };
   const options: QueryOptions = { sort: { createdOn: 'desc' } };
   const queryResult = await ChatMessageModel.find(query, undefined, options).limit(pageSize);
   const result = queryResult.map((doc) => doc.toObject()).reverse();
   const beforeCursor = result.length > 0 ? result[0].createdOn : null;
-  const afterCursor = result.length > 0 ? result[result.length - 1].createdOn : null;
   const apiResult = cursorPaginationApiResult(result, {
     pageSize,
-    cursor: after ?? before,
+    cursor: before,
     beforeCursor,
-    afterCursor,
   });
 
   await updateReadChatMessageForUser(chatGroupId, user.id!);
