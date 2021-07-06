@@ -39,6 +39,8 @@ export const endpoints = [
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,
 
+  require('./chatMessages/get').default,
   require('./chatMessages/put').default,
   require('./chatMessages/delete').default,
+  require('./chatMessages/read/post').default,
 ];
