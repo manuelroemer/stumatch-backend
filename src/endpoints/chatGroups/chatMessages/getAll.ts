@@ -8,6 +8,7 @@ import { QueryOptions } from 'mongoose';
 import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { getUserOrThrow, getDateQueryParam, getPaginationOptions } from '../../../utils/requestHelpers';
 import { ForbiddenError, NotFoundError } from '../../../dtos/apiErrors';
+import { updateReadChatMessageForUser } from '../../../endpointHelpers/chatGroup';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const chatGroupId = req.params['id'];
@@ -40,6 +41,9 @@ const handler = asyncRequestHandler(async (req, res) => {
     beforeCursor,
     afterCursor,
   });
+
+  await updateReadChatMessageForUser(chatGroupId, user.id!);
+
   return res.status(200).json(apiResult);
 });
 
