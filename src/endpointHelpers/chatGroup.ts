@@ -24,15 +24,3 @@ export async function getEnrichedChatGroupDto(chatGroup: ChatGroup, thisUser: Us
     lastMessage,
   };
 }
-
-export async function updateReadChatMessageForUser(chatGroupId: string, userId: string) {
-  const readChatMessage =
-    (await ReadChatMessageModel.findOne({ userId, chatGroupId })) ??
-    new ReadChatMessageModel({
-      userId,
-      chatGroupId,
-    });
-
-  readChatMessage.lastMessageReadOn = new Date();
-  await readChatMessage.save();
-}

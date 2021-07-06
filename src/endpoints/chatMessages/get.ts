@@ -22,7 +22,6 @@ const handler = asyncRequestHandler(async (req, res) => {
   }
 
   validateUserIsInChatGroup(user.id!, chatGroup);
-
   return res.status(200).json(apiResult(chatMessage.toObject()));
 });
 
