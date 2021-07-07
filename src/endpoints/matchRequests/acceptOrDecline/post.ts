@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { boolean, object, SchemaOf } from 'yup';
-import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
@@ -22,7 +21,7 @@ const schema: SchemaOf<RequestBody> = object({
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as RequestBody;
-  const matchRequest = await MatchRequestModel.findOne({ _id: req.params.id, isDeleted: false });
+  const matchRequest = await MatchRequestModel.findOne({ _id: req.params.id });
   if (!matchRequest) {
     throw new BadRequestError();
   }
@@ -35,13 +34,13 @@ const handler = asyncRequestHandler(async (req, res) => {
   }
 
   if (matchResult.matchRequest1Id === req.params.id) {
-    if (matchResult.acceptedByUser1 === null) {
+    if (!matchResult.acceptedByUser1) {
       matchResult.acceptedByUser1 = body.accepted;
     } else {
       throw new BadRequestError('Status already has been set.');
     }
   } else {
-    if (matchResult.acceptedByUser2 === null) {
+    if (!matchResult.acceptedByUser2) {
       matchResult.acceptedByUser2 = body.accepted;
     } else {
       throw new BadRequestError('Status already has been set.');
@@ -56,11 +55,6 @@ const handler = asyncRequestHandler(async (req, res) => {
     userId: matchResult.matchRequest1Id === req.params.id ? user2MatchReqeuest?.userId : user1MatchRequest?.userId,
     matchRequestId: req.params.id,
   });
-
-  const chatgroup = await ChatGroupModel.create({
-    activeParticipantIds: [user1MatchRequest!.userId, user2MatchReqeuest!.userId],
-  });
-  matchResult.chatGroupId = chatgroup.id;
 
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
     const friendsListEntry1 = await FriendsListEntryModel.findOne({
