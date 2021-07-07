@@ -43,6 +43,8 @@ export const userSeed: Array<User> = [
     firstName: 'sTUMatch',
     lastName: 'Student2',
     facultyId: '20000000-0000-1000-8000-000000000000',
+    startingSemester: 'WS',
+    startingYear: 2020,
     roles: ['student'],
   },
   {
@@ -53,6 +55,8 @@ export const userSeed: Array<User> = [
     lastName: 'Student3',
     facultyId: '20000000-0000-1000-8000-000000000000',
     studyProgramId: '20000000-0000-1000-8000-000000000014',
+    startingSemester: 'WS',
+    startingYear: 2018,
     roles: ['student'],
   },
   {

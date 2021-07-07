@@ -1,6 +1,7 @@
 import { ChatGroupModel } from '../db/models/chatGroup';
 import { MatchRequest, MatchRequestModel } from '../db/models/matchRequest';
 import { MatchResultModel } from '../db/models/matchResult';
+import { NotificationModel } from '../db/models/notification';
 import { PastUserMatchEntryModel } from '../db/models/pastUserMatchEntry';
 import { User, UserModel } from '../db/models/user';
 import { logger } from '../log';
@@ -30,22 +31,30 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       continue;
     }
 
+    console.info('test1');
     if (
       isFacultyStudyProgramMatch(matchRequest, pendingUser) &&
       isFacultyStudyProgramMatch(pendingMatchRequest, currentUser) &&
       isSemesterMatch(matchRequest, pendingUser) &&
       isSemesterMatch(pendingMatchRequest, currentUser) &&
-      !hasPastMatch(matchRequest.userId, pendingMatchRequest.userId)
+      !(await hasPastMatch(matchRequest.userId, pendingMatchRequest.userId))
     ) {
+      console.info('test');
       const chatGroup = await ChatGroupModel.create({
         activeParticipantIds: [matchRequest.userId, pendingMatchRequest.userId],
       });
 
-      await MatchResultModel.create({
+      const matchResult = await MatchResultModel.create({
         matchRequest1Id: matchRequest.id,
         matchRequest2Id: pendingMatchRequest.id,
         chatGroupId: chatGroup.id,
       });
+
+      await MatchRequestModel.updateOne({ _id: matchRequest.id }, { matchResultId: matchResult.id });
+      pendingMatchRequest.matchResultId = matchResult.id;
+      await pendingMatchRequest.save();
+
+      await createMatchedNotification(matchRequest, pendingMatchRequest);
 
       await PastUserMatchEntryModel.create({
         user1Id: matchRequest.userId,
@@ -83,7 +92,6 @@ function isSemesterMatch(thisMatchRequest: MatchRequest, otherUser: User) {
 
   const userSemester = calculateSemester(otherUser.startingSemester, otherUser.startingYear);
   return userSemester >= thisMatchRequest.minSemester && userSemester <= thisMatchRequest.maxSemester;
-
 }
 
 function isFacultyStudyProgramMatch(thisMatchRequest: MatchRequest, otherUser: User) {
@@ -91,14 +99,27 @@ function isFacultyStudyProgramMatch(thisMatchRequest: MatchRequest, otherUser: U
     return true;
   } else if (
     (!!thisMatchRequest.facultyId && !otherUser.facultyId) ||
-    (!!thisMatchRequest.studyProgramId && !otherUser.studyProgramId)
+    (!!thisMatchRequest.studyProgramId && !otherUser.facultyId)
   ) {
     return false;
+  } else if (!!thisMatchRequest.facultyId && !thisMatchRequest.studyProgramId) {
+    return thisMatchRequest.facultyId === otherUser.facultyId;
   } else {
-    return (
-      thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId
-    );
+    thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId;
   }
+
+  // if (!thisMatchRequest.facultyId && !thisMatchRequest.studyProgramId) {
+  //   return true;
+  // } else if (
+  //   (!!thisMatchRequest.facultyId && !otherUser.facultyId) ||
+  //   (!!thisMatchRequest.studyProgramId && !otherUser.studyProgramId)
+  // ) {
+  //   return false;
+  // } else {
+  //   return (
+  //     thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId
+  //   );
+  // }
 
   // if (!otherUser.facultyId || !otherUser.studyProgramId) {
   //   return false;
@@ -108,6 +129,23 @@ function isFacultyStudyProgramMatch(thisMatchRequest: MatchRequest, otherUser: U
 async function hasPastMatch(user1Id: string, user2Id: string) {
   const pastUser1 = await PastUserMatchEntryModel.findOne({ user1Id: user1Id, user2Id: user2Id });
   const pastUser2 = await PastUserMatchEntryModel.findOne({ user1Id: user2Id, user2Id: user1Id });
-
+  console.info('test3');
   return !!pastUser1 || !!pastUser2;
+}
+
+async function createMatchedNotification(matchRequestUser1: MatchRequest, matchRequestUser2: MatchRequest) {
+  try {
+    await NotificationModel.create({
+      type: 'matchRequestFoundMatch',
+      matchRequestId: matchRequestUser1.id,
+      userId: matchRequestUser1.userId,
+    });
+    await NotificationModel.create({
+      type: 'matchRequestFoundMatch',
+      matchRequestId: matchRequestUser2.id,
+      userId: matchRequestUser2.userId,
+    });
+  } catch (e) {
+    logger.warning('Match notification creation failed.', e);
+  }
 }

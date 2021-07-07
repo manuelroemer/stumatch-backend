@@ -21,7 +21,7 @@ const chatMessageSchema = createDbObjectSchema<ChatMessage>({
   },
   textContent: {
     type: String,
-    required: true,
+    required: false,
   },
   isDeleted: {
     type: Boolean,
