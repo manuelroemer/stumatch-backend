@@ -23,7 +23,7 @@ const postSchema = createDbObjectSchema<Post>({
   },
   category: {
     type: String,
-    required: false,
+    required: true,
   },
 });
 
