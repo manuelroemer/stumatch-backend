@@ -5,7 +5,7 @@ export interface Post extends DbObject {
   content: string;
   title: string;
   authorId: string;
-  categories: Array<string>;
+  category: string;
 }
 
 const postSchema = createDbObjectSchema<Post>({
@@ -21,8 +21,8 @@ const postSchema = createDbObjectSchema<Post>({
     type: String,
     required: true,
   },
-  categories: {
-    type: [String],
+  category: {
+    type: String,
     required: false,
   },
 });

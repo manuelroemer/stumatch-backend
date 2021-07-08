@@ -11,7 +11,9 @@ const sortableFields: Array<SortableFields<Post>> = ['id', 'createdOn', 'modifie
 
 const handler = asyncRequestHandler(async (req, res) => {
   const sort = getSortQueryFromUrl(req, sortableFields);
-  const paginationResult = await PostModel.paginate(getPaginationOptions(req), {}, undefined, { sort });
+  const filter = req.query.filter?.toString();
+  const query = filter ? { category: filter } : undefined;
+  const paginationResult = await PostModel.paginate(getPaginationOptions(req), query, undefined, { sort });
   const result = paginationResult.docs.map((doc) => doc.toObject());
   const apiResults = await Promise.all(
     result.map(async (post) => {
