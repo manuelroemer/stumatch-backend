@@ -13,6 +13,7 @@ export const endpoints = [
 
   require('./users/getAll').default,
   require('./users/get').default,
+  require('./users/post').default,
   require('./users/notifications/getAll').default,
   require('./users/friendsListEntries/getAll').default,
   require('./users/chatGroups/getAll').default,
@@ -35,5 +36,12 @@ export const endpoints = [
 
   require('./friendsListEntries/delete').default,
 
+  require('./chatGroups/get').default,
   require('./chatGroups/chatMessages/getAll').default,
+  require('./chatGroups/chatMessages/post').default,
+
+  require('./chatMessages/get').default,
+  require('./chatMessages/put').default,
+  require('./chatMessages/delete').default,
+  require('./chatMessages/read/post').default,
 ];

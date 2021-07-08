@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { FacultyModel } from '../../db/models/faculty';
 import { apiResult } from '../../dtos/apiResults';
-import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
 const handler = asyncRequestHandler(async (req, res) => {
@@ -23,4 +22,4 @@ const handler = asyncRequestHandler(async (req, res) => {
   return res.status(200).json(apiResult(result));
 });
 
-export default Router().get('/api/v1/faculties', authenticateJwt, handler);
+export default Router().get('/api/v1/faculties', handler);
