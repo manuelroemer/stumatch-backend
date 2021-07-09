@@ -11,6 +11,8 @@ export const endpoints = [
 
   require('./status/get').default,
 
+  require('./blob/get').default,
+
   require('./users/getAll').default,
   require('./users/get').default,
   require('./users/post').default,
