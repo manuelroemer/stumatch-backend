@@ -3,6 +3,7 @@ import { server, ws } from '..';
 import { logger } from '../log';
 import { establishDbConnection } from './connection';
 import { BlobModel } from './models/blob';
+import { blobSeed } from './models/blobSeed';
 import { ChatGroupModel } from './models/chatGroup';
 import { chatGroupSeed } from './models/chatGroupSeed';
 import { ChatMessageModel } from './models/chatMessage';
@@ -53,7 +54,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
-    await BlobModel.create({ id: '00000000-0000-1000-8000-000000000000', data: Buffer.from([1, 2, 3]) });
+    await BlobModel.create(mapSeedIds(blobSeed));
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
