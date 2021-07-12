@@ -12,7 +12,6 @@ import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
 const schema = object({
   id: string().uuid(),
   userId: string().uuid().required(),
-  //status: string().oneOf(['unverified', 'pendingVerification', 'verified', 'denied']).required(),
   title: string().required(),
   content: string().required(),
 }).defined();

@@ -32,7 +32,6 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  console.log(req.body.status);
   if (req.body.status !== undefined) {
     validateThisUserHasSomeRole(req, 'admin');
   } else {

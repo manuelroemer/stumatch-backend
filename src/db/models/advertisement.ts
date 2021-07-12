@@ -1,15 +1,13 @@
 import { model } from 'mongoose';
 import { createDbObjectSchema, DbObject } from './dbObject';
-
-export type knownstatus = 'unverified' | 'pendingVerification' | 'verified' | 'denied';
 export interface Advertisement extends DbObject {
   userId: string;
   title: string;
   content: string;
-  status: knownstatus;
+  status: 'unverified' | 'pendingVerification' | 'verified' | 'denied';
 }
 
-const AdvertisementSchema = createDbObjectSchema<Advertisement>({
+const advertisementSchema = createDbObjectSchema<Advertisement>({
   userId: {
     type: String,
     required: true,
@@ -29,4 +27,4 @@ const AdvertisementSchema = createDbObjectSchema<Advertisement>({
   },
 });
 
-export const AdvertisementModel = model<Advertisement>('Advertisement', AdvertisementSchema);
+export const AdvertisementModel = model<Advertisement>('Advertisement', advertisementSchema);
