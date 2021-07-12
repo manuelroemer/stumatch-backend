@@ -9,6 +9,11 @@ export interface User extends DbObject {
   email: string;
   firstName: string;
   lastName: string;
+  profileImageBlobId?: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  startingSemester?: 'WS' | 'SS';
+  startingYear?: number;
   roles: Array<UserRole>;
 }
 
@@ -29,6 +34,22 @@ const userSchema = createDbObjectSchema<User>({
   lastName: {
     type: String,
     required: true,
+  },
+  profileImageBlobId: {
+    type: String,
+    required: false,
+  },
+  facultyId: {
+    type: String,
+  },
+  studyProgramId: {
+    type: String,
+  },
+  startingSemester: {
+    type: String,
+  },
+  startingYear: {
+    type: Number,
   },
   roles: {
     type: [String],

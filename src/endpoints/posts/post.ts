@@ -5,10 +5,14 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { PostRequestBody, postValidationSchema } from './utils';
+import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
+import { getUserOrThrow } from '../../utils/requestHelpers';
 
 const handler = asyncRequestHandler(async (req, res) => {
+  const user = getUserOrThrow(req);
+  validateThisUserHasSomeRole(req, ['admin', 'globalContentManager']);
   const body = req.body as PostRequestBody;
-  const post = new PostModel({ _id: body.id, ...body });
+  const post = new PostModel({ _id: body.id, authorId: user.id, ...body });
   await post.save();
   return res.status(201).json(apiResult(post.toObject()));
 });

@@ -2,23 +2,42 @@ import { Router } from 'express';
 import { FilterQuery } from 'mongoose';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
-import { getPaginationOptions, getUserId } from '../../../utils/requestHelpers';
+import { getUserId, getUserOrThrow } from '../../../utils/requestHelpers';
 import { validateThisUserHasSomeIdOrSomeRole } from '../../../utils/roleHelpers';
 import { Notification } from '../../../db/models/notification';
-import { paginationApiResult } from '../../../dtos/apiResults';
+import { apiResult } from '../../../dtos/apiResults';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
+import { getEnrichedUserDto } from '../../../endpointHelpers/user';
+import { UserModel } from '../../../db/models/user';
+import { NotFoundError } from '../../../dtos/apiErrors';
 
 const handler = asyncRequestHandler(async (req, res) => {
+  const user = getUserOrThrow(req);
   const requestedUserId = getUserId(req);
   validateThisUserHasSomeIdOrSomeRole(req, requestedUserId, 'admin');
 
   const query: FilterQuery<Notification> = { $or: [{ user1Id: requestedUserId }, { user2Id: requestedUserId }] };
-  const paginationResult = await FriendsListEntryModel.paginate(getPaginationOptions(req), query, undefined);
-  const result = paginationResult.docs.map((doc) => ({
+  const friendsListEntries = await FriendsListEntryModel.find(query);
+  const friendsResult = friendsListEntries.map((doc) => ({
     id: doc.id,
-    friend: doc.user1Id === requestedUserId ? doc.user2Id : doc.user1Id,
+    friendId: doc.user1Id === requestedUserId ? doc.user2Id : doc.user1Id,
   }));
-  return res.status(200).json(paginationApiResult(result, paginationResult));
+
+  const result = await Promise.all(
+    friendsResult.map(async (friendResult) => {
+      const friend = await UserModel.findById(friendResult.friendId);
+      if (!friend) {
+        throw new NotFoundError();
+      }
+
+      return {
+        ...friendResult,
+        friend: getEnrichedUserDto(friend.toObject(), user),
+      };
+    }),
+  );
+
+  return res.status(200).json(apiResult(result));
 });
 
 export default Router().get('/api/v1/users/:id/friendsListEntries', authenticateJwt, handler);

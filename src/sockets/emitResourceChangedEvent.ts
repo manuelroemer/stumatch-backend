@@ -7,6 +7,8 @@ export interface ResourceChangedEvent {
   id: string;
 }
 
-export function emitResourceChangedEvent(event: ResourceChangedEvent, userId: string) {
-  ws.to(getUserRoom(userId)).emit('resource-changed', event);
+export function emitResourceChangedEvent(event: ResourceChangedEvent, userIds: string | Array<string>) {
+  const finalUserIds = typeof userIds === 'string' ? [userIds] : userIds;
+  const rooms = finalUserIds.map(getUserRoom);
+  ws.to(rooms).emit('resource-changed', event);
 }
