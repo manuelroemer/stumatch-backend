@@ -24,5 +24,5 @@ export const blobSeed: Array<Blob> = [
 function readSeedFile(name: string) {
   // Super dirty, yes. But works just fine enough for our simple dev workflow.
   // No need for anything fancier.
-  return readFileSync(join(__dirname, `../../../assets/seed/${name}`))
+  return readFileSync(join(__dirname, `../../../assets/seed/${name}`));
 }
