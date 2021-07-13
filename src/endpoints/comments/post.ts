@@ -4,31 +4,28 @@ import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
+import { NotFoundError } from '../../dtos/apiErrors';
+import { CommentModel } from '../../db/models/comment';
+import { CommentRequestBody, commentValidationSchema } from './utils';
 import { getUserOrThrow } from '../../utils/requestHelpers';
-import { ForbiddenError, NotFoundError } from '../../dtos/apiErrors';
-import { LikeModel } from '../../db/models/Like';
-import { likeValidationSchema } from './utils';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);
-  const id = req.body.postId;
+  const id = req.params.id;
+  const body = req.body as CommentRequestBody;
   const post = await PostModel.findById(id);
 
   if (!post) {
     throw new NotFoundError();
   }
-  const likeExists = await LikeModel.find({ postId: post.id, userId: user.id });
-  if (likeExists.length > 0) {
-    throw new ForbiddenError();
-  }
-  const like = new LikeModel({ postId: post.id, userId: user.id });
-  await like.save();
-  return res.status(201).json(apiResult(like.toObject()));
+  const comment = new CommentModel({ authorId: user.id, postId: id, ...body });
+  await comment.save();
+  return res.status(201).json(apiResult(comment.toObject()));
 });
 
 export default Router().post(
-  '/api/v1/posts/likes',
+  '/api/v1/posts/comments/:id',
   authenticateJwt,
-  validateRequestBody(likeValidationSchema),
+  validateRequestBody(commentValidationSchema),
   handler,
 );
