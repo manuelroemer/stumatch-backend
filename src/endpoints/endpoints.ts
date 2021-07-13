@@ -44,6 +44,8 @@ export const endpoints = [
   require('./advertisements/put').default,
   require('./advertisements/delete').default,
 
+  require('./feedAdvertisements/getRandom').default,
+
   require('./chatGroups/get').default,
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,

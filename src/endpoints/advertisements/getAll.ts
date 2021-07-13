@@ -5,7 +5,7 @@ import { paginationApiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { SortableFields } from '../../utils/parseMongooseSortQuery';
-import { getUserOrThrow, getPaginationOptions, getSortQueryFromUrl } from '../../utils/requestHelpers';
+import { getPaginationOptions, getSortQueryFromUrl } from '../../utils/requestHelpers';
 import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
 
 const sortableFields: Array<SortableFields<Advertisement>> = [
