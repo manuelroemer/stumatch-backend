@@ -6,7 +6,7 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserOrThrow } from '../../utils/requestHelpers';
 import { ForbiddenError, NotFoundError } from '../../dtos/apiErrors';
-import { LikeModel } from '../../db/models/Like';
+import { LikeModel } from '../../db/models/like';
 import { likeValidationSchema } from './utils';
 
 const handler = asyncRequestHandler(async (req, res) => {

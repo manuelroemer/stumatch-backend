@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { LikeModel } from '../../db/models/Like';
+import { LikeModel } from '../../db/models/like';
 import { NotFoundError } from '../../dtos/apiErrors';
 
 const handler = asyncRequestHandler(async (req, res) => {

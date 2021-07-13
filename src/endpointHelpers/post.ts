@@ -1,4 +1,4 @@
-import { LikeModel } from '../db/models/Like';
+import { LikeModel } from '../db/models/like';
 import { Post } from '../db/models/post';
 import { UserModel } from '../db/models/user';
 
