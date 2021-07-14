@@ -2,7 +2,7 @@ import { model, Document } from 'mongoose';
 import { emitResourceChangedEvent } from '../../sockets/emitResourceChangedEvent';
 import { createDbObjectSchema, DbObject } from './dbObject';
 
-export interface BaseNotification<NotificationType extends string> extends DbObject {
+export interface Notification extends DbObject {
   /**
    * The ID of the user who owns the notification.
    */
@@ -11,7 +11,12 @@ export interface BaseNotification<NotificationType extends string> extends DbObj
    * The type discriminator of the notification.
    * Notifications of different types have different attributes.
    */
-  type: NotificationType;
+  type:
+    | 'text'
+    | 'matchRequestAcceptedByPartner'
+    | 'matchRequestDeclinedByPartner'
+    | 'matchRequestAccepted'
+    | 'matchRequestFoundMatch';
   /**
    * Whether the user has seen the notification.
    * * `true`: The notification has been seen.
@@ -19,39 +24,15 @@ export interface BaseNotification<NotificationType extends string> extends DbObj
    * * `undefined | null`: The notification has not been seen yet.
    */
   seen?: boolean | null;
-}
-
-/**
- * A notification with arbitrary text.
- * Mainly intended for development, testing and generally as a PoC.
- */
-export interface TextNotification extends BaseNotification<'text'> {
+  /**
+   * The title to be displayed by the notification.
+   */
   title?: string;
+  /**
+   * The content to be displayed by the notification.
+   */
   content?: string;
 }
-
-export interface AcceptedMatchRequestNotification extends BaseNotification<'matchRequestAcceptedByPartner'> {
-  matchRequestId: string;
-}
-
-export interface DeclinedMatchRequestNotification extends BaseNotification<'matchRequestDeclinedByPartner'> {
-  matchRequestId: string;
-}
-
-export interface FriendRequestAcceptedNotification extends BaseNotification<'matchRequestAccepted'> {
-  friendsListEntryId: string;
-}
-
-export interface FoundMatchNotification extends BaseNotification<'matchRequestFoundMatch'> {
-  matchRequestId: string;
-}
-
-export type Notification =
-  | TextNotification
-  | AcceptedMatchRequestNotification
-  | DeclinedMatchRequestNotification
-  | FriendRequestAcceptedNotification
-  | FoundMatchNotification;
 
 const notificationSchema = createDbObjectSchema<Notification>(
   {
@@ -66,6 +47,14 @@ const notificationSchema = createDbObjectSchema<Notification>(
     seen: {
       type: Boolean,
       default: null,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
     },
   },
   { strict: false },
