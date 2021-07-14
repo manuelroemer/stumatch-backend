@@ -49,4 +49,4 @@ async function createNewChatGroup(user: User, body: ChatGroupPostBody) {
   });
 }
 
-export default Router().post('/api/v1/chatGroups/:id', authenticateJwt, validateRequestBody(chatGroupSchema), handler);
+export default Router().post('/api/v1/chatGroups', authenticateJwt, validateRequestBody(chatGroupSchema), handler);
