@@ -1,8 +1,17 @@
+import { array, object, SchemaOf, string } from 'yup';
 import { ChatGroup } from '../db/models/chatGroup';
 import { ChatMessageModel } from '../db/models/chatMessage';
 import { ReadChatMessageModel } from '../db/models/readChatMessage';
 import { User, UserModel } from '../db/models/user';
 import { getEnrichedUserDto } from './user';
+
+export interface ChatGroupPostBody {
+  activeParticipantIds: Array<string>;
+}
+
+export const chatGroupSchema: SchemaOf<ChatGroupPostBody> = object({
+  activeParticipantIds: array().of(string().uuid().required()).required().min(1),
+}).defined();
 
 export async function getEnrichedChatGroupDto(chatGroup: ChatGroup, thisUser: User) {
   const activeParticipants = await Promise.all(chatGroup.activeParticipantIds.map((id) => UserModel.findById(id)));
