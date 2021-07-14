@@ -38,7 +38,6 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       isSemesterMatch(pendingMatchRequest, currentUser) &&
       !(await hasPastMatch(matchRequest.userId, pendingMatchRequest.userId))
     ) {
-
       const chatGroup = await ChatGroupModel.create({
         activeParticipantIds: [matchRequest.userId, pendingMatchRequest.userId],
       });
