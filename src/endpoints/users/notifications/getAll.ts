@@ -10,14 +10,7 @@ import { SortableFields } from '../../../utils/parseMongooseSortQuery';
 import { Notification } from '../../../db/models/notification';
 import { paginationApiResult } from '../../../dtos/apiResults';
 
-const sortableFields: Array<SortableFields<Notification>> = [
-  'id',
-  'createdOn',
-  'modifiedOn',
-  'seen',
-  'title',
-  'content',
-];
+const sortableFields: Array<SortableFields<Notification>> = ['id', 'createdOn', 'modifiedOn', 'seen'];
 
 const handler = asyncRequestHandler(async (req, res) => {
   const requestedUserId = getUserId(req);

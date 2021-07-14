@@ -74,16 +74,16 @@ const handler = asyncRequestHandler(async (req, res) => {
 
 export default Router().get('/api/v1/users/:id/matchRequests', authenticateJwt, handler);
 
-function getMatchRequestStatus(acceptedByMe: boolean | null, acceptedByPartner: boolean | null) {
-  if (acceptedByMe === null && acceptedByPartner === null) {
+function getMatchRequestStatus(acceptedByMe?: boolean, acceptedByPartner?: boolean) {
+  if (acceptedByMe === undefined && acceptedByPartner === undefined) {
     return 'matched';
-  } else if (acceptedByMe === true && acceptedByPartner === null) {
+  } else if (acceptedByMe === true && acceptedByPartner === undefined) {
     return 'acceptedByMe';
-  } else if (acceptedByMe === null && acceptedByPartner === true) {
+  } else if (acceptedByMe === undefined && acceptedByPartner === true) {
     return 'acceptedByPartner';
-  } else if (acceptedByMe === false && acceptedByPartner === null) {
+  } else if (acceptedByMe === false && (acceptedByPartner === undefined || acceptedByPartner === true)) {
     return 'declinedByMe';
-  } else if (acceptedByMe === null && acceptedByPartner === false) {
+  } else if ((acceptedByMe === undefined || acceptedByMe === true) && acceptedByPartner === false) {
     return 'declinedByPartner';
   } else {
     return 'accepted';

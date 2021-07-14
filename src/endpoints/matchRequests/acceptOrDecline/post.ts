@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { boolean, object, SchemaOf } from 'yup';
-import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
+import { NotificationModel } from '../../../db/models/notification';
 import { BadRequestError, NotFoundError } from '../../../dtos/apiErrors';
 import { apiResult } from '../../../dtos/apiResults';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
@@ -21,7 +21,7 @@ const schema: SchemaOf<RequestBody> = object({
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as RequestBody;
-  const matchRequest = await MatchRequestModel.findOne({ _id: req.params.id, isDeleted: false });
+  const matchRequest = await MatchRequestModel.findOne({ _id: req.params.id });
   if (!matchRequest) {
     throw new BadRequestError();
   }
@@ -34,13 +34,13 @@ const handler = asyncRequestHandler(async (req, res) => {
   }
 
   if (matchResult.matchRequest1Id === req.params.id) {
-    if (matchResult.acceptedByUser1 === null) {
+    if (!matchResult.acceptedByUser1) {
       matchResult.acceptedByUser1 = body.accepted;
     } else {
       throw new BadRequestError('Status already has been set.');
     }
   } else {
-    if (matchResult.acceptedByUser2 === null) {
+    if (!matchResult.acceptedByUser2) {
       matchResult.acceptedByUser2 = body.accepted;
     } else {
       throw new BadRequestError('Status already has been set.');
@@ -49,13 +49,26 @@ const handler = asyncRequestHandler(async (req, res) => {
 
   const user1MatchRequest = await MatchRequestModel.findById(matchResult.matchRequest1Id);
   const user2MatchReqeuest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
-  const chatgroup = await ChatGroupModel.create({
-    activeParticipantIds: [user1MatchRequest!.userId, user2MatchReqeuest!.userId],
+
+  await NotificationModel.create({
+    type: body.accepted ? 'matchRequestAcceptedByPartner' : 'matchRequestDeclinedByPartner',
+    userId: matchResult.matchRequest1Id === req.params.id ? user2MatchReqeuest?.userId : user1MatchRequest?.userId,
+    matchRequestId: req.params.id,
   });
-  matchResult.chatGroupId = chatgroup.id;
 
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
-    await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
+    const friendsListEntry1 = await FriendsListEntryModel.findOne({
+      user1Id: user1MatchRequest!.userId,
+      user2Id: user2MatchReqeuest!.userId,
+    });
+    const friendsListEntry2 = await FriendsListEntryModel.findOne({
+      user1Id: user2MatchReqeuest!.userId,
+      user2Id: user1MatchRequest!.userId,
+    });
+
+    if (!friendsListEntry1 && !friendsListEntry2) {
+      await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
+    }
   }
 
   await matchResult.save();

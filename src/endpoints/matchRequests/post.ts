@@ -3,6 +3,7 @@ import { number, object, SchemaOf, string } from 'yup';
 import { FacultyModel } from '../../db/models/faculty';
 import { MatchRequestModel } from '../../db/models/matchRequest';
 import { apiResult } from '../../dtos/apiResults';
+import { findMatchingMatchRequest } from '../../endpointHelpers/matcher';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
@@ -36,8 +37,8 @@ const schema: SchemaOf<MatchRequestBody> = object({
       const studyPrograms = faculties.flatMap((f) => f.studyPrograms);
       return !!studyPrograms.find((f) => f._id === value);
     }),
-  minSemester: number().min(1),
-  maxSemester: number().min(1),
+  minSemester: number(),
+  maxSemester: number(),
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
@@ -45,6 +46,8 @@ const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);
   const matchRequest = new MatchRequestModel({ _id: body.id, userId: user.id, ...body });
   await matchRequest.save();
+
+  findMatchingMatchRequest(matchRequest);
   return res.status(201).json(apiResult(matchRequest.toObject()));
 });
 
