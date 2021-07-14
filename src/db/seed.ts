@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import { server, ws } from '..';
 import { logger } from '../log';
 import { establishDbConnection } from './connection';
+import { BlobModel } from './models/blob';
+import { blobSeed } from './models/blobSeed';
 import { ChatGroupModel } from './models/chatGroup';
 import { chatGroupSeed } from './models/chatGroupSeed';
 import { ChatMessageModel } from './models/chatMessage';
@@ -40,6 +42,7 @@ import { userSeed } from './models/userSeed';
     await MatchResultModel.deleteMany();
     await FacultyModel.deleteMany();
     await PastUserMatchEntryModel.deleteMany();
+    await BlobModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -53,6 +56,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.create(mapSeedIds(matchRequestSeed));
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
+    await BlobModel.create(mapSeedIds(blobSeed));
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);

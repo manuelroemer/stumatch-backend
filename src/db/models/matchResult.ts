@@ -1,7 +1,5 @@
 import { model } from 'mongoose';
-import { logger } from '../../log';
 import { createDbObjectSchema, DbObject } from './dbObject';
-import { NotificationModel } from './notification';
 
 export interface MatchResult extends DbObject {
   matchRequest1Id: string;
@@ -30,23 +28,6 @@ const matchResultSchema = createDbObjectSchema<MatchResult>({
     type: String,
     required: true,
   },
-});
-
-matchResultSchema.post('save', async (doc: Document & MatchResult, next) => {
-  try {
-    await NotificationModel.create({
-      type: 'matchRequestFoundMatch',
-      matchRequestId: doc.matchRequest1Id,
-    });
-    await NotificationModel.create({
-      type: 'matchRequestFoundMatch',
-      matchRequestId: doc.matchRequest2Id,
-    });
-  } catch (e) {
-    logger.warning('Friendslist notification creation failed.', e);
-  } finally {
-    next();
-  }
 });
 
 export const MatchResultModel = model<MatchResult>('MatchResult', matchResultSchema);
