@@ -8,6 +8,8 @@ import { ChatGroupModel } from './models/chatGroup';
 import { chatGroupSeed } from './models/chatGroupSeed';
 import { ChatMessageModel } from './models/chatMessage';
 import { chatMessageSeed } from './models/chatMessageSeed';
+import { ContactRequestModel } from './models/contactRequest';
+import { contactRequestSeed } from './models/contactRequestSeed';
 import { FacultyModel } from './models/faculty';
 import { facultySeed } from './models/facultySeed';
 import { FriendsListEntryModel } from './models/friendsListEntry';
@@ -43,6 +45,7 @@ import { userSeed } from './models/userSeed';
     await FacultyModel.deleteMany();
     await PastUserMatchEntryModel.deleteMany();
     await BlobModel.deleteMany();
+    await ContactRequestModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -57,6 +60,8 @@ import { userSeed } from './models/userSeed';
     await MatchResultModel.create(mapSeedIds(matchResultSeed));
     await FacultyModel.create(mapSeedIds(facultySeed));
     await BlobModel.create(mapSeedIds(blobSeed));
+    await ContactRequestModel.create(mapSeedIds(contactRequestSeed));
+
     logger.info('[DB] Seed data created.');
   } catch (err) {
     logger.error(`[DB] Seeding the database failed: ${err?.message ?? err}`, err);
