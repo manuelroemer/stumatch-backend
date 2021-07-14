@@ -4,7 +4,7 @@ import { apiResult } from '../../dtos/apiResults';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { PostRequestBody, postValidationSchema } from './utils';
+import { PostRequestBody, postValidationSchema } from '../../endpointHelpers/post';
 import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
 import { getUserOrThrow } from '../../utils/requestHelpers';
 

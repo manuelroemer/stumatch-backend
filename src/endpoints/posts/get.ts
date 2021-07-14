@@ -9,7 +9,6 @@ import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 const handler = asyncRequestHandler(async (req, res) => {
   const id = req.params.id;
   const post = await PostModel.findById(id);
-
   if (!post) {
     throw new NotFoundError();
   }

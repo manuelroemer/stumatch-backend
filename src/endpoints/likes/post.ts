@@ -7,7 +7,7 @@ import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserOrThrow } from '../../utils/requestHelpers';
 import { ForbiddenError, NotFoundError } from '../../dtos/apiErrors';
 import { LikeModel } from '../../db/models/like';
-import { likeValidationSchema } from './utils';
+import { likeValidationSchema } from '../../endpointHelpers/like';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);

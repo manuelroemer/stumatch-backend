@@ -6,7 +6,7 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { NotFoundError } from '../../dtos/apiErrors';
 import { CommentModel } from '../../db/models/comment';
-import { CommentRequestBody, commentValidationSchema } from './utils';
+import { CommentRequestBody, commentValidationSchema } from '../../endpointHelpers/comment';
 import { getUserOrThrow } from '../../utils/requestHelpers';
 
 const handler = asyncRequestHandler(async (req, res) => {
