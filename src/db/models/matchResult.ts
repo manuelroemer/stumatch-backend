@@ -4,9 +4,9 @@ import { createDbObjectSchema, DbObject } from './dbObject';
 export interface MatchResult extends DbObject {
   matchRequest1Id: string;
   matchRequest2Id: string;
-  acceptedByUser1: boolean | null;
-  acceptedByUser2: boolean | null;
-  chatGroupId: string | null;
+  acceptedByUser1: boolean | undefined;
+  acceptedByUser2: boolean | undefined;
+  chatGroupId: string;
 }
 
 const matchResultSchema = createDbObjectSchema<MatchResult>({
@@ -20,15 +20,13 @@ const matchResultSchema = createDbObjectSchema<MatchResult>({
   },
   acceptedByUser1: {
     type: Boolean,
-    default: null,
   },
   acceptedByUser2: {
     type: Boolean,
-    default: null,
   },
   chatGroupId: {
     type: String,
-    default: null,
+    required: true,
   },
 });
 

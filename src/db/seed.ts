@@ -18,6 +18,7 @@ import { MatchResultModel } from './models/matchResult';
 import { matchResultSeed } from './models/matchResultSeed';
 import { NotificationModel } from './models/notification';
 import { notificationSeed } from './models/notificationSeed';
+import { PastUserMatchEntryModel } from './models/pastUserMatchEntry';
 import { PostModel } from './models/post';
 import { postSeed } from './models/postSeed';
 import { ReadChatMessageModel } from './models/readChatMessage';
@@ -40,6 +41,7 @@ import { userSeed } from './models/userSeed';
     await MatchRequestModel.deleteMany();
     await MatchResultModel.deleteMany();
     await FacultyModel.deleteMany();
+    await PastUserMatchEntryModel.deleteMany();
     await BlobModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
