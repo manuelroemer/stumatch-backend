@@ -11,6 +11,7 @@ export interface ChatGroupPostBody {
 }
 
 export interface ChatGroupPutBody {
+  id?: string;
   mutedByMe?: boolean;
 }
 
@@ -19,6 +20,7 @@ export const chatGroupPostSchema: SchemaOf<ChatGroupPostBody> = object({
 }).defined();
 
 export const chatGroupPutSchema: SchemaOf<ChatGroupPutBody> = object({
+  id: string().uuid(),
   mutedByMe: boolean(),
 }).defined();
 
