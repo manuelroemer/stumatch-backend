@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { Post, PostModel } from '../../db/models/post';
-import { UserModel } from '../../db/models/user';
 import { paginationApiResult } from '../../dtos/apiResults';
+import { getEnrichedPostDto } from '../../endpointHelpers/post';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { SortableFields } from '../../utils/parseMongooseSortQuery';
@@ -15,18 +15,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   const query = filter ? { category: filter } : undefined;
   const paginationResult = await PostModel.paginate(getPaginationOptions(req), query, undefined, { sort });
   const result = paginationResult.docs.map((doc) => doc.toObject());
-  const apiResults = await Promise.all(
-    result.map(async (post) => {
-      const author = await UserModel.findById(post.authorId);
-
-      return {
-        ...post,
-        author,
-        likes: 100,
-        comments: 100,
-      };
-    }),
-  );
+  const apiResults = await Promise.all(result.map((post) => getEnrichedPostDto(post)));
 
   return res.status(200).json(paginationApiResult(apiResults, paginationResult));
 });
