@@ -31,7 +31,6 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       continue;
     }
 
-    console.info('test1');
     if (
       isFacultyStudyProgramMatch(matchRequest, pendingUser) &&
       isFacultyStudyProgramMatch(pendingMatchRequest, currentUser) &&
@@ -39,7 +38,7 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       isSemesterMatch(pendingMatchRequest, currentUser) &&
       !(await hasPastMatch(matchRequest.userId, pendingMatchRequest.userId))
     ) {
-      console.info('test');
+
       const chatGroup = await ChatGroupModel.create({
         activeParticipantIds: [matchRequest.userId, pendingMatchRequest.userId],
       });
@@ -107,29 +106,12 @@ function isFacultyStudyProgramMatch(thisMatchRequest: MatchRequest, otherUser: U
   } else {
     thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId;
   }
-
-  // if (!thisMatchRequest.facultyId && !thisMatchRequest.studyProgramId) {
-  //   return true;
-  // } else if (
-  //   (!!thisMatchRequest.facultyId && !otherUser.facultyId) ||
-  //   (!!thisMatchRequest.studyProgramId && !otherUser.studyProgramId)
-  // ) {
-  //   return false;
-  // } else {
-  //   return (
-  //     thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId
-  //   );
-  // }
-
-  // if (!otherUser.facultyId || !otherUser.studyProgramId) {
-  //   return false;
-  // }
 }
 
 async function hasPastMatch(user1Id: string, user2Id: string) {
   const pastUser1 = await PastUserMatchEntryModel.findOne({ user1Id: user1Id, user2Id: user2Id });
   const pastUser2 = await PastUserMatchEntryModel.findOne({ user1Id: user2Id, user2Id: user1Id });
-  console.info('test3');
+
   return !!pastUser1 || !!pastUser2;
 }
 
