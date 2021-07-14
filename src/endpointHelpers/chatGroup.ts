@@ -37,6 +37,8 @@ export async function getEnrichedChatGroupDto(chatGroup: ChatGroup, thisUser: Us
 
   return {
     id: chatGroup.id,
+    createdOn: chatGroup.createdOn,
+    modifiedOn: chatGroup.modifiedOn,
     activeParticipantIds: chatGroup.activeParticipantIds,
     activeParticipants: activeParticipants
       .filter(Boolean)
