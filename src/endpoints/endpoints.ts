@@ -29,6 +29,8 @@ export const endpoints = [
   require('./posts/categories/getAll').default,
   require('./likes/post').default,
   require('./likes/delete').default,
+  require('./comments/get').default,
+  require('./comments/post').default,
 
   require('./notifications/post').default,
   require('./notifications/put').default,

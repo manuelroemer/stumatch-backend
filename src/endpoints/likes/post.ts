@@ -12,7 +12,6 @@ import { likeValidationSchema } from './utils';
 const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);
   const id = req.body.postId;
-  console.log(user);
   const post = await PostModel.findById(id);
 
   if (!post) {
