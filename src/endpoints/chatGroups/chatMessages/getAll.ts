@@ -8,7 +8,7 @@ import { QueryOptions } from 'mongoose';
 import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { getUserOrThrow, getDateQueryParam, getPaginationOptions } from '../../../utils/requestHelpers';
 import { NotFoundError } from '../../../dtos/apiErrors';
-import { validateUserIsInChatGroup } from '../../../endpointHelpers/chatMessage';
+import { validateUserIsInChatGroup } from '../../../endpointHelpers/chatGroup';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const chatGroupId = req.params['id'];

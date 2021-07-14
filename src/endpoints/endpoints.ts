@@ -27,6 +27,10 @@ export const endpoints = [
   require('./posts/post').default,
   require('./posts/delete').default,
   require('./posts/categories/getAll').default,
+  require('./likes/post').default,
+  require('./likes/delete').default,
+  require('./comments/get').default,
+  require('./comments/post').default,
 
   require('./notifications/post').default,
   require('./notifications/put').default,
@@ -39,6 +43,8 @@ export const endpoints = [
   require('./friendsListEntries/delete').default,
 
   require('./chatGroups/get').default,
+  require('./chatGroups/put').default,
+  require('./chatGroups/post').default,
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,
 

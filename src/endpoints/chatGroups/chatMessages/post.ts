@@ -7,11 +7,8 @@ import { ChatMessageModel } from '../../../db/models/chatMessage';
 import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { NotFoundError } from '../../../dtos/apiErrors';
 import { getUserOrThrow } from '../../../utils/requestHelpers';
-import {
-  ChatMessagePostBody,
-  chatMessageSchema,
-  validateUserIsInChatGroup,
-} from '../../../endpointHelpers/chatMessage';
+import { ChatMessagePostBody, chatMessageSchema } from '../../../endpointHelpers/chatMessage';
+import { validateUserIsInChatGroup } from '../../../endpointHelpers/chatGroup';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);

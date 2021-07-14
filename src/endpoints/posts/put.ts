@@ -6,13 +6,12 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { PostRequestBody, postValidationSchema } from './utils';
+import { PostRequestBody, postValidationSchema } from '../../endpointHelpers/post';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as PostRequestBody;
   const id = req.params.id;
   const updatedPost = await PostModel.findByIdAndUpdate(id, body, { new: true });
-
   if (!updatedPost) {
     throw new NotFoundError();
   }
