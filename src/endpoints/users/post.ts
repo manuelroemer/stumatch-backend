@@ -6,6 +6,7 @@ import { apiResult } from '../../dtos/apiResults';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { hash } from 'bcrypt';
+import { createBlobFromString } from '../../endpointHelpers/blob';
 
 interface UserBody {
   id?: string;
@@ -19,6 +20,7 @@ interface UserBody {
     startingSemester?: string;
     startingYear?: number;
   };
+  profileImageBlob?: string;
 }
 
 const schema: SchemaOf<UserBody> = object({
@@ -56,11 +58,17 @@ const schema: SchemaOf<UserBody> = object({
       .min(1900)
       .max(new Date().getFullYear() + 2),
   }),
+  profileImageBlob: string(),
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as UserBody;
-  const user = new UserModel({
+
+  const profileImageBlob = body.profileImageBlob
+    ? await createBlobFromString(body.profileImageBlob, 'base64')
+    : undefined;
+
+  const user = await UserModel.create({
     _id: body.id,
     email: body.email,
     passwordHash: await hash(body.password, 8),
@@ -71,8 +79,9 @@ const handler = asyncRequestHandler(async (req, res) => {
     startingSemester: body.immatriculatedOn?.startingSemester,
     startingYear: body.immatriculatedOn?.startingYear,
     roles: ['student'],
+    profileImageBlobId: profileImageBlob?.id,
   });
-  await user.save();
+
   return res.status(201).json(apiResult(user.toObject()));
 });
 
