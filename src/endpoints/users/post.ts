@@ -7,6 +7,7 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { hash } from 'bcrypt';
 import { createBlobFromString } from '../../endpointHelpers/blob';
+import { emailRegex, passwordRegex } from '../../constants';
 
 interface UserBody {
   id?: string;
@@ -25,13 +26,8 @@ interface UserBody {
 
 const schema: SchemaOf<UserBody> = object({
   id: string().uuid(),
-  email: string()
-    .required()
-    .matches(/^\S+@\S+/)
-    .max(320),
-  password: string()
-    .required()
-    .matches(/^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/),
+  email: string().required().matches(emailRegex).max(320),
+  password: string().required().matches(passwordRegex),
   firstName: string().required(),
   lastName: string().required(),
   facultyId: string()
