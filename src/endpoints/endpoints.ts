@@ -28,6 +28,10 @@ export const endpoints = [
   require('./posts/post').default,
   require('./posts/delete').default,
   require('./posts/categories/getAll').default,
+  require('./likes/post').default,
+  require('./likes/delete').default,
+  require('./comments/get').default,
+  require('./comments/post').default,
 
   require('./notifications/post').default,
   require('./notifications/put').default,
@@ -47,6 +51,8 @@ export const endpoints = [
   require('./feedAdvertisements/getRandom').default,
 
   require('./chatGroups/get').default,
+  require('./chatGroups/put').default,
+  require('./chatGroups/post').default,
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,
 
@@ -54,4 +60,7 @@ export const endpoints = [
   require('./chatMessages/put').default,
   require('./chatMessages/delete').default,
   require('./chatMessages/read/post').default,
+
+  require('./contactRequests/getAll').default,
+  require('./contactRequests/post').default,
 ];

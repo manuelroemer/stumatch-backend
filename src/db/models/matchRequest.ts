@@ -4,11 +4,11 @@ import { createDbObjectSchema, DbObject } from './dbObject';
 export interface MatchRequest extends DbObject {
   matchResultId?: string;
   userId: string;
-  isDeleted: boolean;
   facultyId?: string;
   studyProgramId?: string;
   minSemester?: number;
   maxSemester?: number;
+  isDeleted: boolean;
 }
 
 const matchRequestSchema = createDbObjectSchema<MatchRequest>({
@@ -18,10 +18,6 @@ const matchRequestSchema = createDbObjectSchema<MatchRequest>({
   userId: {
     type: String,
     required: true,
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
   },
   facultyId: {
     type: String,
@@ -34,6 +30,10 @@ const matchRequestSchema = createDbObjectSchema<MatchRequest>({
   },
   maxSemester: {
     type: Number,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
   },
 });
 
