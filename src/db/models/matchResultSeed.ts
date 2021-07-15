@@ -7,7 +7,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000001',
     acceptedByUser1: undefined,
     acceptedByUser2: undefined,
-    chatGroupId: '40000000-0000-1000-8000-000000000007',
+    chatGroupId: '40000000-0000-1000-8000-000000000010',
   },
   {
     id: '10000000-0000-1000-8000-000000000001',
@@ -15,7 +15,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000003',
     acceptedByUser1: true,
     acceptedByUser2: undefined,
-    chatGroupId: '40000000-0000-1000-8000-000000000008',
+    chatGroupId: '40000000-0000-1000-8000-000000000011',
   },
   {
     id: '10000000-0000-1000-8000-000000000002',
@@ -23,7 +23,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000005',
     acceptedByUser1: undefined,
     acceptedByUser2: true,
-    chatGroupId: '40000000-0000-1000-8000-000000000009',
+    chatGroupId: '40000000-0000-1000-8000-000000000012',
   },
   {
     id: '10000000-0000-1000-8000-000000000003',
@@ -31,7 +31,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000007',
     acceptedByUser1: true,
     acceptedByUser2: true,
-    chatGroupId: '40000000-0000-1000-8000-000000000010',
+    chatGroupId: '40000000-0000-1000-8000-000000000013',
   },
   {
     id: '10000000-0000-1000-8000-000000000004',
@@ -39,7 +39,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000009',
     acceptedByUser1: false,
     acceptedByUser2: undefined,
-    chatGroupId: '40000000-0000-1000-8000-000000000011',
+    chatGroupId: '40000000-0000-1000-8000-000000000014',
   },
   {
     id: '10000000-0000-1000-8000-000000000005',
@@ -47,6 +47,6 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000011',
     acceptedByUser1: undefined,
     acceptedByUser2: false,
-    chatGroupId: '40000000-0000-1000-8000-000000000012',
+    chatGroupId: '40000000-0000-1000-8000-000000000015',
   },
 ];

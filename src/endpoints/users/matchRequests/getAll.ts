@@ -11,6 +11,7 @@ import { MatchRequest, MatchRequestModel } from '../../../db/models/matchRequest
 import { MatchResultModel } from '../../../db/models/matchResult';
 import { UserModel } from '../../../db/models/user';
 import { getEnrichedUserDto } from '../../../endpointHelpers/user';
+import { FacultyModel } from '../../../db/models/faculty';
 
 const sortableFields: Array<SortableFields<MatchRequest>> = ['createdOn', 'modifiedOn'];
 
@@ -23,12 +24,19 @@ const handler = asyncRequestHandler(async (req, res) => {
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await MatchRequestModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
   const matchRequests = paginationResult.docs.map((doc) => doc.toObject());
+  const faculties = (await FacultyModel.find()).map((x) => x.toObject());
+  const studyPrograms = faculties.flatMap((f) => f.studyPrograms);
+
   const apiResults = await Promise.all(
     matchRequests.map(async (matchRequest) => {
       const baseResult = {
         id: matchRequest.id,
         createdOn: matchRequest.createdOn,
         modifiedOn: matchRequest.modifiedOn,
+        faculty: faculties.find((f) => f.id === matchRequest.facultyId),
+        studyProgram: studyPrograms.find((f) => f._id === matchRequest.studyProgramId),
+        minSemester: matchRequest.minSemester,
+        maxSemester: matchRequest.maxSemester,
       };
 
       if (matchRequest.matchResultId) {

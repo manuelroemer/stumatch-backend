@@ -34,7 +34,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   user.roles = body.roles;
 
   await user.save();
-  return res.status(200).json(apiResult(await user.toObject()));
+  return res.status(200).json(apiResult(user.toObject()));
 });
 
 export default Router().put(

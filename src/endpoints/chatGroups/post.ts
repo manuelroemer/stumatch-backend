@@ -5,7 +5,7 @@ import { FriendsListEntry, FriendsListEntryModel } from '../../db/models/friends
 import { User } from '../../db/models/user';
 import { BadRequestError } from '../../dtos/apiErrors';
 import { apiResult } from '../../dtos/apiResults';
-import { chatGroupPostSchema, ChatGroupPostBody } from '../../endpointHelpers/chatGroup';
+import { chatGroupPostSchema, ChatGroupPostBody, findExistingChatGroup } from '../../endpointHelpers/chatGroup';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
@@ -38,12 +38,6 @@ async function validateAllParticipantsAreFriends(user: User, body: ChatGroupPost
       }
     }),
   );
-}
-
-async function findExistingChatGroup(activeParticipantIds: Array<string>) {
-  return await ChatGroupModel.findOne({
-    activeParticipantIds: { $all: activeParticipantIds, $size: activeParticipantIds.length },
-  });
 }
 
 async function createNewChatGroup(activeParticipantIds: Array<string>) {

@@ -1,5 +1,5 @@
 import { array, boolean, object, SchemaOf, string } from 'yup';
-import { ChatGroup } from '../db/models/chatGroup';
+import { ChatGroup, ChatGroupModel } from '../db/models/chatGroup';
 import { ChatMessageModel } from '../db/models/chatMessage';
 import { ReadChatMessageModel } from '../db/models/readChatMessage';
 import { User, UserModel } from '../db/models/user';
@@ -13,6 +13,12 @@ export interface ChatGroupPostBody {
 export interface ChatGroupPutBody {
   id?: string;
   mutedByMe?: boolean;
+}
+
+export async function findExistingChatGroup(activeParticipantIds: Array<string>) {
+  return await ChatGroupModel.findOne({
+    activeParticipantIds: { $all: activeParticipantIds, $size: activeParticipantIds.length },
+  });
 }
 
 export const chatGroupPostSchema: SchemaOf<ChatGroupPostBody> = object({
