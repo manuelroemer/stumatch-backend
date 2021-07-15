@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { QueryOptions } from 'mongoose';
 import { Advertisement, AdvertisementModel } from '../../db/models/advertisement';
 import { paginationApiResult } from '../../dtos/apiResults';
+import { getEnrichedAdvertisementDto } from '../../endpointHelpers/advertisement';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { SortableFields } from '../../utils/parseMongooseSortQuery';
@@ -24,7 +25,8 @@ const handler = asyncRequestHandler(async (req, res) => {
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), {}, undefined, queryOptions);
   const result = paginationResult.docs.map((doc) => doc.toObject());
-  return res.status(200).json(paginationApiResult(result, paginationResult));
+  const apiResults = await Promise.all(result.map((advertisement) => getEnrichedAdvertisementDto(advertisement)));
+  return res.status(200).json(paginationApiResult(apiResults, paginationResult));
 });
 
 export default Router().get('/api/v1/advertisements', authenticateJwt, handler);

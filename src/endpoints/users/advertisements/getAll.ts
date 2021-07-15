@@ -9,6 +9,7 @@ import { validateThisUserHasSomeIdOrSomeRole } from '../../../utils/roleHelpers'
 import { SortableFields } from '../../../utils/parseMongooseSortQuery';
 import { Advertisement } from '../../../db/models/advertisement';
 import { paginationApiResult } from '../../../dtos/apiResults';
+import { getEnrichedAdvertisementDto } from '../../../endpointHelpers/advertisement';
 
 const sortableFields: Array<SortableFields<Advertisement>> = [
   'id',
@@ -29,7 +30,8 @@ const handler = asyncRequestHandler(async (req, res) => {
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
   const result = paginationResult.docs.map((doc) => doc.toObject());
-  return res.status(200).json(paginationApiResult(result, paginationResult));
+  const apiResults = await Promise.all(result.map((advertisement) => getEnrichedAdvertisementDto(advertisement)));
+  return res.status(200).json(paginationApiResult(apiResults, paginationResult));
 });
 
 export default Router().get('/api/v1/users/:id/advertisements', authenticateJwt, handler);
