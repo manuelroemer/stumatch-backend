@@ -1,5 +1,7 @@
 import { model } from 'mongoose';
+import { emitResourceChangedEvent } from '../../sockets/emitResourceChangedEvent';
 import { createDbObjectSchema, DbObject } from './dbObject';
+import { MatchRequestModel } from './matchRequest';
 
 export interface MatchResult extends DbObject {
   matchRequest1Id: string;
@@ -28,6 +30,31 @@ const matchResultSchema = createDbObjectSchema<MatchResult>({
     type: String,
     required: true,
   },
+});
+
+matchResultSchema.post('save', async (doc: Document & MatchResult, next) => {
+  const matchRequest1 = await MatchRequestModel.findOne({ _id: doc.matchRequest1Id });
+  const matchRequest2 = await MatchRequestModel.findOne({ _id: doc.matchRequest2Id });
+
+  emitResourceChangedEvent(
+    {
+      resourceType: 'matchRequest',
+      changeType: 'changed',
+      id: matchRequest1!.id,
+    },
+    matchRequest1!.userId,
+  );
+
+  emitResourceChangedEvent(
+    {
+      resourceType: 'matchRequest',
+      changeType: 'changed',
+      id: matchRequest2!.id,
+    },
+    matchRequest2!.userId,
+  );
+
+  next();
 });
 
 export const MatchResultModel = model<MatchResult>('MatchResult', matchResultSchema);

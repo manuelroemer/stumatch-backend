@@ -57,4 +57,5 @@ export const endpoints = [
 
   require('./contactRequests/getAll').default,
   require('./contactRequests/post').default,
+  require('./contactRequests/put').default,
 ];
