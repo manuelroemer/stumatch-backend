@@ -16,6 +16,7 @@ export const endpoints = [
   require('./users/getAll').default,
   require('./users/get').default,
   require('./users/post').default,
+  require('./users/put').default,
   require('./users/notifications/getAll').default,
   require('./users/friendsListEntries/getAll').default,
   require('./users/chatGroups/getAll').default,
