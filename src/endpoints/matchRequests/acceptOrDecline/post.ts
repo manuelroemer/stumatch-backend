@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { boolean, object, SchemaOf } from 'yup';
+import { ChatGroupModel } from '../../../db/models/chatGroup';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
@@ -63,6 +64,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     await tryCreateMatchRequestAcceptedByPartnerNotification(partnerUserId, user);
   } else {
     await tryCreateMatchRequestDeclinedByPartnerNotification(partnerUserId, user);
+    await ChatGroupModel.findByIdAndDelete(matchResult.chatGroupId);
   }
 
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
