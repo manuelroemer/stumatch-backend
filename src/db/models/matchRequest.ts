@@ -1,4 +1,5 @@
 import { model } from 'mongoose';
+import { emitResourceChangedEvent } from '../../sockets/emitResourceChangedEvent';
 import { createDbObjectSchema, DbObject } from './dbObject';
 
 export interface MatchRequest extends DbObject {
@@ -35,6 +36,19 @@ const matchRequestSchema = createDbObjectSchema<MatchRequest>({
     type: Boolean,
     default: false,
   },
+});
+
+matchRequestSchema.post('save', (doc: Document & MatchRequest, next) => {
+  emitResourceChangedEvent(
+    {
+      resourceType: 'matchRequest',
+      changeType: 'changed',
+      id: doc!.id!,
+    },
+    doc!.userId,
+  );
+
+  next();
 });
 
 export const MatchRequestModel = model<MatchRequest>('MatchRequest', matchRequestSchema);
