@@ -108,19 +108,19 @@ export const facultySeed: Array<Faculty> = [
         name: 'Mathematics',
       },
       {
-        _id: '20000000-0000-1000-8000-000000000030',
+        _id: '20000000-0000-1000-8000-000000000035',
         name: 'Mathematics in Data Science',
       },
       {
-        _id: '20000000-0000-1000-8000-000000000031',
+        _id: '20000000-0000-1000-8000-000000000036',
         name: 'Mathematical Finance and Actuarial Science',
       },
       {
-        _id: '20000000-0000-1000-8000-000000000032',
+        _id: '20000000-0000-1000-8000-000000000037',
         name: 'Mathematics in Operations Research',
       },
       {
-        _id: '20000000-0000-1000-8000-000000000033',
+        _id: '20000000-0000-1000-8000-000000000038',
         name: 'Mathematics in Science and Engineering',
       },
     ],

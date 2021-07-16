@@ -41,6 +41,7 @@ export const endpoints = [
 
   require('./matchRequests/delete').default,
   require('./matchRequests/post').default,
+  require('./matchRequests/put').default,
   require('./matchRequests/acceptOrDecline/post').default,
 
   require('./friendsListEntries/delete').default,

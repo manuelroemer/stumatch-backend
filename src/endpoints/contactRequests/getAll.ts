@@ -12,7 +12,9 @@ const sortableFields: Array<SortableFields<ContactRequest>> = ['createdOn', 'mod
 const handler = asyncRequestHandler(async (req, res) => {
   validateThisUserHasSomeRole(req, 'admin');
   const sort = getSortQueryFromUrl(req, sortableFields);
-  const paginationResult = await ContactRequestModel.paginate(getPaginationOptions(req), {}, undefined, { sort });
+  const filter = req.query.filter?.toString();
+  const query = filter ? { status: filter as any } : undefined;
+  const paginationResult = await ContactRequestModel.paginate(getPaginationOptions(req), query, undefined, { sort });
   const result = paginationResult.docs.map((contactRequest) => contactRequest.toObject());
   return res.status(200).json(paginationApiResult(result, paginationResult));
 });
