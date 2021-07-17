@@ -7,5 +7,6 @@ export const contactRequestSeed: Array<ContactRequest> = [
     email: 'stumatch@student',
     type: 'role',
     message: 'Please change my role, so that I can create posts.',
+    status: 'open',
   },
 ];
