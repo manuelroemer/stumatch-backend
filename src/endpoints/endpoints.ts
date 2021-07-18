@@ -47,6 +47,7 @@ export const endpoints = [
 
   require('./friendsListEntries/delete').default,
 
+  require('./advertisements/get').default,
   require('./advertisements/getAll').default,
   require('./advertisements/post').default,
   require('./advertisements/put').default,

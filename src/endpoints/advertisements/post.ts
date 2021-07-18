@@ -13,6 +13,7 @@ const schema = object({
   id: string().uuid(),
   userId: string().uuid().required(),
   title: string().required(),
+  shortDescription: string().required(),
   content: string().required(),
 }).defined();
 

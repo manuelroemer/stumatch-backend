@@ -13,6 +13,7 @@ interface RequestBody {
   id?: string;
   status?: string;
   title?: string;
+  shortDescription?: string;
   content?: string;
 }
 
@@ -20,6 +21,7 @@ const schema: SchemaOf<RequestBody> = object({
   id: string().uuid(),
   status: string().oneOf(['unverified', 'pendingVerification', 'verified', 'denied']),
   title: string(),
+  shortDescription: string(),
   content: string(),
 }).defined();
 
