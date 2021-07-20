@@ -1,16 +1,19 @@
 import { model } from 'mongoose';
 import { createDbObjectSchema, DbObject } from './dbObject';
 export interface Advertisement extends DbObject {
-  userId: string;
+  authorId: string;
   title: string;
   shortDescription?: string;
   content: string;
   facultyId?: string;
+  studyProgramId?: string;
+  startDate: Date;
+  endDate: Date;
   status: 'unverified' | 'pendingVerification' | 'verified' | 'denied';
 }
 
 const advertisementSchema = createDbObjectSchema<Advertisement>({
-  userId: {
+  authorId: {
     type: String,
     required: true,
   },
@@ -29,6 +32,18 @@ const advertisementSchema = createDbObjectSchema<Advertisement>({
   facultyId: {
     type: String,
     required: false,
+  },
+  studyProgramId: {
+    type: String,
+    required: false,
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
   },
   status: {
     type: String,

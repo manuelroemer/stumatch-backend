@@ -13,7 +13,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  validateThisUserHasSomeIdOrSomeRole(req, advertisement.userId, 'admin');
+  validateThisUserHasSomeIdOrSomeRole(req, advertisement.authorId, 'admin');
   await advertisement.delete();
 
   return res.sendStatus(204);

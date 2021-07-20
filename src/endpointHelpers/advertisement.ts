@@ -17,7 +17,7 @@ export const advertisementValidationSchema: SchemaOf<AdvertisementRequestBody> =
 }).defined();
 
 export async function getEnrichedAdvertisementDto(advertisement: Advertisement) {
-  const author = await UserModel.findById(advertisement.userId);
+  const author = await UserModel.findById(advertisement.authorId);
 
   return {
     ...advertisement,

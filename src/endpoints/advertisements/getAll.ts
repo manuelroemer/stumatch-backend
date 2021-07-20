@@ -13,7 +13,7 @@ const sortableFields: Array<SortableFields<Advertisement>> = [
   'id',
   'createdOn',
   'modifiedOn',
-  'userId',
+  'authorId',
   'title',
   'content',
   'status',

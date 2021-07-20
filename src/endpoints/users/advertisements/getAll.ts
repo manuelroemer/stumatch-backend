@@ -15,7 +15,7 @@ const sortableFields: Array<SortableFields<Advertisement>> = [
   'id',
   'createdOn',
   'modifiedOn',
-  'userId',
+  'authorId',
   'title',
   'content',
   'status',
@@ -26,7 +26,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   validateThisUserHasSomeIdOrSomeRole(req, requestedUserId, 'admin');
 
   const sort = getSortQueryFromUrl(req, sortableFields);
-  const query: FilterQuery<Advertisement> = { userId: requestedUserId };
+  const query: FilterQuery<Advertisement> = { authorId: requestedUserId };
   const queryOptions: QueryOptions = { sort };
   const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
   const result = paginationResult.docs.map((doc) => doc.toObject());

@@ -5,7 +5,7 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { object, string, SchemaOf } from 'yup';
+import { object, string, SchemaOf, date } from 'yup';
 import { validateThisUserHasSomeIdOrSomeRole, validateThisUserHasSomeRole } from '../../utils/roleHelpers';
 import { AdvertisementModel } from '../../db/models/advertisement';
 
@@ -15,6 +15,8 @@ interface RequestBody {
   title?: string;
   shortDescription?: string;
   content?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 const schema: SchemaOf<RequestBody> = object({
@@ -23,6 +25,8 @@ const schema: SchemaOf<RequestBody> = object({
   title: string(),
   shortDescription: string(),
   content: string(),
+  startDate: date(),
+  endDate: date(),
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
@@ -37,7 +41,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   if (req.body.status !== undefined) {
     validateThisUserHasSomeRole(req, 'admin');
   } else {
-    validateThisUserHasSomeIdOrSomeRole(req, advertisement.userId, 'admin');
+    validateThisUserHasSomeIdOrSomeRole(req, advertisement.authorId, 'admin');
     req.body.status = 'unverified';
   }
 
