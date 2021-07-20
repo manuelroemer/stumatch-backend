@@ -7,6 +7,7 @@ export interface ContactRequest extends DbObject {
   type: 'role' | 'featureBug' | 'other';
   message: string;
   userId?: string;
+  status: 'open' | 'inProgress' | 'closed';
 }
 
 const contactRequestSchema = createDbObjectSchema<ContactRequest>({
@@ -28,6 +29,11 @@ const contactRequestSchema = createDbObjectSchema<ContactRequest>({
   },
   userId: {
     type: String,
+  },
+  status: {
+    type: String,
+    default: 'open',
+    required: true,
   },
 });
 
