@@ -3,7 +3,7 @@ import { ChatGroupModel } from '../../db/models/chatGroup';
 import { ChatMessageModel } from '../../db/models/chatMessage';
 import { NotFoundError } from '../../dtos/apiErrors';
 import { apiResult } from '../../dtos/apiResults';
-import { validateUserIsInChatGroup } from '../../endpointHelpers/chatMessage';
+import { validateUserIsInChatGroup } from '../../endpointHelpers/chatGroup';
 import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { getUserOrThrow } from '../../utils/requestHelpers';

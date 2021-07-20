@@ -3,12 +3,16 @@ import { boolean, object, SchemaOf } from 'yup';
 import { FriendsListEntryModel } from '../../../db/models/friendsListEntry';
 import { MatchRequestModel } from '../../../db/models/matchRequest';
 import { MatchResultModel } from '../../../db/models/matchResult';
-import { NotificationModel } from '../../../db/models/notification';
 import { BadRequestError, NotFoundError } from '../../../dtos/apiErrors';
 import { apiResult } from '../../../dtos/apiResults';
+import {
+  tryCreateMatchRequestAcceptedByPartnerNotification,
+  tryCreateMatchRequestDeclinedByPartnerNotification,
+} from '../../../endpointHelpers/notification';
 import { authenticateJwt } from '../../../middlewares/authenticateJwt';
 import { validateRequestBody } from '../../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
+import { getUserOrThrow } from '../../../utils/requestHelpers';
 import { validateThisUserHasSomeIdOrSomeRole } from '../../../utils/roleHelpers';
 
 interface RequestBody {
@@ -20,6 +24,7 @@ const schema: SchemaOf<RequestBody> = object({
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
+  const user = getUserOrThrow(req);
   const body = req.body as RequestBody;
   const matchRequest = await MatchRequestModel.findOne({ _id: req.params.id });
   if (!matchRequest) {
@@ -48,30 +53,35 @@ const handler = asyncRequestHandler(async (req, res) => {
   }
 
   const user1MatchRequest = await MatchRequestModel.findById(matchResult.matchRequest1Id);
-  const user2MatchReqeuest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
+  const user2MatchRequest = await MatchRequestModel.findById(matchResult.matchRequest2Id);
+  if (!user1MatchRequest || !user2MatchRequest) {
+    throw new NotFoundError();
+  }
 
-  await NotificationModel.create({
-    type: body.accepted ? 'matchRequestAcceptedByPartner' : 'matchRequestDeclinedByPartner',
-    userId: matchResult.matchRequest1Id === req.params.id ? user2MatchReqeuest?.userId : user1MatchRequest?.userId,
-    matchRequestId: req.params.id,
-  });
+  const partnerUserId = user1MatchRequest.userId === user.id ? user2MatchRequest.userId : user1MatchRequest.userId;
+  if (body.accepted) {
+    await tryCreateMatchRequestAcceptedByPartnerNotification(partnerUserId, user);
+  } else {
+    await tryCreateMatchRequestDeclinedByPartnerNotification(partnerUserId, user);
+  }
 
   if (matchResult.acceptedByUser1 && matchResult.acceptedByUser2) {
     const friendsListEntry1 = await FriendsListEntryModel.findOne({
       user1Id: user1MatchRequest!.userId,
-      user2Id: user2MatchReqeuest!.userId,
+      user2Id: user2MatchRequest!.userId,
     });
     const friendsListEntry2 = await FriendsListEntryModel.findOne({
-      user1Id: user2MatchReqeuest!.userId,
+      user1Id: user2MatchRequest!.userId,
       user2Id: user1MatchRequest!.userId,
     });
 
     if (!friendsListEntry1 && !friendsListEntry2) {
-      await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchReqeuest!.userId });
+      await FriendsListEntryModel.create({ user1Id: user1MatchRequest!.userId, user2Id: user2MatchRequest!.userId });
     }
   }
 
   await matchResult.save();
+
   return res.status(201).json(apiResult(matchResult.toObject()));
 });
 

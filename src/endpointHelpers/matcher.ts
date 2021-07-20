@@ -1,10 +1,10 @@
 import { ChatGroupModel } from '../db/models/chatGroup';
 import { MatchRequest, MatchRequestModel } from '../db/models/matchRequest';
 import { MatchResultModel } from '../db/models/matchResult';
-import { NotificationModel } from '../db/models/notification';
 import { PastUserMatchEntryModel } from '../db/models/pastUserMatchEntry';
 import { User, UserModel } from '../db/models/user';
 import { logger } from '../log';
+import { tryCreateMatchRequestFoundNotification } from './notification';
 
 export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
   const currentUser = await UserModel.findOne({ _id: matchRequest.userId });
@@ -12,6 +12,7 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
     logger.warn(`Could not find the user with the id: ${matchRequest.userId}. Not executing the matching algorithm.`);
     return;
   }
+
   const pendingMatchRequests = await MatchRequestModel.find(
     {
       userId: { $ne: matchRequest.userId },
@@ -19,14 +20,11 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       isDeleted: false,
     },
     undefined,
-    {
-      sort: { createdOn: 'asc' },
-    },
+    { sort: { createdOn: 'asc' } },
   );
 
   for (const pendingMatchRequest of pendingMatchRequests) {
     const pendingUser = await UserModel.findOne({ _id: pendingMatchRequest.userId });
-
     if (!pendingUser) {
       continue;
     }
@@ -52,12 +50,12 @@ export async function findMatchingMatchRequest(matchRequest: MatchRequest) {
       pendingMatchRequest.matchResultId = matchResult.id;
       await pendingMatchRequest.save();
 
-      await createMatchedNotification(matchRequest, pendingMatchRequest);
-
       await PastUserMatchEntryModel.create({
         user1Id: matchRequest.userId,
         user2Id: pendingMatchRequest.userId,
       });
+
+      await createMatchedNotification(matchRequest, pendingMatchRequest);
       return;
     }
   }
@@ -114,18 +112,12 @@ async function hasPastMatch(user1Id: string, user2Id: string) {
   return !!pastUser1 || !!pastUser2;
 }
 
-async function createMatchedNotification(matchRequestUser1: MatchRequest, matchRequestUser2: MatchRequest) {
+async function createMatchedNotification(matchRequest1: MatchRequest, matchRequest2: MatchRequest) {
   try {
-    await NotificationModel.create({
-      type: 'matchRequestFoundMatch',
-      matchRequestId: matchRequestUser1.id,
-      userId: matchRequestUser1.userId,
-    });
-    await NotificationModel.create({
-      type: 'matchRequestFoundMatch',
-      matchRequestId: matchRequestUser2.id,
-      userId: matchRequestUser2.userId,
-    });
+    const user1 = await UserModel.findById(matchRequest1.userId);
+    const user2 = await UserModel.findById(matchRequest2.userId);
+    await tryCreateMatchRequestFoundNotification(user1!.id!, user2!);
+    await tryCreateMatchRequestFoundNotification(user2!.id!, user1!);
   } catch (e) {
     logger.warning('Match notification creation failed.', e);
   }

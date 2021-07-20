@@ -45,6 +45,8 @@ export const endpoints = [
   require('./friendsListEntries/delete').default,
 
   require('./chatGroups/get').default,
+  require('./chatGroups/put').default,
+  require('./chatGroups/post').default,
   require('./chatGroups/chatMessages/getAll').default,
   require('./chatGroups/chatMessages/post').default,
 
@@ -52,4 +54,7 @@ export const endpoints = [
   require('./chatMessages/put').default,
   require('./chatMessages/delete').default,
   require('./chatMessages/read/post').default,
+
+  require('./contactRequests/getAll').default,
+  require('./contactRequests/post').default,
 ];
