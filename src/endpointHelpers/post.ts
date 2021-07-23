@@ -9,6 +9,7 @@ export interface PostRequestBody {
   title: string;
   content: string;
   category: string;
+  postImageBlob?: string;
 }
 
 export const postValidationSchema: SchemaOf<PostRequestBody> = object({
@@ -16,6 +17,7 @@ export const postValidationSchema: SchemaOf<PostRequestBody> = object({
   title: string().required(),
   content: string().required(),
   category: string().required(),
+  postImageBlob: string(),
 }).defined();
 
 export async function getEnrichedPostDto(post: Post) {

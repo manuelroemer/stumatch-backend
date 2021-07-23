@@ -9,4 +9,5 @@ export const postSeed: Array<Post> = range(100).map((i) => ({
   authorId: '00000000-0000-1000-8000-000000000000',
   category: faker.random.word(),
   createdOn: faker.date.past(),
+  postImageBlobId: '10000000-0000-1000-8000-000000000004',
 }));

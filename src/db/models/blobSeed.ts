@@ -19,6 +19,10 @@ export const blobSeed: Array<Blob> = [
     id: '10000000-0000-1000-8000-000000000003',
     data: readSeedFile('khang.png'),
   },
+  {
+    id: '10000000-0000-1000-8000-000000000004',
+    data: readSeedFile('sTUMatch_logo.png'),
+  },
 ];
 
 function readSeedFile(name: string) {
