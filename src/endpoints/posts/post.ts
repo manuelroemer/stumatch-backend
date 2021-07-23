@@ -7,12 +7,21 @@ import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { PostRequestBody, postValidationSchema } from '../../endpointHelpers/post';
 import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
 import { getUserOrThrow } from '../../utils/requestHelpers';
+import { createBlobFromString } from '../../endpointHelpers/blob';
 
 const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);
   validateThisUserHasSomeRole(req, ['admin', 'globalContentManager']);
   const body = req.body as PostRequestBody;
-  const post = new PostModel({ _id: body.id, authorId: user.id, ...body });
+  const postImageBlob = body.postImageBlob ? await createBlobFromString(body.postImageBlob, 'base64') : undefined;
+  const post = new PostModel({
+    _id: body.id,
+    authorId: user.id,
+    content: body.content,
+    title: body.title,
+    category: body.category,
+    postImageBlobId: postImageBlob?.id,
+  });
   await post.save();
   return res.status(201).json(apiResult(post.toObject()));
 });

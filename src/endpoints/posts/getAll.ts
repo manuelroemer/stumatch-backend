@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { escapeRegExp } from 'lodash';
 import { Post, PostModel } from '../../db/models/post';
 import { paginationApiResult } from '../../dtos/apiResults';
 import { getEnrichedPostDto } from '../../endpointHelpers/post';
@@ -12,7 +13,15 @@ const sortableFields: Array<SortableFields<Post>> = ['id', 'createdOn', 'modifie
 const handler = asyncRequestHandler(async (req, res) => {
   const sort = getSortQueryFromUrl(req, sortableFields);
   const filter = req.query.filter?.toString();
-  const query = filter ? { category: filter } : undefined;
+  const search = escapeRegExp(req.query.search?.toString());
+  const query =
+    filter && search
+      ? { category: filter, title: { $regex: new RegExp(search, 'i') } }
+      : filter
+      ? { category: filter }
+      : search
+      ? { title: { $regex: new RegExp(search, 'i') } }
+      : undefined;
   const paginationResult = await PostModel.paginate(getPaginationOptions(req), query, undefined, { sort });
   const result = paginationResult.docs.map((doc) => doc.toObject());
   const apiResults = await Promise.all(result.map((post) => getEnrichedPostDto(post)));

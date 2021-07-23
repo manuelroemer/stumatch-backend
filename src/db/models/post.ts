@@ -6,6 +6,7 @@ export interface Post extends DbObject {
   title: string;
   authorId: string;
   category: string;
+  postImageBlobId?: string;
 }
 
 const postSchema = createDbObjectSchema<Post>({
@@ -24,6 +25,9 @@ const postSchema = createDbObjectSchema<Post>({
   category: {
     type: String,
     required: true,
+  },
+  postImageBlobId: {
+    type: String,
   },
 });
 
