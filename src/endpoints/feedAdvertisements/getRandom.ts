@@ -17,7 +17,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     endDate: { $gte: now },
     $or: [
       { $and: [{ $or: [{ facultyId: user.facultyId }, { facultyId: null }] }, { studyProgramId: null }] },
-      { $and: [{ studyProgramId: user.studyProgramId }, { $not: { studyProgramId: null } }] },
+      { $and: [{ studyProgramId: user.studyProgramId }, { studyProgramId: { $ne: null } }] },
     ],
   };
 
