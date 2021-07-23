@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { escapeRegExp } from 'lodash';
 import { User, UserModel } from '../../db/models/user';
 import { paginationApiResult } from '../../dtos/apiResults';
 import { getEnrichedUserDto } from '../../endpointHelpers/user';
@@ -12,7 +13,7 @@ const sortableFields: Array<SortableFields<User>> = ['id', 'createdOn', 'modifie
 const handler = asyncRequestHandler(async (req, res) => {
   const thisUser = getUserOrThrow(req);
   const sort = getSortQueryFromUrl(req, sortableFields);
-  const filter = req.query.filter?.toString();
+  const filter = escapeRegExp(req.query.filter?.toString());
 
   const query = filter
     ? { $or: [{ firstName: { $regex: filter, $options: 'i' } }, { lastName: { $regex: filter, $options: 'i' } }] }
