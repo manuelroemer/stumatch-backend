@@ -3,6 +3,7 @@ import { createDbObjectSchema, DbObject } from './dbObject';
 export interface Advertisement extends DbObject {
   authorId: string;
   title: string;
+  imageBlobId?: string;
   shortDescription?: string;
   content: string;
   facultyId?: string;
@@ -20,6 +21,10 @@ const advertisementSchema = createDbObjectSchema<Advertisement>({
   title: {
     type: String,
     required: true,
+  },
+  imageBlobId: {
+    type: String,
+    required: false,
   },
   shortDescription: {
     type: String,

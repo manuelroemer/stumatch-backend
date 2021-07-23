@@ -23,7 +23,9 @@ const handler = asyncRequestHandler(async (req, res) => {
   validateThisUserHasSomeRole(req, 'admin');
   const sort = getSortQueryFromUrl(req, sortableFields);
   const queryOptions: QueryOptions = { sort };
-  const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), {}, undefined, queryOptions);
+  const filter = req.query.filter?.toString();
+  const query = filter ? { status: filter as any } : undefined;
+  const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
   const result = paginationResult.docs.map((doc) => doc.toObject());
   const apiResults = await Promise.all(result.map((advertisement) => getEnrichedAdvertisementDto(advertisement)));
   return res.status(200).json(paginationApiResult(apiResults, paginationResult));

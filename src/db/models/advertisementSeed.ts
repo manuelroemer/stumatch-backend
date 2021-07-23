@@ -9,7 +9,8 @@ export const advertisementSeed: Array<Advertisement> = [
     shortDescription: faker.lorem.sentence(10),
     content: faker.lorem.sentence(20),
     facultyId: '20000000-0000-1000-8000-000000000000',
-    startDate: '',
+    startDate: new Date('2021-07-19T14:15:29.307+00:00'),
+    endDate: new Date('2021-07-20T14:15:29.307+00:00'),
     status: 'unverified',
   },
   {
@@ -19,6 +20,8 @@ export const advertisementSeed: Array<Advertisement> = [
     shortDescription: faker.lorem.sentence(10),
     content: faker.lorem.sentence(20),
     facultyId: '20000000-0000-1000-8000-000000000000',
+    startDate: new Date('2021-07-19T14:15:29.307+00:00'),
+    endDate: new Date('2021-07-20T14:15:29.307+00:00'),
     status: 'pendingVerification',
   },
   {
@@ -28,6 +31,8 @@ export const advertisementSeed: Array<Advertisement> = [
     shortDescription: faker.lorem.sentence(10),
     content: faker.lorem.sentence(20),
     facultyId: '20000000-0000-1000-8000-000000000001',
+    startDate: new Date('2021-07-19T14:15:29.307+00:00'),
+    endDate: new Date('2021-07-20T14:15:29.307+00:00'),
     status: 'verified',
   },
   {
@@ -37,6 +42,8 @@ export const advertisementSeed: Array<Advertisement> = [
     shortDescription: faker.lorem.sentence(10),
     content: faker.lorem.sentence(20),
     facultyId: '20000000-0000-1000-8000-000000000001',
+    startDate: new Date('2021-07-19T14:15:29.307+00:00'),
+    endDate: new Date('2021-07-20T14:15:29.307+00:00'),
     status: 'denied',
   },
 ];
