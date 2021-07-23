@@ -13,8 +13,6 @@ const handler = asyncRequestHandler(async (req, res) => {
   const user = getUserOrThrow(req);
   validateThisUserHasSomeRole(req, ['admin', 'globalContentManager']);
   const body = req.body as PostRequestBody;
-  console.log('BODY');
-  console.log(body);
   const postImageBlob = body.postImageBlob ? await createBlobFromString(body.postImageBlob, 'base64') : undefined;
   const post = new PostModel({
     _id: body.id,
@@ -25,7 +23,6 @@ const handler = asyncRequestHandler(async (req, res) => {
     postImageBlobId: postImageBlob?.id,
   });
   await post.save();
-  console.log(post);
   return res.status(201).json(apiResult(post.toObject()));
 });
 

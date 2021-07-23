@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { escapeRegExp } from 'lodash';
 import { Post, PostModel } from '../../db/models/post';
 import { paginationApiResult } from '../../dtos/apiResults';
 import { getEnrichedPostDto } from '../../endpointHelpers/post';
@@ -12,8 +13,7 @@ const sortableFields: Array<SortableFields<Post>> = ['id', 'createdOn', 'modifie
 const handler = asyncRequestHandler(async (req, res) => {
   const sort = getSortQueryFromUrl(req, sortableFields);
   const filter = req.query.filter?.toString();
-  const search = req.query.search?.toString();
-  // { "abc": { $regex: '.*' + colName + '.*' } },
+  const search = escapeRegExp(req.query.search?.toString());
   const query =
     filter && search
       ? { category: filter, title: { $regex: new RegExp(search, 'i') } }
