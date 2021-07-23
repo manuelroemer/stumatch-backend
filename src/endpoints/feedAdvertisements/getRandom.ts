@@ -5,9 +5,11 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 
 const handler = asyncRequestHandler(async (req, res) => {
-  const query = { status: 'verified' };
-  const ad = await AdvertisementModel.aggregate().match(query).sample(1);
-  return res.status(200).json(ad);
+  const now = new Date();
+  const query = { status: 'verified', startDate: { $lte: now }, endDate: { $gte: now } };
+
+  const aggregationResult = await AdvertisementModel.aggregate().match(query).sample(1);
+  return !aggregationResult ? res.status(200).json(undefined) : res.status(200).json(aggregationResult[0]);
 });
 
 export default Router().get('/api/v1/feedAdvertisements/random', authenticateJwt, handler);
