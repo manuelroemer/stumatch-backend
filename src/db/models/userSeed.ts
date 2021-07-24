@@ -57,6 +57,7 @@ export const userSeed: Array<User> = [
     studyProgramId: '20000000-0000-1000-8000-000000000014',
     startingSemester: 'WS',
     startingYear: 2018,
+    searchForJobs: true,
     roles: ['student'],
   },
   {
@@ -67,6 +68,7 @@ export const userSeed: Array<User> = [
     lastName: 'Batz',
     facultyId: '20000000-0000-1000-8000-000000000000',
     studyProgramId: '20000000-0000-1000-8000-000000000016',
+    searchForJobs: true,
     roles: ['student'],
   },
   {
@@ -76,6 +78,7 @@ export const userSeed: Array<User> = [
     firstName: 'Dylan',
     lastName: 'Moore',
     facultyId: '20000000-0000-1000-8000-000000000001',
+    searchForJobs: true,
     roles: ['student'],
   },
   {

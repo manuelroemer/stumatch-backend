@@ -14,10 +14,8 @@ const handler = asyncRequestHandler(async (req, res) => {
   const thisUser = getUserOrThrow(req);
   const sort = getSortQueryFromUrl(req, sortableFields);
   const filter = escapeRegExp(req.query.filter?.toString());
-
-  const query = filter
-    ? { $or: [{ firstName: { $regex: filter, $options: 'i' } }, { lastName: { $regex: filter, $options: 'i' } }] }
-    : undefined;
+  const lookingForJob = req.query.lookingForJob?.toString() === 'true';
+  const query = buildQuery(filter, lookingForJob);
 
   const paginationResult = await UserModel.paginate(getPaginationOptions(req), query, undefined, { sort });
   const result = paginationResult.docs.map((doc) => getEnrichedUserDto(doc.toObject(), thisUser));
@@ -25,3 +23,21 @@ const handler = asyncRequestHandler(async (req, res) => {
 });
 
 export default Router().get('/api/v1/users', authenticateJwt, handler);
+
+function buildQuery(filter: string, lookingForJob: boolean) {
+  const filterPart = {
+    $or: [{ firstName: { $regex: filter, $options: 'i' } }, { lastName: { $regex: filter, $options: 'i' } }],
+  };
+  const lookingForJobPart = { searchForJobs: true };
+  let query = {};
+
+  if (filter) {
+    query = { ...query, ...filterPart };
+  }
+
+  if (lookingForJob) {
+    query = { ...query, ...lookingForJobPart };
+  }
+
+  return query;
+}
