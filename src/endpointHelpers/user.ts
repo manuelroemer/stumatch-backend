@@ -6,7 +6,8 @@ export function getEnrichedUserDto(user: User, thisUser: User) {
 }
 
 function trimPrivateUserProfileInfo(userToReturn: User, thisUser: User) {
-  const returnPublicProfileInfoOnly = thisUser.id !== userToReturn.id && !hasSomeRole(thisUser, ['admin', 'advertiser']);
+  const returnPublicProfileInfoOnly =
+    thisUser.id !== userToReturn.id && !hasSomeRole(thisUser, ['admin', 'advertiser']);
   const result: Partial<User> = { ...userToReturn };
 
   // Private data which should *never* be returned.

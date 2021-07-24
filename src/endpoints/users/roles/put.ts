@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { object, string, array } from 'yup';
-import { UserModel, UserRole } from '../../db/models/user';
-import { NotFoundError } from '../../dtos/apiErrors';
-import { apiResult } from '../../dtos/apiResults';
-import { authenticateJwt } from '../../middlewares/authenticateJwt';
-import { validateBodyIdMatchesPathId } from '../../middlewares/validateBodyIdMatchesPathId';
-import { validateRequestBody } from '../../middlewares/validateRequestBody';
-import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
-import { validateThisUserHasSomeRole } from '../../utils/roleHelpers';
+import { UserModel, UserRole } from '../../../db/models/user';
+import { NotFoundError } from '../../../dtos/apiErrors';
+import { apiResult } from '../../../dtos/apiResults';
+import { authenticateJwt } from '../../../middlewares/authenticateJwt';
+import { validateBodyIdMatchesPathId } from '../../../middlewares/validateBodyIdMatchesPathId';
+import { validateRequestBody } from '../../../middlewares/validateRequestBody';
+import { asyncRequestHandler } from '../../../utils/asyncRequestHandler';
+import { validateThisUserHasSomeRole } from '../../../utils/roleHelpers';
 
 export interface UserPutBody {
   id?: string;
@@ -38,7 +38,7 @@ const handler = asyncRequestHandler(async (req, res) => {
 });
 
 export default Router().put(
-  '/api/v1/users/:id',
+  '/api/v1/users/:id/roles',
   authenticateJwt,
   validateRequestBody(schema),
   validateBodyIdMatchesPathId(),
