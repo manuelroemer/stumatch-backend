@@ -61,10 +61,10 @@ const schema: SchemaOf<UserBody> = object({
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as UserBody;
-
   const profileImageBlob = body.profileImageBlob
     ? await createBlobFromString(body.profileImageBlob, 'base64')
     : undefined;
+  const searchJob = body.searchForJobs === 'Yes' ? true : body.searchForJobs === 'No' ? false : undefined;
   const user = await UserModel.create({
     _id: body.id,
     email: body.email,
@@ -75,7 +75,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     studyProgramId: body.studyProgramId,
     startingSemester: body.immatriculatedOn?.startingSemester,
     startingYear: body.immatriculatedOn?.startingYear,
-    searchForJobs: body.searchForJobs === 'Yes' ? true : false,
+    searchForJobs: searchJob,
     roles: ['student'],
     profileImageBlobId: profileImageBlob?.id,
   });
