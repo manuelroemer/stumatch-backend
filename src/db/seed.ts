@@ -10,6 +10,8 @@ import { ChatGroupModel } from './models/chatGroup';
 import { chatGroupSeed } from './models/chatGroupSeed';
 import { ChatMessageModel } from './models/chatMessage';
 import { chatMessageSeed } from './models/chatMessageSeed';
+import { CommentModel } from './models/comment';
+import { LikeModel } from './models/like';
 import { ContactRequestModel } from './models/contactRequest';
 import { contactRequestSeed } from './models/contactRequestSeed';
 import { FacultyModel } from './models/faculty';
@@ -29,6 +31,8 @@ import { ReadChatMessageModel } from './models/readChatMessage';
 import { readChatMessageSeed } from './models/readChatMessageSeed';
 import { UserModel } from './models/user';
 import { userSeed } from './models/userSeed';
+import { commentSeed } from './models/commentSeed';
+import { likeSeed } from './models/likeSeed';
 
 (async function () {
   try {
@@ -49,6 +53,8 @@ import { userSeed } from './models/userSeed';
     await PastUserMatchEntryModel.deleteMany();
     await BlobModel.deleteMany();
     await ContactRequestModel.deleteMany();
+    await LikeModel.deleteMany();
+    await CommentModel.deleteMany();
     logger.info('[DB] Existing data cleared.');
 
     logger.info('[DB] Creating seed data...');
@@ -65,6 +71,8 @@ import { userSeed } from './models/userSeed';
     await AdvertisementModel.create(mapSeedIds(advertisementSeed));
     await BlobModel.create(mapSeedIds(blobSeed));
     await ContactRequestModel.create(mapSeedIds(contactRequestSeed));
+    await LikeModel.create(mapSeedIds(likeSeed));
+    await CommentModel.create(mapSeedIds(commentSeed));
 
     logger.info('[DB] Seed data created.');
   } catch (err) {
