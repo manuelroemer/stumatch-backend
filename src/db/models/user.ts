@@ -14,6 +14,7 @@ export interface User extends DbObject {
   studyProgramId?: string;
   startingSemester?: 'WS' | 'SS';
   startingYear?: number;
+  searchForJobs?: boolean;
   roles: Array<UserRole>;
 }
 
@@ -50,6 +51,9 @@ const userSchema = createDbObjectSchema<User>({
   },
   startingYear: {
     type: Number,
+  },
+  searchForJobs: {
+    type: Boolean,
   },
   roles: {
     type: [String],

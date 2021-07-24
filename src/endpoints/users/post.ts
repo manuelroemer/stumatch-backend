@@ -21,6 +21,7 @@ interface UserBody {
     startingSemester?: string;
     startingYear?: number;
   };
+  searchForJobs?: string;
   profileImageBlob?: string;
 }
 
@@ -54,6 +55,7 @@ const schema: SchemaOf<UserBody> = object({
       .min(1900)
       .max(new Date().getFullYear() + 2),
   }),
+  searchForJobs: string().oneOf(['Yes', 'No', 'Undefined']),
   profileImageBlob: string(),
 }).defined();
 
@@ -63,7 +65,6 @@ const handler = asyncRequestHandler(async (req, res) => {
   const profileImageBlob = body.profileImageBlob
     ? await createBlobFromString(body.profileImageBlob, 'base64')
     : undefined;
-
   const user = await UserModel.create({
     _id: body.id,
     email: body.email,
@@ -74,6 +75,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     studyProgramId: body.studyProgramId,
     startingSemester: body.immatriculatedOn?.startingSemester,
     startingYear: body.immatriculatedOn?.startingYear,
+    searchForJobs: body.searchForJobs === 'Yes' ? true : false,
     roles: ['student'],
     profileImageBlobId: profileImageBlob?.id,
   });
