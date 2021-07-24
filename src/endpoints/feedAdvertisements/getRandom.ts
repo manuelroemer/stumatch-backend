@@ -22,7 +22,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   };
 
   const aggregationResult = await AdvertisementModel.aggregate().match(query).sample(1);
-  if (!aggregationResult) {
+  if (aggregationResult.length == 0) {
     throw new NotFoundError();
   }
   return res.status(200).json(apiResult(await getEnrichedAdvertisementDto(aggregationResult[0])));
