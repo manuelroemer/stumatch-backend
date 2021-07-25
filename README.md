@@ -7,8 +7,8 @@ This repository contains the source code of the sTUMatch backend.
 
 ### Installing Packages
 
-First of all, ensure that [NodeJS](https://nodejs.org/en/) is installed on your machine.
-Then, clone the repository and install the packages:
+Ensure that [NodeJS](https://nodejs.org/en/) is installed on your machine.
+Clone the repository and install the packages:
 
 ```sh
 git clone https://gitlab.lrz.de/seba-master-2021/team-29/backend.git stumatch-backend
@@ -20,9 +20,9 @@ npm i
 
 ### Database Connection Setup
 
-In order to run the application locally, you must configure a MongoDB connection string.
-You can either use a local MongoDB instance or you can use a (free) online service like
-[MongoDB Atlas](https://docs.atlas.mongodb.com/getting-started/) (recommended). <br/>
+In order to run the application locally, you must configure a **MongoDB connection string**.
+We were using [MongoDB Atlas](https://docs.atlas.mongodb.com/getting-started/) (recommended), 
+but you should be able to use any DB which allows connecting via a connection sring. <br/>
 
 Once you have your connection string, create a new file called `.env` in the repository's root
 folder (`stumatch-backend`). The file should have the following content (replace the
@@ -31,6 +31,8 @@ folder (`stumatch-backend`). The file should have the following content (replace
 ```env
 DB_CONNECTION_STRING=your_connection_string_here
 ```
+
+You can have a look at the [.env.example](./.env.example) file to see what it should look like.
 
 
 ### Database Seeding
@@ -61,18 +63,17 @@ info: Seed data created.
 
 If you are seeing an error, you should re-check the connection string configuration.
 
+> **⚠️ Important:**<br/>
+> It can happen that the seeding process doesn't terminate. In that case you can do so manually
+> via `CTRL+C` once the `Seed data created.` message appeared.
+
 
 ### Running the Application
 
-At this point, you can run the application.
-
-If you are using [VS Code](https://code.visualstudio.com/) (recommended), you can simply run and
-debug the application using `F5`.
-
-Alternatively, you can run the application using the terminal:
+At this point, you can run the application using the terminal:
 
 ```sh
 npm run start
 ```
 
-Either way, you can now access the server's API at `localhost:4040`.
+You can now access the server's API at `localhost:4040`.
