@@ -54,8 +54,9 @@ const handler = asyncRequestHandler(async (req, res) => {
     validateThisUserHasSomeIdOrSomeRole(req, advertisement.authorId, 'admin');
     body.status = 'pendingVerification';
   }
-
-  advertisement.advertisementImageBlobId = advertisementImageBlob?.id;
+  if (advertisementImageBlob) {
+    advertisement.advertisementImageBlobId = advertisementImageBlob?.id;
+  }
   Object.assign(advertisement, body);
   await advertisement.save();
 
