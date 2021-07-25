@@ -11,7 +11,7 @@ export interface Advertisement extends DbObject {
   startDate: Date;
   endDate: Date;
   advertisementImageBlobId?: string;
-  status: 'unverified' | 'pendingVerification' | 'verified' | 'denied';
+  status: 'unverified' | 'verified' | 'denied';
 }
 
 const advertisementSchema = createDbObjectSchema<Advertisement>({

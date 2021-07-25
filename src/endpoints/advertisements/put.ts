@@ -33,7 +33,7 @@ const schema = object({
   startDate: date(),
   endDate: date(),
   advertisementImageBlob: string(),
-  status: string().oneOf(['unverified', 'pendingVerification', 'verified', 'denied']),
+  status: string().oneOf(['unverified', 'verified', 'denied']),
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
@@ -52,7 +52,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     validateThisUserHasSomeRole(req, 'admin');
   } else {
     validateThisUserHasSomeIdOrSomeRole(req, advertisement.authorId, 'admin');
-    body.status = 'pendingVerification';
+    body.status = 'unverified';
   }
   if (advertisementImageBlob) {
     advertisement.advertisementImageBlobId = advertisementImageBlob?.id;
