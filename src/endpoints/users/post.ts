@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { number, object, SchemaOf, string } from 'yup';
+import { number, object, SchemaOf, string, boolean } from 'yup';
 import { FacultyModel } from '../../db/models/faculty';
 import { UserModel } from '../../db/models/user';
 import { apiResult } from '../../dtos/apiResults';
@@ -21,7 +21,7 @@ interface UserBody {
     startingSemester?: string;
     startingYear?: number;
   };
-  searchForJobs?: string;
+  searchForJobs?: boolean;
   profileImageBlob?: string;
 }
 
@@ -55,7 +55,7 @@ const schema: SchemaOf<UserBody> = object({
       .min(1900)
       .max(new Date().getFullYear() + 2),
   }),
-  searchForJobs: string().oneOf(['Yes', 'No', 'Undefined']),
+  searchForJobs: boolean().oneOf([true, false]),
   profileImageBlob: string(),
 }).defined();
 
@@ -64,7 +64,6 @@ const handler = asyncRequestHandler(async (req, res) => {
   const profileImageBlob = body.profileImageBlob
     ? await createBlobFromString(body.profileImageBlob, 'base64')
     : undefined;
-  const searchJob = body.searchForJobs === 'Yes' ? true : body.searchForJobs === 'No' ? false : undefined;
   const user = await UserModel.create({
     _id: body.id,
     email: body.email,
@@ -75,7 +74,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     studyProgramId: body.studyProgramId,
     startingSemester: body.immatriculatedOn?.startingSemester,
     startingYear: body.immatriculatedOn?.startingYear,
-    searchForJobs: searchJob,
+    searchForJobs: body.searchForJobs,
     roles: ['student'],
     profileImageBlobId: profileImageBlob?.id,
   });
