@@ -25,7 +25,8 @@ You can either use a local MongoDB instance or you can use a (free) online servi
 [MongoDB Atlas](https://docs.atlas.mongodb.com/getting-started/) (recommended). <br/>
 
 Once you have your connection string, create a new file called `.env` in the repository's root
-folder (`stumatch-backend`). The file should have the following content (replace the `"your_connection_string_here"` part with your actual connection string):
+folder (`stumatch-backend`). The file should have the following content (replace the
+`"your_connection_string_here"` part with your actual connection string):
 
 ```env
 DB_CONNECTION_STRING=your_connection_string_here

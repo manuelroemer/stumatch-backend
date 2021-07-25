@@ -9,7 +9,8 @@
       "console": "integratedTerminal",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
-        "start"
+        "run",
+        "watch"
       ],
       "skipFiles": [
         "<node_internals>/**"
