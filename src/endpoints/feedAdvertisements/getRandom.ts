@@ -26,10 +26,6 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
   return res.status(200).json(apiResult(await getEnrichedAdvertisementDto(aggregationResult[0])));
-/*   const results = await Promise.all(
-    aggregationResult.map((advertisement) => getEnrichedAdvertisementDto(advertisement)),
-  );
-  return res.status(200).json(apiResult(results)); */
 });
 
 export default Router().get('/api/v1/feedAdvertisements/random', authenticateJwt, handler);
