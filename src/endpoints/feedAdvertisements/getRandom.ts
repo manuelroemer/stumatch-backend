@@ -25,6 +25,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   if (aggregationResult.length == 0) {
     throw new NotFoundError();
   }
+  aggregationResult[0].id = aggregationResult[0]._id;
   return res.status(200).json(apiResult(await getEnrichedAdvertisementDto(aggregationResult[0])));
 /*   const results = await Promise.all(
     aggregationResult.map((advertisement) => getEnrichedAdvertisementDto(advertisement)),
