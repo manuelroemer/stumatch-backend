@@ -23,6 +23,18 @@ export const blobSeed: Array<Blob> = [
     id: '10000000-0000-1000-8000-000000000004',
     data: readSeedFile('sTUMatch_logo.png'),
   },
+  {
+    id: '10000000-0000-1000-8000-000000000555',
+    data: readSeedFile('bmw.png'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000000556',
+    data: readSeedFile('mercedes.png'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000000557',
+    data: readSeedFile('google.png'),
+  },
 ];
 
 function readSeedFile(name: string) {
