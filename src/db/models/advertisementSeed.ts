@@ -36,6 +36,7 @@ export const advertisementSeed: Array<Advertisement> = [
     facultyId: '20000000-0000-1000-8000-000000000001',
     startDate: new Date('2021-07-19T14:15:29.307+00:00'),
     endDate: new Date('2021-08-20T14:15:29.307+00:00'),
+    advertisementImageBlobId: '10000000-0000-1000-8000-000000000557',
     status: 'verified',
   },
   {
@@ -47,6 +48,7 @@ export const advertisementSeed: Array<Advertisement> = [
       'Key Responsibilities\n-Development of Bokeh applications and Jupyter notebooks for monitoring of capital markets data\n-Implement and test machine learning approaches for market data quality assurance\n-Growing our methodological code base while curating the documentation\n\nQualifications\n-Currently working towards a university degree (preferably Master) in mathematics, computer science, physics or a related field\n-Programming experience using e.g. Python (ideally showcasing public projects on GitHub or Kaggle)\n-Knowledge of database technologies (SQL) and version control systems (git)\n\nExperience & Key skills\n-Strong analytical and conceptual capabilities\n-Independent and outcome-oriented working style\n\n',
     startDate: new Date('2021-07-19T14:15:29.307+00:00'),
     endDate: new Date('2021-08-20T14:15:29.307+00:00'),
+    advertisementImageBlobId: '10000000-0000-1000-8000-000000000555',
     status: 'verified',
   },
   {
@@ -58,6 +60,7 @@ export const advertisementSeed: Array<Advertisement> = [
       'Key Responsibilities\n-Development of Bokeh applications and Jupyter notebooks for monitoring of capital markets data\n-Implement and test machine learning approaches for market data quality assurance\n-Growing our methodological code base while curating the documentation\n\nQualifications\n-Currently working towards a university degree (preferably Master) in mathematics, computer science, physics or a related field\n-Programming experience using e.g. Python (ideally showcasing public projects on GitHub or Kaggle)\n-Knowledge of database technologies (SQL) and version control systems (git)\n\nExperience & Key skills\n-Strong analytical and conceptual capabilities\n-Independent and outcome-oriented working style\n\n',
     startDate: new Date('2021-07-19T14:15:29.307+00:00'),
     endDate: new Date('2021-08-20T14:15:29.307+00:00'),
+    advertisementImageBlobId: '10000000-0000-1000-8000-000000000556',
     status: 'verified',
   },
 ];
