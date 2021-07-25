@@ -10,6 +10,7 @@ export interface Advertisement extends DbObject {
   studyProgramId?: string;
   startDate: Date;
   endDate: Date;
+  advertisementImageBlobId?: string;
   status: 'unverified' | 'pendingVerification' | 'verified' | 'denied';
 }
 
@@ -49,6 +50,10 @@ const advertisementSchema = createDbObjectSchema<Advertisement>({
   endDate: {
     type: Date,
     required: true,
+  },
+  advertisementImageBlobId: {
+    type: String,
+    required: false,
   },
   status: {
     type: String,
