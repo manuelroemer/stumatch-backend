@@ -30,6 +30,8 @@ const schema = object({
   title: string(),
   shortDescription: string(),
   content: string(),
+  facultyId: string(),
+  studyProgramId: string(),
   startDate: date(),
   endDate: date(),
   advertisementImageBlob: string(),
@@ -57,7 +59,10 @@ const handler = asyncRequestHandler(async (req, res) => {
   if (advertisementImageBlob) {
     advertisement.advertisementImageBlobId = advertisementImageBlob?.id;
   }
+  advertisement.facultyId = body.facultyId;
+  advertisement.studyProgramId = body.studyProgramid;
   Object.assign(advertisement, body);
+
   await advertisement.save();
 
   return res.status(200).json(apiResult(advertisement.toObject()));
