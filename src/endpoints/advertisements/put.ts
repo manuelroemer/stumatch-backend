@@ -7,31 +7,41 @@ import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
 import { object, string, SchemaOf, date } from 'yup';
 import { validateThisUserHasSomeIdOrSomeRole, validateThisUserHasSomeRole } from '../../utils/roleHelpers';
-import { AdvertisementModel } from '../../db/models/advertisement';
+import { Advertisement, AdvertisementModel } from '../../db/models/advertisement';
+import { createBlobFromString } from '../../endpointHelpers/blob';
 
 interface RequestBody {
   id?: string;
-  status?: string;
+  authorId?: string;
   title?: string;
   shortDescription?: string;
   content?: string;
+  facultyId?: string;
+  studyProgramid?: string;
   startDate?: Date;
   endDate?: Date;
+  advertisementImageBlob?: string;
+  status?: string;
 }
 
-const schema: SchemaOf<RequestBody> = object({
+const schema = object({
   id: string().uuid(),
-  status: string().oneOf(['unverified', 'pendingVerification', 'verified', 'denied']),
+  authorId: string(),
   title: string(),
   shortDescription: string(),
   content: string(),
   startDate: date(),
   endDate: date(),
+  advertisementImageBlob: string(),
+  status: string().oneOf(['unverified', 'pendingVerification', 'verified', 'denied']),
 }).defined();
 
 const handler = asyncRequestHandler(async (req, res) => {
   const body = req.body as RequestBody;
   const id = req.params.id;
+  const advertisementImageBlob = body.advertisementImageBlob
+    ? await createBlobFromString(body.advertisementImageBlob, 'base64')
+    : undefined;
   const advertisement = await AdvertisementModel.findById(id);
 
   if (!advertisement) {
@@ -42,9 +52,10 @@ const handler = asyncRequestHandler(async (req, res) => {
     validateThisUserHasSomeRole(req, 'admin');
   } else {
     validateThisUserHasSomeIdOrSomeRole(req, advertisement.authorId, 'admin');
-    req.body.status = 'unverified';
+    body.status = 'pendingVerification';
   }
 
+  advertisement.advertisementImageBlobId = advertisementImageBlob?.id;
   Object.assign(advertisement, body);
   await advertisement.save();
 

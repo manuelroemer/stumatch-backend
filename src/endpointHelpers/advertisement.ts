@@ -1,21 +1,19 @@
 import { UserModel } from '../db/models/user';
-import { object, SchemaOf, string } from 'yup';
 import { FacultyModel } from '../db/models/faculty';
 import { Advertisement } from '../db/models/advertisement';
 
-export interface AdvertisementRequestBody {
+export interface AdvertisementPostBody {
   id?: string;
+  authorId: string;
   title: string;
+  shortDescription: string;
   content: string;
-  status: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  startDate: Date;
+  endDate: Date;
+  advertisementImageBlob: string;
 }
-
-export const advertisementValidationSchema: SchemaOf<AdvertisementRequestBody> = object({
-  id: string().uuid(),
-  title: string().required(),
-  content: string().required(),
-  status: string().required(),
-}).defined();
 
 export async function getEnrichedAdvertisementDto(advertisement: Advertisement) {
   const author = await UserModel.findById(advertisement.authorId);
