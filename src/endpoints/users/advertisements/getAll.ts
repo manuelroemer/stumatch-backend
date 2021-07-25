@@ -27,9 +27,13 @@ const handler = asyncRequestHandler(async (req, res) => {
 
   const sort = getSortQueryFromUrl(req, sortableFields);
   const queryOptions: QueryOptions = { sort };
-  const filter = req.query.filter?.toString();
-  const query = filter ? { authorId: requestedUserId, status: filter as any } : undefined;
-  const paginationResult = await AdvertisementModel.paginate(getPaginationOptions(req), query, undefined, queryOptions);
+  const query = { authorId: requestedUserId };
+  const paginationResult = await AdvertisementModel.paginate(
+    getPaginationOptions(req),
+    query as FilterQuery<Advertisement>,
+    undefined,
+    queryOptions,
+  );
   const result = paginationResult.docs.map((doc) => doc.toObject());
   const apiResults = await Promise.all(result.map((advertisement) => getEnrichedAdvertisementDto(advertisement)));
   return res.status(200).json(paginationApiResult(apiResults, paginationResult));
