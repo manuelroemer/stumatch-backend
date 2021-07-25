@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { number, object, SchemaOf, string, boolean } from 'yup';
 import { FacultyModel } from '../../db/models/faculty';
-import { UserModel } from '../../db/models/user';
+import { User, UserModel } from '../../db/models/user';
 import { apiResult } from '../../dtos/apiResults';
 import { validateRequestBody } from '../../middlewares/validateRequestBody';
 import { asyncRequestHandler } from '../../utils/asyncRequestHandler';
@@ -73,12 +73,18 @@ const handler = asyncRequestHandler(async (req, res) => {
   user.startingSemester = body.immatriculatedOn?.startingSemester as any;
   user.startingYear = body.immatriculatedOn?.startingYear;
   user.searchForJobs = body.searchForJobs;
-
   await user.save();
 
+  triggerMatchAlgorithm(user);
+  return res.status(200).json(apiResult(user.toObject()));
+});
+
+export default Router().put('/api/v1/users/:id', authenticateJwt, validateRequestBody(schema), handler);
+
+async function triggerMatchAlgorithm(user: User) {
   const pendingMatchRequests = await MatchRequestModel.find(
     {
-      userId: { $ne: user.id },
+      userId: user.id,
       matchResultId: { $exists: false },
       isDeleted: false,
     },
@@ -86,14 +92,7 @@ const handler = asyncRequestHandler(async (req, res) => {
     { sort: { createdOn: 'asc' } },
   );
 
-  if (!pendingMatchRequests) {
-    throw new NotFoundError();
-  }
   for (const matchRequest of pendingMatchRequests) {
-    findMatchingMatchRequest(matchRequest);
+    await findMatchingMatchRequest(matchRequest);
   }
-
-  return res.status(200).json(apiResult(user.toObject()));
-});
-
-export default Router().put('/api/v1/users/:id', authenticateJwt, validateRequestBody(schema), handler);
+}
