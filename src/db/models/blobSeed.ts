@@ -33,7 +33,7 @@ export const blobSeed: Array<Blob> = [
   },
   {
     id: '10000000-0000-1000-8000-000000000557',
-    data: readSeedFile('google.png'),
+    data: readSeedFile('googleLens.png'),
   },
 ];
 
