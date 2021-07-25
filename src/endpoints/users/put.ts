@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { number, object, SchemaOf, string } from 'yup';
+import { number, object, SchemaOf, string, boolean } from 'yup';
 import { FacultyModel } from '../../db/models/faculty';
 import { UserModel } from '../../db/models/user';
 import { apiResult } from '../../dtos/apiResults';
@@ -11,7 +11,6 @@ import { authenticateJwt } from '../../middlewares/authenticateJwt';
 import { emailRegex } from '../../constants';
 import { MatchRequestModel } from '../../db/models/matchRequest';
 import { findMatchingMatchRequest } from '../../endpointHelpers/matcher';
-
 interface UserBody {
   id?: string;
   email?: string;
@@ -19,7 +18,7 @@ interface UserBody {
   lastName?: string;
   facultyId?: string;
   studyProgramId?: string;
-  searchForJobs?: string;
+  searchForJobs?: boolean;
   immatriculatedOn?: {
     startingSemester?: string;
     startingYear?: number;
@@ -49,7 +48,7 @@ const schema: SchemaOf<UserBody> = object({
       const studyPrograms = faculties.flatMap((f) => f.studyPrograms);
       return !!studyPrograms.find((f) => f._id === value);
     }),
-  searchForJobs: string().oneOf(['Yes', 'No', 'Undefined']),
+  searchForJobs: boolean().oneOf([true, false]),
   immatriculatedOn: object().shape({
     startingSemester: string().oneOf(['WS', 'SS']),
     startingYear: number()
@@ -66,7 +65,6 @@ const handler = asyncRequestHandler(async (req, res) => {
     throw new NotFoundError();
   }
 
-  const searchJob = body.searchForJobs === 'Yes' ? true : body.searchForJobs === 'No' ? false : undefined;
   user.email = body.email!;
   user.firstName = body.firstName!;
   user.lastName = body.lastName!;
@@ -74,7 +72,7 @@ const handler = asyncRequestHandler(async (req, res) => {
   user.studyProgramId = body.studyProgramId;
   user.startingSemester = body.immatriculatedOn?.startingSemester as any;
   user.startingYear = body.immatriculatedOn?.startingYear;
-  user.searchForJobs = searchJob;
+  user.searchForJobs = body.searchForJobs;
 
   await user.save();
 
