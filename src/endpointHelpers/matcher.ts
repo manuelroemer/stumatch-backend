@@ -101,7 +101,9 @@ function isFacultyStudyProgramMatch(thisMatchRequest: MatchRequest, otherUser: U
   } else if (!!thisMatchRequest.facultyId && !thisMatchRequest.studyProgramId) {
     return thisMatchRequest.facultyId === otherUser.facultyId;
   } else {
-    thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId;
+    return (
+      thisMatchRequest.facultyId === otherUser.facultyId && thisMatchRequest.studyProgramId === otherUser.studyProgramId
+    );
   }
 }
 
