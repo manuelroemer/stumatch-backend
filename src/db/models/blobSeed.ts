@@ -35,6 +35,10 @@ export const blobSeed: Array<Blob> = [
     id: '10000000-0000-1000-8000-000000000557',
     data: readSeedFile('googleLens.png'),
   },
+  {
+    id: '10000000-0000-1000-8000-000000001000',
+    data: readSeedFile('test.jpg'),
+  },
 ];
 
 function readSeedFile(name: string) {
