@@ -58,7 +58,7 @@ export const matchRequestSeed: Array<MatchRequest> = [
   {
     id: '00000000-0000-1000-8000-000000000009',
     matchResultId: '10000000-0000-1000-8000-000000000004',
-    userId: '00000000-0000-1000-8000-000000000005',
+    userId: '00000000-0000-1000-8000-000000000006',
     isDeleted: false,
   },
   {
