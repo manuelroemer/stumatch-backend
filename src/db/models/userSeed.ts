@@ -140,6 +140,17 @@ export const userSeed: Array<User> = [
     profileImageBlobId: '10000000-0000-1000-8000-000000000003',
     roles: ['student', 'admin', 'advertiser', 'globalContentManager'],
   },
+  {
+    id: '10000000-0000-1000-8000-000000000004',
+    email: 'testuser@stumatch.com',
+    passwordHash: hashSync('Test123', 8),
+    firstName: 'Test',
+    lastName: 'Test',
+    facultyId: '20000000-0000-1000-8000-000000000000',
+    studyProgramId: '20000000-0000-1000-8000-000000000016',
+    profileImageBlobId: '10000000-0000-1000-8000-000000000003',
+    roles: ['student', 'admin', 'advertiser', 'globalContentManager'],
+  },
   ...range(10).map((i) => {
     const user: User = {
       id: `00000000-0000-2000-8000-${i.toString().padStart(12, '0')}`,
