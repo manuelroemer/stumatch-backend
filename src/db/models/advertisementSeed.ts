@@ -6,7 +6,7 @@ export const advertisementSeed: Array<Advertisement> = [
     id: '40000000-0000-1000-8000-000000000001',
     authorId: '00000000-0000-1000-8000-000000000003',
     title: 'Werkstudentin (m/w/d) oder Praktikantin (m/w/d) für Webentwicklung',
-    shortDescription: 'Studenten ab dem 3. Semester für Entwicklung und Testing gesucht',
+    shortDescription: 'Studenten ab dem 3. Semester für Entwicklung und Testing gesucht!',
     content:
       'Du studierst Informatik, Wirtschaftsinformatik oder einen vergleichbaren Studiengang. \nDu hast Freude an Entwicklungstätigkeiten. \nDu hast bereits praktische Erfahrungen mit Webentwicklung, idealerweise Angular, sammeln können. \nGit und Docker sind keine Fremdwörter für Dich.\nDu bestichst durch hohe Zuverlässigkeit sowie eine selbständige und strukturierte Arbeitsweise.',
     facultyId: '20000000-0000-1000-8000-000000000000',
