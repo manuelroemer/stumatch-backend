@@ -69,7 +69,7 @@ export const blobSeed: Array<Blob> = [
   },
   {
     id: '10000000-0000-1000-8000-000000001008',
-    data: readSeedFile('postß8.jpg'),
+    data: readSeedFile('post08.jpg'),
   },
   {
     id: '10000000-0000-1000-8000-000000001009',
