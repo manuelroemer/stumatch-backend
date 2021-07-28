@@ -10,7 +10,7 @@ export const matchRequestSeed: Array<MatchRequest> = [
   {
     id: '00000000-0000-1000-8000-000000000001',
     matchResultId: '10000000-0000-1000-8000-000000000000',
-    userId: '00000000-0000-1000-8000-000000000002',
+    userId: '00000000-0000-1000-8000-000000000007',
     isDeleted: false,
   },
   {
@@ -46,7 +46,7 @@ export const matchRequestSeed: Array<MatchRequest> = [
   {
     id: '00000000-0000-1000-8000-000000000007',
     matchResultId: '10000000-0000-1000-8000-000000000003',
-    userId: '00000000-0000-1000-8000-000000000003',
+    userId: '00000000-0000-1000-8000-000000000006',
     isDeleted: false,
   },
   {
@@ -64,7 +64,7 @@ export const matchRequestSeed: Array<MatchRequest> = [
   {
     id: '00000000-0000-1000-8000-000000000010',
     matchResultId: '10000000-0000-1000-8000-000000000005',
-    userId: '00000000-0000-1000-8000-000000000001',
+    userId: '00000000-0000-1000-8000-000000000008',
     isDeleted: false,
   },
   {
