@@ -33,4 +33,13 @@ export const contactRequestSeed: Array<ContactRequest> = [
     message: 'Please change my role, so i can create advertisements',
     status: 'open',
   },
+  {
+    userId: '00000000-0000-1000-8000-000000000007',
+    name: 'Johanna ',
+    email: 'johanna2@gmail.com',
+    type: 'other',
+    message:
+      'We are a little group of 5 students and we would like to organize an event for the first year students. Can I or you post this event on your Newsfeed page? ',
+    status: 'open',
+  },
 ];
