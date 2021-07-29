@@ -38,7 +38,7 @@ export const userSeed: Array<User> = [
   },
   {
     id: '00000000-0000-1000-8000-000000000004',
-    email: 'Brett_Cummerata@gmail.com',
+    email: 'brett_cummerata@gmail.com',
     passwordHash: hashSync('Student123', 8),
     firstName: 'Roma',
     lastName: 'Gibson',
@@ -49,7 +49,7 @@ export const userSeed: Array<User> = [
   },
   {
     id: '00000000-0000-1000-8000-000000000005',
-    email: 'Richard93@yahoo.com',
+    email: 'richard93@yahoo.com',
     passwordHash: hashSync('Student123', 8),
     firstName: 'Richard',
     lastName: 'Weber',
@@ -73,7 +73,7 @@ export const userSeed: Array<User> = [
   },
   {
     id: '00000000-0000-1000-8000-000000000007',
-    email: 'Dylan.Moore2@gmail.com',
+    email: 'dylan.moore2@gmail.com',
     passwordHash: hashSync('Student123', 8),
     firstName: 'Dylan',
     lastName: 'Moore',
@@ -83,7 +83,7 @@ export const userSeed: Array<User> = [
   },
   {
     id: '00000000-0000-1000-8000-000000000008',
-    email: 'Johann.Fisher61@hotmail.com',
+    email: 'johann.fisher61@hotmail.com',
     passwordHash: hashSync('Student123', 8),
     firstName: 'Johann',
     lastName: 'Fisher',
