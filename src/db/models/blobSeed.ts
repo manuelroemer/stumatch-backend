@@ -121,35 +121,35 @@ export const blobSeed: Array<Blob> = [
   },
   {
     id: '10000000-0000-1000-8000-000000001021',
-    data: readSeedFile('ad01.jpg'),
+    data: readSeedFile('ad01.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001022',
-    data: readSeedFile('ad02.jpg'),
+    data: readSeedFile('ad02.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001023',
-    data: readSeedFile('ad03.jpg'),
+    data: readSeedFile('ad03.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001024',
-    data: readSeedFile('ad04.jpg'),
+    data: readSeedFile('ad04.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001025',
-    data: readSeedFile('ad05.jpg'),
+    data: readSeedFile('ad05.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001026',
-    data: readSeedFile('ad06.jpg'),
+    data: readSeedFile('ad06.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001027',
-    data: readSeedFile('ad07.jpg'),
+    data: readSeedFile('ad07.png'),
   },
   {
     id: '10000000-0000-1000-8000-000000001028',
-    data: readSeedFile('ad08.jpg'),
+    data: readSeedFile('ad08.png'),
   },
 ];
 
