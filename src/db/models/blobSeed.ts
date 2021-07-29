@@ -119,6 +119,38 @@ export const blobSeed: Array<Blob> = [
     id: '10000000-0000-1000-8000-000000001020',
     data: readSeedFile('post20.jpg'),
   },
+  {
+    id: '10000000-0000-1000-8000-000000001021',
+    data: readSeedFile('ad01.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001022',
+    data: readSeedFile('ad02.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001023',
+    data: readSeedFile('ad03.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001024',
+    data: readSeedFile('ad04.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001025',
+    data: readSeedFile('ad05.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001026',
+    data: readSeedFile('ad06.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001027',
+    data: readSeedFile('ad07.jpg'),
+  },
+  {
+    id: '10000000-0000-1000-8000-000000001028',
+    data: readSeedFile('ad08.jpg'),
+  },
 ];
 
 function readSeedFile(name: string) {
