@@ -104,9 +104,4 @@ export const chatGroupSeed: Array<ChatGroup> = [
     activeParticipantIds: ['00000000-0000-1000-8000-000000000000', '10000000-0000-1000-8000-000000000003'],
     mutedByParticipantIds: [],
   },
-  {
-    id: `40000000-0000-1000-8000-000000000019`,
-    activeParticipantIds: ['00000000-0000-1000-8000-000000000000', '10000000-0000-1000-8000-000000000004'],
-    mutedByParticipantIds: [],
-  },
 ];

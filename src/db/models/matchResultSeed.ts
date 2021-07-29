@@ -31,7 +31,7 @@ export const matchResultSeed: Array<MatchResult> = [
     matchRequest2Id: '00000000-0000-1000-8000-000000000007',
     acceptedByUser1: true,
     acceptedByUser2: true,
-    chatGroupId: '40000000-0000-1000-8000-000000000013',
+    chatGroupId: '40000000-0000-1000-8000-000000000000',
   },
   {
     id: '10000000-0000-1000-8000-000000000004',
