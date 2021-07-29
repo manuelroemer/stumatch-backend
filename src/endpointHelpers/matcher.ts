@@ -65,7 +65,6 @@ function calculateSemester(startingSemester: string, startingYear: number) {
   const startMonthSS = 3;
   const startMonthWS = 9;
   const currentYear = new Date().getFullYear();
-
   const currentSemester = new Date().getMonth() < startMonthSS || new Date().getMonth() >= startMonthWS ? 'WS' : 'SS';
 
   if (startingYear > currentYear || (startingYear === currentYear && currentSemester !== startingSemester)) {
